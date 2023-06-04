@@ -6,11 +6,15 @@ from pathlib import Path
 # python -m pip install --upgrade openai
 import openai
 
+# pip install git+https://github.com/dsdanielpark/Bard-API.git
+from bardapi import Bard
+
 
 def init_os_envs():
     with open(Path(__file__).parent / "secrets.json", "r") as rf:
         secrets = json.load(rf)
     os.environ["OPENAI_API_KEY"] = secrets["openai_api_key"]
+    os.environ["BARD_API_KEY"] = secrets["bard_api_key"]
 
     for proxy_env in ["http_proxy", "https_proxy"]:
         os.environ[proxy_env] = secrets["http_proxy"]
@@ -78,13 +82,13 @@ class ChatGPTAgent:
         self,
         original_text,
         model="gpt-3.5-turbo",
-        task="paper-en",
+        task="en2zh",
     ):
+        task_system_message_dict = {
+            "en2zh": "你是一个英译中翻译专家。你的任务是将给定的英文如实翻译成中文。",
+        }
         self.model = model
-        if task == "paper-en":
-            self.system_message = (
-                "你是一个学术翻译专家。你的任务是将给定的英文如实翻译成中文。你的翻译应当是严谨的和自然的，不要删改原文。请按照要求翻译下面的文本："
-            )
+        self.system_message = task_system_message_dict[task]
         self.original_text = original_text
 
     def run(self):
