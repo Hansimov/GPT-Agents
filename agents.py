@@ -1,4 +1,4 @@
-from utils import ChatGPTAgent, BardAgent
+from utils import ChatGPTAgent, BardAgent, ClaudeAgent
 
 # original_text = "Hello World"
 # chatgpt_agent = ChatGPTAgent(original_text)
@@ -6,5 +6,8 @@ from utils import ChatGPTAgent, BardAgent
 # chatgpt_agent.run()
 # print(chatgpt_agent.translated_text)
 
-bard_agent = BardAgent()
-bard_agent.run()
+# bard_agent = BardAgent()
+# bard_agent.run()
+
+claude_agent = ClaudeAgent()
+claude_agent.run()
