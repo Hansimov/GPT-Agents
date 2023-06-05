@@ -6,7 +6,8 @@ from pathlib import Path
 # python -m pip install --upgrade openai
 import openai
 
-# pip install git+https://github.com/dsdanielpark/Bard-API.git
+# python -m pip install git+https://github.com/dsdanielpark/Bard-API.git
+import bardapi
 from bardapi import Bard
 
 
@@ -105,6 +106,19 @@ class ChatGPTAgent:
 
         self.translated_text = response["choices"][0]["message"]["content"]
         return self.translated_text
+
+class BardAgent:
+    def __init__(self):
+        pass
+    
+    def run(self):
+        question = "Today's Weather of Shanghai Minhang. For temperature, you should Celsius Degree instead of Fahrenheit. You should output the statistics in table format."
+        # answer = Bard().get_answer(question)["content"]
+        # print(answer)
+        bard_session = bardapi.core.Bard(token=os.environ["BARD_API_KEY"])
+        response = bard_session.get_answer(question)
+        answer = response["content"]
+        print(answer)
 
 
 if __name__ == "__main__":
