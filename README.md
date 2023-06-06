@@ -8,3 +8,6 @@ Multiple GPT Agents to have brainstorms and make decisions
 
 * dsdanielpark/Bard-API: The unofficial python package that returns response of Google Bard through cookie value.
   * https://github.com/dsdanielpark/Bard-API
+
+* acheong08/EdgeGPT: Reverse engineered API of Microsoft's Bing Chat AI
+  * https://github.com/acheong08/EdgeGPT
