@@ -92,19 +92,33 @@ class BardAgent:
 
 
 class ClaudeAgent:
-    def __init__(self):
-        pass
+    def __init__(self, model="Claude-instant"):
+        self.poe_model_name_map = {
+            "Sage": "capybara",
+            "Claude-instant": "a2",
+            "Claude-instant-100k": "a2_100k",
+            "Claude+": "a2_2",
+            "ChatGPT": "chinchilla",
+            "GPT-4": "beaver",
+        }
+        self.model = model
+        self.model_id = self.poe_model_name_map[model]
+        print(f"> Poe LLM Model: {self.model}")
 
     def run(self):
         claude_client = poe.Client(
             token=os.environ["CLAUDE_API_KEY"],
             proxy=os.environ["http_proxy"],
         )
-        print(json.dumps(claude_client.bot_names, indent=2))
-        # message = "Summarize the GNU GPL v3"
-        # for chunk in claude_client.send_message("capybara", message, with_chat_break=True):
-        #     print(chunk["text_new"], end="", flush=True)
-        # print()
+        # print(json.dumps(claude_client.bot_names, indent=2))
+        message = "Summarize the GNU GPL v3"
+        for chunk in claude_client.send_message(
+            self.model_id,
+            message,
+            with_chat_break=True,
+        ):
+            print(chunk["text_new"], end="", flush=True)
+        print()
 
 
 class BingAgent:
