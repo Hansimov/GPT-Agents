@@ -96,7 +96,10 @@ class ClaudeAgent:
         pass
 
     def run(self):
-        claude_client = poe.Client(os.environ["CLAUDE_API_KEY"])
+        claude_client = poe.Client(
+            token=os.environ["CLAUDE_API_KEY"],
+            proxy=os.environ["http_proxy"],
+        )
         print(json.dumps(claude_client.bot_names, indent=2))
         # message = "Summarize the GNU GPL v3"
         # for chunk in claude_client.send_message("capybara", message, with_chat_break=True):
