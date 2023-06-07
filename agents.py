@@ -9,7 +9,8 @@ from utils import ChatGPTAgent, BardAgent, ClaudeAgent, BingAgent
 # bard_agent = BardAgent()
 # bard_agent.run()
 
-claude_agent = ClaudeAgent("Sage")
+# claude_agent = ClaudeAgent("Sage")
+claude_agent = ClaudeAgent("Claude-instant")
 claude_agent.run()
 
 # bing_agent = BingAgent()

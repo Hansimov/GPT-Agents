@@ -2,9 +2,12 @@ import asyncio
 import json
 import logging
 import os
+import platform
 import shutil
 import sys
 from pathlib import Path
+from termcolor import colored
+
 
 # python -m pip install --upgrade openai
 import openai
@@ -122,6 +125,9 @@ class ClaudeAgent:
             self.model_id,
             count=count,
         )
+        if platform.system() == "windows":
+            os.system("color")
+
         for message in history:
             author = message["node"]["author"]
             text = message["node"]["text"]
@@ -130,13 +136,20 @@ class ClaudeAgent:
             else:
                 if author != "human":
                     author = self.poe_model_id_map[author]
-                print(f"[{author}]:" f"{text}")
+
+                if author == "human":
+                    text_color = "green"
+                elif author != "chat_break":
+                    text_color = "cyan"
+                else:
+                    text_color = "white"
+                print(f"[{author}]: " f"{colored(text,text_color)}")
         print()
 
     def run(self):
-        # self.get_history()
-        self.prompt("Introduce yourself in less than 10 words.")
-        self.prompt("Repeat my last question.")
+        self.get_history(count=10)
+        # self.prompt("Introduce yourself in less than 10 words.")
+        # self.prompt("Repeat my last question.")
 
 
 class BingAgent:
