@@ -1,0 +1,51 @@
+I am contributing to a GitHub repo named EdgeGPT written in Python.
+Here is the link to the repo: https://github.com/acheong08/EdgeGPT.
+I would like to generate docs for this repo, both for users and developers:
+[1] For users, the doc should be focused on how to use setup and use the package, and how to solve common problems and report issues.
+[2] For developers, the doc should be focused the architecture of the repo, and some details about the implementation, and the hacks or tricks to solve some uncommon problems.
+
+Please analyze my questions above, then do following steps:
+[1] Search the web, and list common workflows and BKM to generate doc for GitHub repo and Python project.
+[2] Search the web, and list popular Python packages to automate or help generating the docs of functions.
+
+
+Great! Before move forward for my task, I would like to know some beautiful examples of documentations websites. Please search the web, and list several beautiful examples for documentation websites. Please explain why you think they are beautiful.
+
+
+Great! Based on your search results, I found the following Resources to be useful:
+[1] Google developer documentation style guide: https://developers.google.com/style .
+[2] Write Great Documentation Series: https://jacobian.org/series/great-documentation/
+[3] FastAPI Doc: https://fastapi.tiangolo.com .
+[4] DigitalOcean API Doc: https://docs.digitalocean.com/reference/api .
+[5] Ember.js Doc: https://guides.emberjs.com .
+[6] CoffeeScript Doc: https://coffeescript.org/ .
+
+Please do following steps based on the above references:
+[1] Learn the documentation guides in above Resources 1 and 2, and extract most important rules and practices to write and generate a doc for a Python package.
+[2] Learn the Resource 3, 4, 5 and 6, to get familiar with the documentation styles and formats.
+[3] List the tools and packages used in generating and organizing the docs in Resources 3, 4, 5 and 6.
+
+
+Search and learn the following references I provide you.
+Then list the tools and packages they use in generating and organizing the docs:
+[1] CoffeeScript Doc: https://coffeescript.org/
+
+[1] DigitalOcean API Doc: https://docs.digitalocean.com/reference/api
+[4] FastAPI Doc: https://fastapi.tiangolo.com .
+[1] Ember.js Doc: https://guides.emberjs.com
+
+
+Great! Now based on our previous conversations, please do following steps:
+[1] Summarize my requirements for documenting a Python project.
+[2] Suggest a table of tools and libraries for different documenting goals. For example, the goals could be "the format of generated doc should be markdown", or "the project to document is written in Python", or "the documentation appearance should beautiful and modern".
+
+Then let's select MkDocs as the tool to generate doc.
+please do following steps:
+[1] Search the web of MkDocs, list its popular features, then list some great examples and usages.
+[2] Search the doc of MkDocs, list the workflow of using MkDocs to generate a markdown documentation for a Python project.
+
+
+Then let's select pdoc3 as the tool to generate doc.
+please do following steps:
+[1] Search the web of pdoc3, list its popular features, then list some great examples and usages.
+[2] Search the doc of pdoc3, list the workflow of using pdoc3 to generate a markdown documentation for a Python project.

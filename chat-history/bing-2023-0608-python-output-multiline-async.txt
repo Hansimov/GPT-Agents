@@ -1,0 +1,31 @@
+I would like to use Python to develop a multiple line output program.
+When the program output texts to windows terminal, it can update multiple lines asyncly at the same time.
+For example, here is a simulated env for input and text output programs:
+
+```
+[input]: Please provide me several suggestions on the travel plan in Shanghai in one day.
+[program1]: I have 3 suggestions for you ... <Keep async updating texts>
+[program2]: Here are my suggestions : ... <Keep async updating texts>
+[program3]: You should first ... <Keep async updating texts>
+```
+
+
+I would like to use Python to develop a multiple line output program.
+When the program output texts to windows terminal, it can update multiple lines asyncly at the same time.
+Please search the web, and list several high-quality solutions for my requirement.
+
+
+Great! Now could you 1st search the web first, 2nd write a script in Python to show me how this can be done.
+
+I run this script in windows, but it does not work as what i expect. I would like it to update multiple lines asyncly.
+
+Your new solution gives me this error. Please analyze it, then fix it.
+
+```
+Traceback (most recent call last):
+  File "C:\_codes\GPT-Agents\tests\test_update_multiline_async.py", line 1, in <module>
+    import curses
+  File "C:\Python39\lib\curses\__init__.py", line 13, in <module>
+    from _curses import *
+ModuleNotFoundError: No module named '_curses'
+```
