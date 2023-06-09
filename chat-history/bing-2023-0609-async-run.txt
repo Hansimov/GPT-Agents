@@ -1,0 +1,20 @@
+I would like to run multiple Python functions at same time.
+The running functions should be independent and do not influence others.
+Also, the functions are about network request and response, so I need to handle and manage the response in a natural and elegant way.
+Search the web first, then search your knowledge base, then list several solutions to my requirements above.
+
+Great! Then Do following steps based on previous answer:
+[1] Design few indicators to evaluate the solutions.
+[2] Use table format to show the comparisons with these indicators.
+[3] Recommend the best solution for me.
+
+Please Search the web, and Recommend more tools or packages like Ray.
+
+My program is mainly about frontend and backend work in parallel, so:
+[1] Design several indicators to evaluate the solutions.
+[2] Use table format to show the comparisons of Ray and Dask with these indicators.
+[3] Recommend the best solution for me.
+
+My program has a lot of network requests and responses, so:
+[1] Write several example functions which all use `await` and `async` with `asyncio` package.
+[2] Provide examples of using Ray to implement the feature of running these functions in parallel at same time, and receive and process the response accordingly.
