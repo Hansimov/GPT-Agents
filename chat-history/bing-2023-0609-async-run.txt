@@ -18,3 +18,45 @@ My program is mainly about frontend and backend work in parallel, so:
 My program has a lot of network requests and responses, so:
 [1] Write several example functions which all use `await` and `async` with `asyncio` package.
 [2] Provide examples of using Ray to implement the feature of running these functions in parallel at same time, and receive and process the response accordingly.
+
+
+
+For example, I have below python example script.
+I would like to improve the `ask_question`, to make it run the llm_agent at same time, then run in parallel.
+Could you find a best solution to do this?
+
+```py
+import random
+import time
+
+
+class LLMAgent:
+    def __init__(self, model="ChatGPT"):
+        self.model = model
+
+    def answer(self, question=None):
+        rand_num = random.randint(1, 4)
+        msg = f"[{self.model}]: I am {self.model}. Sleeping {rand_num}s."
+        print(msg)
+        time.sleep(rand_num)
+        return msg
+
+
+class TaskRunner:
+    def __init__(self):
+        pass
+
+    def ask_question(self, question="Hello, who are you?"):
+        print(question)
+        models = [
+            "ChatGPT",
+            "Sage",
+            "Claude-instant",
+            "Claude-instant-100k",
+            "Claude+",
+            "Bing",
+        ]
+        for model in models:
+            llm_agent = LLMAgent(model)
+            llm_agent.answer(question)
+```

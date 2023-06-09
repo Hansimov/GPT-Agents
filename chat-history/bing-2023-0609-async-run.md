@@ -253,3 +253,97 @@ Copy
 In this example, we’ve added the `@ray.remote` decorator to the `fetch` function to distribute it across any available nodes in a Ray cluster. The rest of the code is similar to the previous example, except that we use `ray.get` to retrieve the results of the parallel tasks.
 
 I hope this helps! Let me know if you have any other questions or concerns.
+
+> I would like to run multiple Python functions at same time.
+> The running functions should be independent and do not influence others.
+> Also, the functions are about network request and response, so I need to handle and manage the response in a natural and elegant way.
+> Search the web first, then search your knowledge base, then list several solutions to my requirements above.
+> 
+> Great! Then Do following steps based on previous answer:
+> [1] Design few indicators to evaluate the solutions.
+> [2] Use table format to show the comparisons with these indicators.
+> [3] Recommend the best solution for me.
+> 
+> Please Search the web, and Recommend more tools or packages like Ray.
+> 
+> My program is mainly about frontend and backend work in parallel, so:
+> [1] Design several indicators to evaluate the solutions.
+> [2] Use table format to show the comparisons of Ray and Dask with these indicators.
+> [3] Recommend the best solution for me.
+> 
+> My program has a lot of network requests and responses, so:
+> [1] Write several example functions which all use `await` and `async` with `asyncio` package.
+> [2] Provide examples of using Ray to implement the feature of running these functions in parallel at same time, and receive and process the response accordingly.
+> 
+> 
+> 
+> For example, I have below python example script.
+> I would like to improve the `ask_question`, to make it run the llm_agent at same time, then run in parallel.
+> Could you find a best solution to do this?
+> 
+> ```py
+> import random
+> import time
+> 
+> 
+> class LLMAgent:
+>     def __init__(self, model="ChatGPT"):
+>         self.model = model
+> 
+>     def answer(self, question=None):
+>         rand_num = random.randint(1, 4)
+>         msg = f"[{self.model}]: I am {self.model}. Sleeping {rand_num}s."
+>         print(msg)
+>         time.sleep(rand_num)
+>         return msg
+> 
+> 
+> class TaskRunner:
+>     def __init__(self):
+>         pass
+> 
+>     def ask_question(self, question="Hello, who are you?"):
+>         print(question)
+>         models = [
+>             "ChatGPT",
+>             "Sage",
+>             "Claude-instant",
+>             "Claude-instant-100k",
+>             "Claude+",
+>             "Bing",
+>         ]
+>         for model in models:
+>             llm_agent = LLMAgent(model)
+>             llm_agent.answer(question)
+> ```
+
+Sure! One way to improve the `ask_question` method to run the `LLMAgent` instances in parallel is to use the `concurrent.futures` module. Here’s an example of how you can do it:
+
+    import concurrent.futures
+    
+    class TaskRunner:
+        def __init__(self):
+            pass
+    
+        def ask_question(self, question="Hello, who are you?"):
+            print(question)
+            models = [
+                "ChatGPT",
+                "Sage",
+                "Claude-instant",
+                "Claude-instant-100k",
+                "Claude+",
+                "Bing",
+            ]
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                agents = [LLMAgent(model) for model in models]
+                results = [executor.submit(agent.answer, question) for agent in agents]
+                for f in concurrent.futures.as_completed(results):
+                    print(f.result())
+    
+
+Copy
+
+In this example, we create a `ThreadPoolExecutor` and use it to submit the `answer` method of each `LLMAgent` instance as a separate task. The `as_completed` function returns an iterator that yields the results of the tasks as they complete.
+
+This approach allows you to run multiple instances of the `LLMAgent` class in parallel and receive and process their responses accordingly. I hope this helps! Let me know if you have any other questions or concerns.
