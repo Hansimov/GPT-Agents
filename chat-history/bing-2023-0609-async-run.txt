@@ -60,3 +60,138 @@ class TaskRunner:
             llm_agent = LLMAgent(model)
             llm_agent.answer(question)
 ```
+
+Great! Now solve this for me.
+The function `answer` in `LLMAgent` class would be replaced by a network request and response in the future, and the returned response from the network request could be a stream of data.
+Then how to make the output in terminal make the output in the same line for same model.
+For example, the later streamed output of `ChatGPT` should be in the same line of `[ChatGPT]: ... `, and the later streamed output of `Sage` should be in the same line of `[Sage]: ... `, and so on.
+
+My updated codes is attached below. Please enhance it with above requirements.
+
+```py
+import concurrent.futures
+import random
+import time
+
+
+class LLMAgent:
+    def __init__(self, model="ChatGPT"):
+        self.model = model
+
+    def answer(self, question=None):
+        rand_num = random.randint(1, 4)
+        msg = f"[{self.model}]: I am {self.model}. Sleeping {rand_num}s."
+        
+        time.sleep(rand_num)
+        print(msg)
+        return msg
+
+
+class TaskRunner:
+    def __init__(self):
+        pass
+
+    def ask_question(self, question="Hello, who are you?"):
+        print(question)
+        models = [
+            "ChatGPT",
+            "Sage",
+            "Claude-instant",
+            "Claude-instant-100k",
+            "Claude+",
+            "Bing",
+        ]
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            agents = [LLMAgent(model) for model in models]
+            results = [executor.submit(agent.answer, question) for agent in agents]
+            for f in concurrent.futures.as_completed(results):
+                pass
+
+    def run(self):
+        self.ask_question()
+
+
+task_runner = TaskRunner()
+task_runner.run()
+
+```
+
+Your solution seems to be good.
+Then could you enhance the `answer` function to make it generate streamed data in a random time interval, and the output in terminal make the output in the same line for same model.
+
+
+Based on your solutions, I improve my codes, then run it with Python 3.9.6.
+
+It raises the below error:
+
+```
+C:\Python39\lib\asyncio\base_events.py:1891: RuntimeWarning: coroutine 'LLMAgent.answer' was never awaited
+  handle = None  # Needed to break cycles when an exception occurs.
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+```
+
+Here is my codes which has this error:
+
+```
+import asyncio
+import concurrent.futures
+import random
+import time
+
+
+class LLMAgent:
+    def __init__(self, model="ChatGPT"):
+        self.model = model
+
+    async def answer(self, question=None):
+        beg_str = f"[{self.model}]: I am {self.model}"
+        print(beg_str)
+        for i in range(5):
+            rand_num = random.random() * 0.5
+            msg = f"<place_holder>"
+            await asyncio.sleep(rand_num)
+            print(
+                f"\033[{self.index}A\033[2K{msg}\033[{self.index}B ({round(rand_num,2)})",
+                end="\r",
+            )
+        return msg
+
+
+class TaskRunner:
+    def __init__(self):
+        pass
+
+    async def ask_question(self, question="Hello, who are you?"):
+        print(question)
+        models = [
+            "ChatGPT",
+            "Sage",
+            "Claude-instant",
+            "Claude-instant-100k",
+            "Claude+",
+            "Bing",
+        ]
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            loop = asyncio.get_event_loop()
+            agents = [LLMAgent(model) for model in models]
+            for i, agent in enumerate(agents):
+                agent.index = len(models) - i
+                print()
+            tasks = [
+                loop.run_in_executor(
+                    executor,
+                    agent.answer,
+                    question,
+                )
+                for agent in agents
+            ]
+            await asyncio.gather(*tasks)
+
+    def run(self):
+        asyncio.run(self.ask_question())
+
+
+task_runner = TaskRunner()
+task_runner.run()
+
+```

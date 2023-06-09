@@ -347,3 +347,311 @@ Copy
 In this example, we create a `ThreadPoolExecutor` and use it to submit the `answer` method of each `LLMAgent` instance as a separate task. The `as_completed` function returns an iterator that yields the results of the tasks as they complete.
 
 This approach allows you to run multiple instances of the `LLMAgent` class in parallel and receive and process their responses accordingly. I hope this helps! Let me know if you have any other questions or concerns.
+
+> Great! Now solve this for me.
+> The function `answer` in `LLMAgent` class would be replaced by a network request and response in the future, and the returned response from the network request could be a stream of data.
+> Then how to make the output in terminal make the output in the same line for same model.
+> For example, the later streamed output of `ChatGPT` should be in the same line of `[ChatGPT]: ... `, and the later streamed output of `Sage` should be in the same line of `[Sage]: ... `, and so on.
+> 
+> My updated codes is attached below. Please enhance it with above requirements.
+> 
+> ```py
+> import concurrent.futures
+> import random
+> import time
+> 
+> 
+> class LLMAgent:
+>     def __init__(self, model="ChatGPT"):
+>         self.model = model
+> 
+>     def answer(self, question=None):
+>         rand_num = random.randint(1, 4)
+>         msg = f"[{self.model}]: I am {self.model}. Sleeping {rand_num}s."
+>         time.sleep(rand_num)
+>         print(msg)
+>         return msg
+> 
+> 
+> class TaskRunner:
+>     def __init__(self):
+>         pass
+> 
+>     def ask_question(self, question="Hello, who are you?"):
+>         print(question)
+>         models = [
+>             "ChatGPT",
+>             "Sage",
+>             "Claude-instant",
+>             "Claude-instant-100k",
+>             "Claude+",
+>             "Bing",
+>         ]
+>         with concurrent.futures.ThreadPoolExecutor() as executor:
+>             agents = [LLMAgent(model) for model in models]
+>             results = [executor.submit(agent.answer, question) for agent in agents]
+>             for f in concurrent.futures.as_completed(results):
+>                 pass
+> 
+>     def run(self):
+>         self.ask_question()
+> 
+> 
+> task_runner = TaskRunner()
+> task_runner.run()
+> 
+> ```
+
+If the `answer` method in the `LLMAgent` class will be replaced by a network request and response that returns a stream of data, one way to display the output in the terminal on the same line for each model is to use ANSI escape codes to move the cursor up and down. Here’s an example of how you can do it:
+
+    import concurrent.futures
+    import random
+    import time
+    
+    
+    class LLMAgent:
+        def __init__(self, model="ChatGPT"):
+            self.model = model
+    
+        def answer(self, question=None):
+            rand_num = random.randint(1, 4)
+            msg = f"[{self.model}]: I am {self.model}. Sleeping {rand_num}s."
+            time.sleep(rand_num)
+            print(f"\033[{self.index}A\033[2K{msg}\033[{self.index}B", end="\r")
+            return msg
+    
+    
+    class TaskRunner:
+        def __init__(self):
+            pass
+    
+        def ask_question(self, question="Hello, who are you?"):
+            print(question)
+            models = [
+                "ChatGPT",
+                "Sage",
+                "Claude-instant",
+                "Claude-instant-100k",
+                "Claude+",
+                "Bing",
+            ]
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                agents = [LLMAgent(model) for model in models]
+                for i, agent in enumerate(agents):
+                    agent.index = len(models) - i
+                    print()
+                results = [executor.submit(agent.answer, question) for agent in agents]
+                for f in concurrent.futures.as_completed(results):
+                    pass
+    
+        def run(self):
+            self.ask_question()
+    
+    
+    task_runner = TaskRunner()
+    task_runner.run()
+    
+
+Copy
+
+In this example, we’ve added an `index` attribute to each `LLMAgent` instance to keep track of its position in the list of models. In the `answer` method, we use ANSI escape codes to move the cursor up by `index` lines, clear the current line using the `2K` code, print the message, and then move the cursor back down by `index` lines.
+
+This approach allows you to display the output of each `LLMAgent` instance on the same line in the terminal as new data is streamed from the network request. I hope this helps! Let me know if you have any other questions or concerns.
+
+> Your solution seems to be good.
+> Then could you enhance the `answer` function to make it generate streamed data in a random time interval, and the output in terminal make the output in the same line for same model.
+
+Sure! Here’s an example of how you can enhance the `answer` method to generate streamed data at random time intervals and display the output on the same line for each model:
+
+    import concurrent.futures
+    import random
+    import time
+    
+    
+    class LLMAgent:
+        def __init__(self, model="ChatGPT"):
+            self.model = model
+    
+        async def answer(self, question=None):
+            for i in range(5):
+                rand_num = random.randint(1, 4)
+                msg = f"[{self.model}]: I am {self.model}. Sleeping {rand_num}s."
+                await asyncio.sleep(rand_num)
+                print(f"\033[{self.index}A\033[2K{msg}\033[{self.index}B", end="\r")
+            return msg
+    
+    
+    class TaskRunner:
+        def __init__(self):
+            pass
+    
+        async def ask_question(self, question="Hello, who are you?"):
+            print(question)
+            models = [
+                "ChatGPT",
+                "Sage",
+                "Claude-instant",
+                "Claude-instant-100k",
+                "Claude+",
+                "Bing",
+            ]
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                loop = asyncio.get_event_loop()
+                agents = [LLMAgent(model) for model in models]
+                for i, agent in enumerate(agents):
+                    agent.index = len(models) - i
+                    print()
+                tasks = [loop.run_in_executor(executor, agent.answer, question) for agent in agents]
+                await asyncio.gather(*tasks)
+    
+        def run(self):
+            asyncio.run(self.ask_question())
+    
+    
+    task_runner = TaskRunner()
+    task_runner.run()
+    
+
+Copy
+
+In this example, we’ve modified the `answer` method to be an asynchronous function that generates streamed data at random time intervals using the `asyncio.sleep` function. The rest of the code is similar to the previous example.
+
+This approach allows you to generate streamed data from the `LLMAgent` instances at random time intervals and display the output on the same line for each model in the terminal. I hope this helps! Let me know if you have any other questions or concerns.
+
+> Based on your solutions, I improve my codes, then run it with Python 3.9.6.
+> 
+> It raises the below error:
+> 
+> ```
+> C:\Python39\lib\asyncio\base_events.py:1891: RuntimeWarning: coroutine 'LLMAgent.answer' was never awaited
+>   handle = None  # Needed to break cycles when an exception occurs.
+> RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+> ```
+> 
+> Here is my codes which has this error:
+> 
+> ```
+> import asyncio
+> import concurrent.futures
+> import random
+> import time
+> 
+> 
+> class LLMAgent:
+>     def __init__(self, model="ChatGPT"):
+>         self.model = model
+> 
+>     async def answer(self, question=None):
+>         beg_str = f"[{self.model}]: I am {self.model}"
+>         print(beg_str)
+>         for i in range(5):
+>             rand_num = random.random() * 0.5
+>             msg = f"<place_holder>"
+>             await asyncio.sleep(rand_num)
+>             print(
+>                 f"\033[{self.index}A\033[2K{msg}\033[{self.index}B ({round(rand_num,2)})",
+>                 end="\r",
+>             )
+>         return msg
+> 
+> 
+> class TaskRunner:
+>     def __init__(self):
+>         pass
+> 
+>     async def ask_question(self, question="Hello, who are you?"):
+>         print(question)
+>         models = [
+>             "ChatGPT",
+>             "Sage",
+>             "Claude-instant",
+>             "Claude-instant-100k",
+>             "Claude+",
+>             "Bing",
+>         ]
+>         with concurrent.futures.ThreadPoolExecutor() as executor:
+>             loop = asyncio.get_event_loop()
+>             agents = [LLMAgent(model) for model in models]
+>             for i, agent in enumerate(agents):
+>                 agent.index = len(models) - i
+>                 print()
+>             tasks = [
+>                 loop.run_in_executor(
+>                     executor,
+>                     agent.answer,
+>                     question,
+>                 )
+>                 for agent in agents
+>             ]
+>             await asyncio.gather(*tasks)
+> 
+>     def run(self):
+>         asyncio.run(self.ask_question())
+> 
+> 
+> task_runner = TaskRunner()
+> task_runner.run()
+> 
+> ```
+
+The error message you’re seeing indicates that the `answer` method of the `LLMAgent` class, which is a coroutine, was never awaited. This is because the `run_in_executor` method of the `asyncio` event loop is not designed to run coroutines. It’s intended for running regular functions that may block the event loop in a separate thread or process.
+
+To fix this issue, you can modify the `ask_question` method to use `asyncio.create_task` instead of `run_in_executor` to run the `answer` method of each `LLMAgent` instance as a separate task. Here’s an example of how you can do it:
+
+    import asyncio
+    import random
+    import time
+    
+    
+    class LLMAgent:
+        def __init__(self, model="ChatGPT"):
+            self.model = model
+    
+        async def answer(self, question=None):
+            beg_str = f"[{self.model}]: I am {self.model}"
+            print(beg_str)
+            for i in range(5):
+                rand_num = random.random() * 0.5
+                msg = f"<place_holder>"
+                await asyncio.sleep(rand_num)
+                print(
+                    f"\033[{self.index}A\033[2K{msg}\033[{self.index}B ({round(rand_num,2)})",
+                    end="\r",
+                )
+            return msg
+    
+    
+    class TaskRunner:
+        def __init__(self):
+            pass
+    
+        async def ask_question(self, question="Hello, who are you?"):
+            print(question)
+            models = [
+                "ChatGPT",
+                "Sage",
+                "Claude-instant",
+                "Claude-instant-100k",
+                "Claude+",
+                "Bing",
+            ]
+            agents = [LLMAgent(model) for model in models]
+            for i, agent in enumerate(agents):
+                agent.index = len(models) - i
+                print()
+            tasks = [asyncio.create_task(agent.answer(question)) for agent in agents]
+            await asyncio.gather(*tasks)
+    
+        def run(self):
+            asyncio.run(self.ask_question())
+    
+    
+    task_runner = TaskRunner()
+    task_runner.run()
+    
+
+Copy
+
+In this example, we’ve removed the use of the `concurrent.futures` module and modified the `ask_question` method to use `asyncio.create_task` to create a separate task for each instance of the `LLMAgent` class. The rest of the code is similar to your previous example.
+
+This approach should fix the error you’re seeing and allow you to run multiple instances of the `LLMAgent` class in parallel and receive and process their responses accordingly. I hope this helps! Let me know if you have any other questions or concerns.
