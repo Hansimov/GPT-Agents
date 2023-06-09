@@ -195,3 +195,62 @@ task_runner = TaskRunner()
 task_runner.run()
 
 ```
+
+
+Your solution is great! I have improved the `LLMAgent` as below.
+
+```py
+class LLMAgent:
+    def __init__(self, model="ChatGPT"):
+        self.model = model
+
+    async def answer(self, question=None):
+        msg = f"[{self.model}]: I am {self.model}. "
+        print(msg)
+        word_num = random.randint(20, 30)
+        for i in range(word_num):
+            rand_num = random.random() * 0.5
+            msg += f"<{self.model}_word_{round(rand_num,2)}>"
+            await asyncio.sleep(rand_num)
+            print(
+                f"\033[{self.index}A\033[2K{msg}\033[{self.index}B",
+                end="\r",
+            )
+        return msg
+```
+
+But this code still has a problem, that is when the text is too long so that it exceeds the line width of the terminal, the later texts would overlap the previous texts.
+Please solve this for me.
+
+
+Based on your suggestions, I have improve the codes to the following:
+
+```py
+class LLMAgent:
+    def __init__(self, model="ChatGPT"):
+        self.model = model
+
+    async def answer(self, question=None):
+        word_num = random.randint(20, 30)
+        msg = f"[{self.model}]: I am {self.model}. ({word_num} words) "
+        print(msg)
+        for i in range(word_num):
+            rand_num = random.random() * 0.5
+            msg += f"<{self.model}_word_{i}>"
+            await asyncio.sleep(rand_num)
+            lines = textwrap.wrap(
+                msg,
+                width=shutil.get_terminal_size().columns,
+            )
+            for j, line in enumerate(lines):
+                print(
+                    f"\033[{self.index + j}A\033[2K{line}\033[{self.index + j}B",
+                    end="\r",
+                )
+        return msg
+```
+
+This now can output linebreaks, but it has another problem, that is the the max lines would not be updated. For example, output of `Sage` is at the 2nd row, then the output of `Claude-instant` would be at the 3rd row, and so on. But when the output of `Claude-instant` exceeds to 4th rows, the output of `Sage` would be overlapped.
+So the growth direction of output text should be up to bottom, and the total count of rows should be updated when there is a new line break in any of the agent output.
+
+You solution is not working. It outputs multiple duplicated lines for each agent.
