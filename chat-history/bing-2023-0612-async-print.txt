@@ -1,9 +1,11 @@
+I would provide you a Python script at the end. Please do following steps to this script:
+[1] List the usage, functions and structure of this script.
+[2] Re-write the part of print the text of multiple agents, especially line breaks. For example, if the output text of agent "Sage" has more lines than before, then all agents which print below of "Sage" should add the line number of starting printing with the added count of "Sage".
+
+
+```py
 import asyncio
 import concurrent.futures
-
-
-# pip install windows-curses
-import curses
 import random
 import shutil
 import textwrap
@@ -13,7 +15,6 @@ import time
 class LLMAgent:
     def __init__(self, model="ChatGPT"):
         self.model = model
-        self.lines_printed = 0
 
     async def answer(self, question=None):
         word_num = random.randint(20, 30)
@@ -29,17 +30,12 @@ class LLMAgent:
             )
             self.task_runner.max_lines = max(self.task_runner.max_lines, len(lines))
             for j, line in enumerate(lines):
-                index = self.index + j + self.lines_printed
+                index = self.index + j
                 line = lines[j] if j < len(lines) else ""
-                try:
-                    curses.setupterm()
-                    curses.putp(curses.tparm(curses.tigetstr("cuu"), index + j))
-                    curses.putp(curses.tigetstr("el"))
-                    print(line, end="\r")
-                    curses.putp(curses.tparm(curses.tigetstr("cud"), index + j))
-                except Exception as e:
-                    print(f"Error: {e}")
-            self.lines_printed += len(lines) - 1
+                print(
+                    f"\033[{index + j}A\033[2K{line}\033[{index + j}B",
+                    end="\r",
+                )
         return msg
 
 
@@ -70,3 +66,16 @@ class TaskRunner:
 
 task_runner = TaskRunner()
 task_runner.run()
+```
+
+The text format `\033[{index + j}A\033[2K{line}\033[{index + j}B` does not work in windows terminal. It output the characters of `\033[{index + j}A` instead of move the cursor.
+
+
+In windows, you should use `windows-curses`. Here is its repo:
+https://github.com/zephyrproject-rtos/windows-curses
+
+Please refer to this, and re-write the related codes.
+
+
+
+Your solution gives this error: `_curses.putp() takes exactly one argument (2 given)`
