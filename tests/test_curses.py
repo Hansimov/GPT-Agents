@@ -1,5 +1,12 @@
 # python -m pip install windows-curses
 import curses
+import platform
+import sys
+
+if platform.system() == "Windows":
+    from ctypes import windll
+
+    windll.kernel32.SetConsoleMode(windll.kernel32.GetStdHandle(-11), 7)
 
 
 def test_create_window_and_move(stdscr):
@@ -43,4 +50,28 @@ def test_print_and_move(stdscr):
 
 
 # curses.wrapper(test_create_window_and_move)
-curses.wrapper(test_print_and_move)
+# curses.wrapper(test_print_and_move)
+
+from ctypes import windll, Structure, c_long, byref
+
+
+class POINT(Structure):
+    _fields_ = [("x", c_long), ("y", c_long)]
+
+
+def queryMousePosition():
+    pt = POINT()
+    windll.user32.GetCursorPos(byref(pt))
+    return {"x": pt.x, "y": pt.y}
+
+
+# pos = queryMousePosition()
+# print(pos)
+
+
+x = sys.stdout.write("\x1b[6n hello")
+a = sys.stdin.read(10)
+# print(x)
+# print("")
+print(a)
+# print(sys.stdin.isatty())

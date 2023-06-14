@@ -17,6 +17,10 @@ if platform.system() == "Windows":
     windll.kernel32.SetConsoleMode(windll.kernel32.GetStdHandle(-11), 7)
 
 
+def move_curse(x, y):
+    print("\033[%d;%dH" % (y, x))
+
+
 class LLMAgent:
     def __init__(self, model="ChatGPT"):
         self.model = model
@@ -62,7 +66,7 @@ class LLMAgent:
                     #     print(f"{line}")
                     line_num = self.line_num
         print()
-
+        # move_curse(2, 0)
         #     for line in self.lines:
         #         print(f"\033[K{line}")
         # for i in range(len(self.lines) + 1):
