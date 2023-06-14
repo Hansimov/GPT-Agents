@@ -2,7 +2,7 @@ import asyncio
 import concurrent.futures
 
 
-# pip install windows-curses
+# python -m pip install windows-curses
 import curses
 import random
 import shutil
