@@ -79,3 +79,80 @@ Please refer to this, and re-write the related codes.
 
 
 Your solution gives this error: `_curses.putp() takes exactly one argument (2 given)`
+
+
+Below is a in-progress python script which tries to use `curses` to async print texts from different agents.
+Please based on the page, then do following steps, note that in each step, you should output your thoughts and results:
+[1] List some most commonly-used functions for the `curses` module in this page.
+[2] Analyze the codes below, then extract functions, then explain them.
+[3] Re-write functions `ask_question` and `answer`, fill the "To implement" part,  to make the all agents output asyncly, and also process the line breaks properly.
+[4] Improve codes. Note that you might use the concept of "lock" to avoid modifying some values (such as max lines of current terminal) with conflicts. 
+[5] Improve codes. Note that once the lines of the output text from one agent has incremented, all agents below it should update the first line to start outputting their texts. You might need to add some decorators or notificators to trigger this update, then re-output the texts for all agents that below this agent.
+
+```py
+import asyncio
+import concurrent.futures
+
+
+# python -m pip install windows-curses
+import curses
+import random
+import shutil
+import textwrap
+import time
+
+
+class LLMAgent:
+    def __init__(self, model="ChatGPT"):
+        self.model = model
+        self.lines_printed = 0
+
+    async def answer(self, question=None):
+        word_num = random.randint(20, 30)
+        msg = f"[{self.model}]: I am {self.model}. ({word_num} words) "
+        async with self.task_runner.lock:
+            print(msg)
+        for i in range(word_num):
+            rand_num = random.random() * 0.3
+            msg += f"<{self.model}_word_{i}>"
+            await asyncio.sleep(rand_num)
+            lines = textwrap.wrap(
+                msg,
+                width=shutil.get_terminal_size().columns,
+            )
+            # To implement
+        return msg
+
+
+class TaskRunner:
+    def __init__(self):
+        self.max_lines = 0
+        self.lock = asyncio.Lock()
+
+    async def ask_question(self, question="Hello, who are you?"):
+        async with self.lock:
+            print(question)
+        models = [
+            "ChatGPT",
+            "Sage",
+            "Claude-instant",
+            "Claude-instant-100k",
+            "Claude+",
+            "Bing",
+        ]
+        agents = [LLMAgent(model) for model in models]
+        # To implement
+        tasks = [asyncio.create_task(agent.answer(question)) for agent in agents]
+        await asyncio.gather(*tasks)
+
+    def run(self):
+        asyncio.run(self.ask_question())
+
+
+task_runner = TaskRunner()
+task_runner.run()
+```
+
+AttributeError: module 'curses' has no attribute 'deleteln'
+
+Then fix the error of `AttributeError: module 'curses' has no attribute 'deleteln'` in your previous codes of `LLMAgent` and `TaskRunner`.
