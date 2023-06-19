@@ -6,12 +6,12 @@ from utils import ChatGPTAgent, BardAgent, ClaudeAgent, BingAgent
 # chatgpt_agent.run()
 # print(chatgpt_agent.translated_text)
 
-# bard_agent = BardAgent()
-# bard_agent.run()
+bard_agent = BardAgent()
+bard_agent.run()
 
 # claude_agent = ClaudeAgent("Sage")
-claude_agent = ClaudeAgent("Claude-instant")
-claude_agent.run()
+# claude_agent = ClaudeAgent("Claude-instant")
+# claude_agent.run()
 
 # bing_agent = BingAgent()
 # bing_agent.run()
