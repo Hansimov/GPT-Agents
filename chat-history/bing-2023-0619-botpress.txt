@@ -1,0 +1,8 @@
+I would like to use botpress to build a chat UI with multiple agents.
+Please search the web, then provide a quick example to start with it.
+
+I would like to use Python as the backend of the chat UI, and botpress as the frontend. Please suggest three solutions to do this.
+
+Great! Then I would like to generate a frontend UI with botpress, how to do this?
+
+Great! Then how to create an expression for the botpress node to capture the begining of the user input?
