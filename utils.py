@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import json
 import logging
 import os
@@ -40,6 +41,28 @@ def init_os_envs():
 
 init_os_envs()
 openai.api_key = os.environ["OPENAI_API_KEY"]
+
+
+class ContextManager:
+    def __init__(self):
+        self.chat_history = []
+        request_body = {
+            "model": None,
+            "question": None,
+            "datetime": None,
+        }
+
+
+class ChatResponse:
+    def __init__(self):
+        self.question = None
+
+
+class ChatRequest:
+    def __init__(self, question, model):
+        self.question = question
+        self.model = model
+        self.datetime = datetime.datetime.now()
 
 
 class ChatGPTAgent:
