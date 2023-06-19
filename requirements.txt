@@ -1,0 +1,4 @@
+openai
+poe-api
+EdgeGPT
+git+https://github.com/dsdanielpark/Bard-API.git
