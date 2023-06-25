@@ -6,6 +6,10 @@ import os
 import platform
 import shutil
 import sys
+from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import AIMessage, HumanMessage, SystemMessage
+
 from pathlib import Path
 from termcolor import colored
 
@@ -89,8 +93,10 @@ class ChatGPTAgent:
             model=self.model,
             messages=[
                 {
+                    "role": "system",
+                    "content": self.system_message,
                     "role": "user",
-                    "content": self.system_message + self.original_text,
+                    "content": self.original_text,
                 },
             ],
             temperature=0,
@@ -98,6 +104,20 @@ class ChatGPTAgent:
 
         self.translated_text = response["choices"][0]["message"]["content"]
         return self.translated_text
+
+
+class LangchainAgent:
+    def __init__(self):
+        pass
+
+    def run(self):
+        llm = OpenAI(
+            model_name="text-davinci-002",
+        )
+        res = llm.predict(
+            "Tell me the latest president of the United States of America."
+        )
+        print(res)
 
 
 class BardAgent:
