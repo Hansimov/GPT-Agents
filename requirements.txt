@@ -1,4 +1,4 @@
-langchain[all]
+langchain[llms]
 openai
 poe-api
 EdgeGPT
