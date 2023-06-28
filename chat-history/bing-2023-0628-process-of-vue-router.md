@@ -92,3 +92,21 @@ In a Vue 3 project, you would typically use `.vue` files to define your Vue comp
 On the other hand, you would use `.ts` files to write TypeScript code that is not specific to a single Vue component. For example, you might use `.ts` files to define utility functions, store modules, or other parts of your application that are not tied to a specific component.
 
 In general, you would use `.vue` files to define your Vue components and `.ts` files to write other TypeScript code in your Vue 3 project. However, this is not a strict rule and you can organize your code in whatever way makes the most sense for your project.
+
+
+## In a typical vue project, there are "views" and "compoenents".
+**1st, explain these two directories.**
+**2nd, introduce their differences.**
+**3rd, answer when to put files in "views", when to put files in "components"**
+
+In a typical Vue project, you might have two directories for organizing your components: `views` and `components`.
+
+1. **Views**: The `views` directory typically contains top-level components that represent the different “pages” or “screens” of your application. These components are often associated with routes in your application, and are responsible for displaying the main content of each page.
+
+2. **Components**: The `components` directory typically contains reusable components that can be used in multiple places throughout your application. These components are often smaller and more focused than view components, and are used to build up the UI of your application.
+
+The main difference between `views` and `components` is their level of abstraction and their intended use. View components are top-level components that represent entire pages or screens, while component components are smaller, reusable building blocks.
+
+In general, you would put files in the `views` directory if they represent top-level pages or screens in your application, and you would put files in the `components` directory if they define reusable components that can be used in multiple places.
+
+For example, you might have a `Home.vue` file in the `views` directory that represents the home page of your application, and a `Button.vue` file in the `components` directory that defines a reusable button component.
