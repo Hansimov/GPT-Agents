@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VNetworkGraph } from 'v-network-graph'
-import data from '@/vis_data'
+import data from '@/agents_data'
 </script>
 
 <template>

@@ -61,9 +61,9 @@ const configs = defineConfigs({
         visible: true,
         normal: {
             width: 10,
-            dasharray: '10 16',
+            dasharray: '40 16',
             animate: true,
-            animationSpeed: 40
+            animationSpeed: 20
         }
     }
 })
