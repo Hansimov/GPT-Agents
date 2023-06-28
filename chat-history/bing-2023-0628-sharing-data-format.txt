@@ -1,0 +1,11 @@
+I am building a vue3 project.
+This project is about visualizing the interaction of multiple nodes.
+The nodes are connected by edges. And nodes can interact with each other.
+I would like to use Python as backend, and Vue as frontend.
+When I create a new node in the Python backend, it should be created and shown in the frontend.
+I would like to implement this feature by using a shared data format.
+Then please provide three suggestions for each of the following questions:
+[1] How can I share the data format between Python and Vue?
+[2] What data format is suitable for representing the nodes, edges, and their history of interaction?
+[3] Since the visualization is dynamic, how can I update the visualization in real-time in the frontend when the data is updated by the backend?
+
