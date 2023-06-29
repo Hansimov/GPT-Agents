@@ -23,31 +23,43 @@
             "name": "Node 4",
             "x": 350,
             "y": 60
+        },
+        {
+            "id": "n5",
+            "name": "Node 5",
+            "x": 350,
+            "y": 0
         }
     ],
     "edges": [
         {
             "id": "e1-2",
-            "name": "Edge 1 - 2",
+            "name": "Edge 1-2",
             "from": "n1",
             "to": "n2"
         },
         {
             "id": "e2-4",
-            "name": "Edge 2 - 4",
+            "name": "Edge 2-4",
             "from": "n2",
             "to": "n4"
         },
         {
             "id": "e2-3",
-            "name": "Edge 2 - 3",
+            "name": "Edge 2-3",
             "from": "n2",
             "to": "n3"
         },
         {
-            "id": "e3-4",
-            "name": "Edge 3 - 4",
-            "from": "n3",
+            "id": "e4-3",
+            "name": "Edge 4-3",
+            "from": "n4",
+            "to": "n3"
+        },
+        {
+            "id": "e5-4",
+            "name": "Edge 5-4",
+            "from": "n5",
             "to": "n4"
         }
     ],
@@ -67,6 +79,45 @@
                 "e2-4",
                 "e4-3"
             ]
+        },
+        {
+            "id": "p3",
+            "name": "Path 3",
+            "edges": [
+                "e5-4",
+                "e4-3"
+            ]
         }
-    ]
+    ],
+    "configs": {
+        "node": {
+            "normal": {
+                "type": "circle",
+                "radius": 25,
+                "color": "#99ccff"
+            },
+            "hover": {
+                "color": "#88bbff"
+            },
+            "label": {
+                "visible": true,
+                "fontSize": 12
+            }
+        },
+        "edge": {
+            "gap": 12,
+            "normal": {
+                "color": "#6699cc"
+            }
+        },
+        "path": {
+            "visible": true,
+            "normal": {
+                "width": 12,
+                "dasharray": "40 16",
+                "animate": true,
+                "animationSpeed": 100
+            }
+        }
+    }
 }

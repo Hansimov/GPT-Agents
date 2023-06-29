@@ -21,26 +21,9 @@ for (const path of data.paths) {
     paths[path.id] = { edges: path.edges };
 }
 
-const configs = defineConfigs({
-    node: {
-        normal: { type: 'circle', radius: 20, color: '#99ccff' },
-        hover: { color: '#88bbff' },
-        label: { visible: false, fontSize: 8 }
-    },
-    edge: {
-        gap: 12,
-        normal: { color: '#6699cc' }
-    },
-    path: {
-        visible: true,
-        normal: {
-            width: 10,
-            dasharray: '40 16',
-            animate: true,
-            animationSpeed: 20
-        }
-    }
-})
+const configs = defineConfigs(
+    data.configs
+)
 
 export default {
     nodes,
