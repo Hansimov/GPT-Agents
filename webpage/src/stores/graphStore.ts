@@ -51,14 +51,13 @@ export const useGraphStore = defineStore({
             const graph_config = await this.fetchJsonData(this.graph_config_json_path)
             // update configs
             this.configs = defineConfigs(graph_config.configs);
-            // console.log(this.configs);
         },
         startPolling() {
-            let preGraphData: typeof undefined;
-            let preGraphConfig: typeof undefined;
+            let preGraphData: any;
+            let preGraphConfig: any;
 
-            function isValueChanged(newValue, valueType: string) {
-                let preValue: typeof undefined;
+            function isValueChanged(newValue: any, valueType: string) {
+                let preValue: any;
                 if (valueType === 'graph_data') {
                     preValue = preGraphData;
                 } else {
