@@ -13,7 +13,8 @@
             },
             "label": {
                 "visible": true,
-                "fontSize": 12
+                "fontSize": 12,
+                "directionAutoAdjustment": true
             }
         },
         "edge": {
@@ -44,10 +45,11 @@
             "visible": true,
             "normal": {
                 "width": 12,
-                "dasharray": "40 16",
+                "dasharray": "20 16",
                 "animate": true,
-                "animationSpeed": 40
-            }
+                "animationSpeed": 30
+            },
+            "end": "edgeOfNode"
         }
     }
 }

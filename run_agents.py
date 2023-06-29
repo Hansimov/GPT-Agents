@@ -19,13 +19,18 @@ def create_nodes_from_agents():
         {"name": "Planet1", "role": "planet"},
         {"name": "Planet2", "role": "planet"},
         {"name": "Planet3", "role": "planet"},
-        # {"name": "Planet4", "role": "planet"},
+        {"name": "Planet4", "role": "planet"},
+        {"name": "Planet5", "role": "planet"},
     ]
     nodes = []
     for agent in agents:
         node = Node()
         node.name = agent["name"]
         node.role = agent["role"]
+        if "color" in agent.keys():
+            node.color = agent["color"]
+        else:
+            node.color = None
         nodes.append(node)
     return nodes
 
@@ -50,11 +55,18 @@ def create_graph_from_nodes(nodes):
 def dump_graph_to_vng_json(G):
     data = {}
     data["nodes"] = [
-        {"id": "Center", "name": "Center", "x": 0, "y": 0, "color": "red"},
+        {
+            "id": "Center",
+            "name": "Center",
+            "x": 0,
+            "y": 0,
+            "color": "red",
+            "radius": 50,
+        },
     ]
     for i in range(len(G.nodes) - 1):
         planet_name = f"Planet{i+1}"
-        r = 100
+        r = 150
         planet_x = round(r * cos(2 * pi * i / (len(G.nodes) - 1)), 1)
         planet_y = round(r * sin(2 * pi * i / (len(G.nodes) - 1)), 1)
         data["nodes"].append(
@@ -68,42 +80,34 @@ def dump_graph_to_vng_json(G):
 
     data["edges"] = []
     for edge in G.edges:
-        data["edges"].append(
-            {
-                "id": f"edge-{edge[0]}-{edge[1]}",
-                "name": f"edge-{edge[0]}-{edge[1]}",
-                "from": edge[0],
-                "to": edge[1],
-            }
+        data["edges"].extend(
+            [
+                {
+                    "id": f"edge-{edge[0]}-{edge[1]}",
+                    "name": f"edge-{edge[0]}-{edge[1]}",
+                    "from": edge[0],
+                    "to": edge[1],
+                },
+                {
+                    "id": f"edge-{edge[1]}-{edge[0]}",
+                    "name": f"edge-{edge[1]}-{edge[0]}",
+                    "from": edge[1],
+                    "to": edge[0],
+                },
+            ]
         )
 
     data["paths"] = []
-    # "paths": [
-    #     {
-    #         "id": "p1",
-    #         "name": "Path 1",
-    #         "edges": [
-    #             "e1-2",
-    #             "e2-3"
-    #         ]
-    #     },
-    #     {
-    #         "id": "p2",
-    #         "name": "Path 2",
-    #         "edges": [
-    #             "e2-4",
-    #             "e4-3"
-    #         ]
-    #     },
-    #     {
-    #         "id": "p3",
-    #         "name": "Path 3",
-    #         "edges": [
-    #             "e5-4",
-    #             "e4-3"
-    #         ]
-    #     }
-    # ]
+    for edge in G.edges:
+        data["paths"].extend(
+            [
+                {
+                    "id": f"path-{edge[0]}-{edge[1]}",
+                    "name": f"path-{edge[0]}-{edge[1]}",
+                    "edges": [f"edge-{edge[0]}-{edge[1]}"],
+                }
+            ]
+        )
 
     graph_json_path = Path("./webpage/src/data/graph.json")
     with open(graph_json_path, "w") as wf:

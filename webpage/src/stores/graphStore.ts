@@ -1,14 +1,20 @@
 import { defineStore } from 'pinia';
-import { type Nodes, type Edges, type Layouts, type Paths, defineConfigs } from 'v-network-graph';
+import { reactive } from "vue";
+import { type Node, type Nodes, type Edges, type Layouts, type Paths, defineConfigs } from 'v-network-graph';
+
+interface NodeX extends Node {
+    color: string,
+    radius: number
+}
 
 export const useGraphStore = defineStore({
     id: 'graph',
     state: () => ({
-        nodes: {} as Nodes,
+        nodes: {} as Record<string, NodeX>,
         edges: {} as Edges,
         layouts: { "nodes": {} } as Layouts,
         paths: {} as Paths,
-        configs: defineConfigs({}),
+        configs: defineConfigs<NodeX>({}),
         graph_data_json_path: 'src/data/graph.json',
         graph_config_json_path: 'src/data/graph_config.json',
     }),
@@ -20,9 +26,19 @@ export const useGraphStore = defineStore({
         async updateGraphData() {
             const graph_data = await this.fetchJsonData(this.graph_data_json_path)
             // update nodes
-            const nodes: Nodes = {};
+            const nodes: Record<string, NodeX> = {};
             for (const node of graph_data.nodes) {
-                nodes[node.id] = { name: node.name };
+                console.log(node.name, node.color, node.radius);
+
+                if (node.color === undefined) {
+                    node.color = "#000000";
+                }
+
+                if (node.radius === undefined) {
+                    node.radius = 25;
+                }
+
+                nodes[node.id] = { name: node.name, color: node.color, radius: node.radius };
             }
             this.nodes = nodes;
 
@@ -50,7 +66,27 @@ export const useGraphStore = defineStore({
         async updateGraphConfig() {
             const graph_config = await this.fetchJsonData(this.graph_config_json_path)
             // update configs
-            this.configs = defineConfigs(graph_config.configs);
+            // for (const node in this.nodes) {
+            //     graph_config.configs["node"]["normal"] = 
+            // }
+            const default_configs = defineConfigs(graph_config.configs);
+            this.configs = reactive(defineConfigs<NodeX>({
+                node: {
+                    normal: {
+                        type: "circle",
+                        radius: node => node.radius,
+                        color: node => node.color,
+                    },
+                    hover: {
+                        color: "#88bbff"
+                    },
+                    label: {
+                        visible: true,
+                        fontSize: 12,
+                        directionAutoAdjustment: true
+                    }
+                }
+            }))
         },
         startPolling() {
             let preGraphData: any;

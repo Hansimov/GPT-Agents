@@ -5,25 +5,38 @@
             "name": "Center",
             "x": 0,
             "y": 0,
-            "color": "red"
+            "color": "red",
+            "radius": 50
         },
         {
             "id": "Planet1",
             "name": "Planet1",
-            "x": 100.0,
+            "x": 150.0,
             "y": 0.0
         },
         {
             "id": "Planet2",
             "name": "Planet2",
-            "x": -50.0,
-            "y": 86.6
+            "x": 46.4,
+            "y": 142.7
         },
         {
             "id": "Planet3",
             "name": "Planet3",
-            "x": -50.0,
-            "y": -86.6
+            "x": -121.4,
+            "y": 88.2
+        },
+        {
+            "id": "Planet4",
+            "name": "Planet4",
+            "x": -121.4,
+            "y": -88.2
+        },
+        {
+            "id": "Planet5",
+            "name": "Planet5",
+            "x": 46.4,
+            "y": -142.7
         }
     ],
     "edges": [
@@ -34,17 +47,95 @@
             "to": "Planet1"
         },
         {
+            "id": "edge-Planet1-Center",
+            "name": "edge-Planet1-Center",
+            "from": "Planet1",
+            "to": "Center"
+        },
+        {
             "id": "edge-Center-Planet2",
             "name": "edge-Center-Planet2",
             "from": "Center",
             "to": "Planet2"
         },
         {
+            "id": "edge-Planet2-Center",
+            "name": "edge-Planet2-Center",
+            "from": "Planet2",
+            "to": "Center"
+        },
+        {
             "id": "edge-Center-Planet3",
             "name": "edge-Center-Planet3",
             "from": "Center",
             "to": "Planet3"
+        },
+        {
+            "id": "edge-Planet3-Center",
+            "name": "edge-Planet3-Center",
+            "from": "Planet3",
+            "to": "Center"
+        },
+        {
+            "id": "edge-Center-Planet4",
+            "name": "edge-Center-Planet4",
+            "from": "Center",
+            "to": "Planet4"
+        },
+        {
+            "id": "edge-Planet4-Center",
+            "name": "edge-Planet4-Center",
+            "from": "Planet4",
+            "to": "Center"
+        },
+        {
+            "id": "edge-Center-Planet5",
+            "name": "edge-Center-Planet5",
+            "from": "Center",
+            "to": "Planet5"
+        },
+        {
+            "id": "edge-Planet5-Center",
+            "name": "edge-Planet5-Center",
+            "from": "Planet5",
+            "to": "Center"
         }
     ],
-    "paths": []
+    "paths": [
+        {
+            "id": "path-Center-Planet1",
+            "name": "path-Center-Planet1",
+            "edges": [
+                "edge-Center-Planet1"
+            ]
+        },
+        {
+            "id": "path-Center-Planet2",
+            "name": "path-Center-Planet2",
+            "edges": [
+                "edge-Center-Planet2"
+            ]
+        },
+        {
+            "id": "path-Center-Planet3",
+            "name": "path-Center-Planet3",
+            "edges": [
+                "edge-Center-Planet3"
+            ]
+        },
+        {
+            "id": "path-Center-Planet4",
+            "name": "path-Center-Planet4",
+            "edges": [
+                "edge-Center-Planet4"
+            ]
+        },
+        {
+            "id": "path-Center-Planet5",
+            "name": "path-Center-Planet5",
+            "edges": [
+                "edge-Center-Planet5"
+            ]
+        }
+    ]
 }
