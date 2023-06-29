@@ -1,0 +1,92 @@
+{
+    "nodes": [
+        {
+            "id": "n1",
+            "name": "Node 1",
+            "x": 0,
+            "y": 0
+        },
+        {
+            "id": "n2",
+            "name": "Node 2",
+            "x": 100,
+            "y": 60
+        },
+        {
+            "id": "n3",
+            "name": "Node 3",
+            "x": 0,
+            "y": 110
+        },
+        {
+            "id": "n4",
+            "name": "Node 4",
+            "x": 350,
+            "y": 60
+        },
+        {
+            "id": "n5",
+            "name": "Node 5",
+            "x": 350,
+            "y": 0
+        }
+    ],
+    "edges": [
+        {
+            "id": "e1-2",
+            "name": "Edge 1-2",
+            "from": "n1",
+            "to": "n2"
+        },
+        {
+            "id": "e2-4",
+            "name": "Edge 2-4",
+            "from": "n2",
+            "to": "n4"
+        },
+        {
+            "id": "e2-3",
+            "name": "Edge 2-3",
+            "from": "n2",
+            "to": "n3"
+        },
+        {
+            "id": "e4-3",
+            "name": "Edge 4-3",
+            "from": "n4",
+            "to": "n3"
+        },
+        {
+            "id": "e5-4",
+            "name": "Edge 5-4",
+            "from": "n5",
+            "to": "n4"
+        }
+    ],
+    "paths": [
+        {
+            "id": "p1",
+            "name": "Path 1",
+            "edges": [
+                "e1-2",
+                "e2-3"
+            ]
+        },
+        {
+            "id": "p2",
+            "name": "Path 2",
+            "edges": [
+                "e2-4",
+                "e4-3"
+            ]
+        },
+        {
+            "id": "p3",
+            "name": "Path 3",
+            "edges": [
+                "e5-4",
+                "e4-3"
+            ]
+        }
+    ]
+}

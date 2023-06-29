@@ -1,10 +1,12 @@
 {
     "configs": {
+        "view": {
+            "autoPanAndZoomOnLoad": "fit-content"
+        },
         "node": {
             "normal": {
                 "type": "circle",
-                "radius": 25,
-                "color": "#99ccff"
+                "radius": 25
             },
             "hover": {
                 "color": "#88bbff"
@@ -17,7 +19,25 @@
         "edge": {
             "gap": 12,
             "normal": {
-                "color": "#6699cc"
+                "color": "gray"
+            },
+            "marker": {
+                "source": {
+                    "type": "none",
+                    "width": 6,
+                    "height": 6,
+                    "margin": -1,
+                    "units": "strokeWidth",
+                    "color": null
+                },
+                "target": {
+                    "type": "arrow",
+                    "width": 6,
+                    "height": 6,
+                    "margin": -1,
+                    "units": "strokeWidth",
+                    "color": null
+                }
             }
         },
         "path": {
