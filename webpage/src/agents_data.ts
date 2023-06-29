@@ -1,50 +1,24 @@
-import { Nodes, Edges, Layouts, Paths, defineConfigs } from 'v-network-graph'
+import { Nodes, Edges, Layouts, Paths, defineConfigs, type Path } from 'v-network-graph'
 import 'v-network-graph/lib/style.css'
+import data from '@/data/node_edges.json';
 
-const nodes: Nodes = {
-    node1: { name: 'Node 1' },
-    node2: { name: 'Node 2' },
-    node3: { name: 'Node 3' },
-    node4: { name: 'Node 4' },
-    node5: { name: 'Node 5' },
-    node6: { name: 'Node 6' },
-    node7: { name: 'Node 7' },
-    node8: { name: 'Node 8' },
-    node9: { name: 'Node 9' },
-    node10: { name: 'Node 10' }
+const nodes: Nodes = {};
+const edges: Edges = {};
+const layouts: Layouts = { "nodes": {} };
+const paths: Paths = {};
+
+
+for (const node of data.nodes) {
+    nodes[node.id] = { name: node.name };
+    layouts["nodes"][node.id] = { x: node.x, y: node.y };
 }
 
-const edges: Edges = {
-    edge1: { source: 'node1', target: 'node2' },
-    edge2: { source: 'node3', target: 'node2' },
-    edge3: { source: 'node2', target: 'node4' },
-    edge4: { source: 'node2', target: 'node4' },
-    edge5: { source: 'node4', target: 'node5' },
-    edge6: { source: 'node4', target: 'node6' },
-    edge7: { source: 'node5', target: 'node7' },
-    edge8: { source: 'node5', target: 'node8' },
-    edge9: { source: 'node6', target: 'node9' },
-    edge10: { source: 'node6', target: 'node10' }
+for (const edge of data.edges) {
+    edges[edge.id] = { source: edge.from, target: edge.to };
 }
 
-const layouts: Layouts = {
-    nodes: {
-        node1: { x: 0, y: 0 },
-        node2: { x: 100, y: 60 },
-        node3: { x: 0, y: 110 },
-        node4: { x: 250, y: 60 },
-        node5: { x: 350, y: 10 },
-        node6: { x: 350, y: 110 },
-        node7: { x: 450, y: 10 },
-        node8: { x: 450, y: 60 },
-        node9: { x: 450, y: 110 },
-        node10: { x: 450, y: 160 }
-    }
-}
-
-const paths: Paths = {
-    path1: { edges: ['edge1', 'edge3', 'edge5', 'edge7'] },
-    path2: { edges: ['edge2', 'edge4', 'edge6', 'edge10'] }
+for (const path of data.paths) {
+    paths[path.id] = { edges: path.edges };
 }
 
 const configs = defineConfigs({
