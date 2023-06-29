@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { VNetworkGraph } from 'v-network-graph'
+import 'v-network-graph/lib/style.css'
 import { onMounted } from 'vue'
 import { useGraphStore } from '@/stores/graphStore'
 

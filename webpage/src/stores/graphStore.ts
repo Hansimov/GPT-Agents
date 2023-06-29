@@ -9,61 +9,83 @@ export const useGraphStore = defineStore({
         layouts: { "nodes": {} } as Layouts,
         paths: {} as Paths,
         configs: defineConfigs({}),
-        graph_json_path: 'src/data/graph.json',
+        graph_data_json_path: 'src/data/graph.json',
+        graph_config_json_path: 'src/data/graph_config.json',
     }),
     actions: {
-        async updateData() {
-            const response = await fetch(this.graph_json_path);
-            const data = await response.json();
-
+        async fetchJsonData(json_path: string) {
+            const response = await fetch(json_path);
+            return await response.json();
+        },
+        async updateGraphData() {
+            const graph_data = await this.fetchJsonData(this.graph_data_json_path)
             // update nodes
             const nodes: Nodes = {};
-            for (const node of data.nodes) {
+            for (const node of graph_data.nodes) {
                 nodes[node.id] = { name: node.name };
             }
             this.nodes = nodes;
 
             // update edges
             const edges: Edges = {};
-            for (const edge of data.edges) {
+            for (const edge of graph_data.edges) {
                 edges[edge.id] = { source: edge.from, target: edge.to };
             }
             this.edges = edges;
 
             // update layouts
             const layouts: Layouts = { "nodes": {} };
-            for (const node of data.nodes) {
+            for (const node of graph_data.nodes) {
                 layouts["nodes"][node.id] = { x: node.x, y: node.y };
             }
             this.layouts = layouts;
 
             // update paths
             const paths: Paths = {};
-            for (const path of data.paths) {
+            for (const path of graph_data.paths) {
                 paths[path.id] = { edges: path.edges };
             }
             this.paths = paths;
-
+        },
+        async updateGraphConfig() {
+            const graph_config = await this.fetchJsonData(this.graph_config_json_path)
             // update configs
-            this.configs = defineConfigs(data.configs);
+            this.configs = defineConfigs(graph_config.configs);
+            // console.log(this.configs);
         },
         startPolling() {
-            let prevData: typeof undefined;
+            let preGraphData: typeof undefined;
+            let preGraphConfig: typeof undefined;
 
-            function isDataChanged(newData: typeof undefined) {
-                if (prevData && (JSON.stringify(newData) === JSON.stringify(prevData))) {
+            function isValueChanged(newValue, valueType: string) {
+                let preValue: typeof undefined;
+                if (valueType === 'graph_data') {
+                    preValue = preGraphData;
+                } else {
+                    preValue = preGraphConfig;
+                }
+
+                if (preValue && (JSON.stringify(newValue) === JSON.stringify(preValue))) {
                     return false;
                 } else {
-                    prevData = newData;
+                    if (valueType === 'graph_data') {
+                        preGraphData = newValue;
+                    } else {
+                        preGraphConfig = newValue;
+                    }
                     return true;
                 }
             }
 
             const poll = async () => {
-                const response = await fetch(this.graph_json_path);
-                const newData = await response.json();
-                if (isDataChanged(newData)) {
-                    this.updateData();
+                const new_graph_data = await this.fetchJsonData(this.graph_data_json_path);
+                if (isValueChanged(new_graph_data, "graph_data")) {
+                    this.updateGraphData();
+                }
+
+                const new_graph_config = await this.fetchJsonData(this.graph_config_json_path);
+                if (isValueChanged(new_graph_config, "graph_config")) {
+                    this.updateGraphConfig();
                 }
             }
 
