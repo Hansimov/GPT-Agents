@@ -1,18 +1,29 @@
-<script setup lang="ts">
-import { VNetworkGraph } from 'v-network-graph'
-import data from '@/agents_data'
-</script>
-
 <template>
   <v-network-graph
     class="graph"
-    :nodes="data.nodes"
-    :edges="data.edges"
-    :paths="data.paths"
-    :layouts="data.layouts"
-    :configs="data.configs"
+    :nodes="dataStore.$state.nodes"
+    :edges="dataStore.$state.edges"
+    :paths="dataStore.$state.paths"
+    :layouts="dataStore.$state.layouts"
+    :configs="configs"
   />
 </template>
+
+<script setup lang="ts">
+import { VNetworkGraph } from 'v-network-graph'
+import { defineComponent, computed, onMounted } from 'vue'
+import { useDataStore } from '@/stores/nodeStore'
+import data from '@/agents_data'
+
+const dataStore = useDataStore()
+
+const configs = computed(() => data.configs)
+
+// Call the updateData action when the component is mounted
+onMounted(() => {
+  dataStore.startPolling()
+})
+</script>
 
 <style>
 @media (min-width: 1024px) {
