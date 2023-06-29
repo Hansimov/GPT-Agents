@@ -1,18 +1,19 @@
 import { defineStore } from 'pinia';
-import { Nodes, Edges, Layouts, Paths, defineConfigs } from 'v-network-graph';
+import { type Nodes, type Edges, type Layouts, type Paths, defineConfigs } from 'v-network-graph';
 
-export const useDataStore = defineStore({
-    id: 'nodes',
+export const useGraphStore = defineStore({
+    id: 'graph',
     state: () => ({
         nodes: {} as Nodes,
         edges: {} as Edges,
         layouts: { "nodes": {} } as Layouts,
         paths: {} as Paths,
         configs: defineConfigs({}),
+        graph_json_path: 'src/data/graph.json',
     }),
     actions: {
         async updateData() {
-            const response = await fetch('src/data/node_edges.json');
+            const response = await fetch(this.graph_json_path);
             const data = await response.json();
 
             // update nodes
@@ -47,9 +48,9 @@ export const useDataStore = defineStore({
             this.configs = defineConfigs(data.configs);
         },
         startPolling() {
-            let prevData: typeof data | undefined;
+            let prevData: typeof undefined;
 
-            function isDataChanged(newData: typeof data) {
+            function isDataChanged(newData: typeof undefined) {
                 if (prevData && (JSON.stringify(newData) === JSON.stringify(prevData))) {
                     return false;
                 } else {
@@ -59,7 +60,7 @@ export const useDataStore = defineStore({
             }
 
             const poll = async () => {
-                const response = await fetch('src/data/node_edges.json');
+                const response = await fetch(this.graph_json_path);
                 const newData = await response.json();
                 if (isDataChanged(newData)) {
                     this.updateData();
@@ -67,7 +68,6 @@ export const useDataStore = defineStore({
             }
 
             setInterval(poll, 500);
-
         }
     }
 });

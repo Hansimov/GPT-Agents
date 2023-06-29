@@ -1,6 +1,6 @@
 import { Nodes, Edges, Layouts, Paths, defineConfigs, type Path } from 'v-network-graph'
 import 'v-network-graph/lib/style.css'
-import data from '@/data/node_edges.json';
+import data from '@/data/graph.json';
 
 const nodes: Nodes = {};
 const edges: Edges = {};
