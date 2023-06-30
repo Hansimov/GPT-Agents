@@ -21,7 +21,11 @@
         "edge": {
             "gap": 12,
             "normal": {
-                "color": "gray"
+                "color": "gray",
+                "animate": true,
+                "width": 2,
+                "dasharray": "10 6",
+                "animationSpeed": 10
             },
             "marker": {
                 "source": {
@@ -49,7 +53,7 @@
                 "width": 12,
                 "dasharray": "20 16",
                 "animate": true,
-                "animationSpeed": 30
+                "animationSpeed": 25
             },
             "end": "edgeOfNode",
             "margin": 0,

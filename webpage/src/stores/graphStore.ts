@@ -11,6 +11,8 @@ interface EdgeX extends Edge {
 }
 
 interface PathX extends Path {
+    animate: Boolean,
+    animationSpeed: number
 }
 
 export const useGraphStore = defineStore({
@@ -19,7 +21,7 @@ export const useGraphStore = defineStore({
         nodes: {} as Record<string, NodeX>,
         edges: {} as Edges,
         layouts: { "nodes": {} } as Layouts,
-        paths: {} as Paths,
+        paths: {} as Record<string, PathX>,
         configs: defineConfigs<NodeX, EdgeX, PathX>({}),
         graph_data_json_path: 'src/data/graph.json',
         graph_config_json_path: 'src/data/graph_config.json',
@@ -35,7 +37,6 @@ export const useGraphStore = defineStore({
             const nodes: Record<string, NodeX> = {};
             for (const node of graph_data.nodes) {
                 nodes[node.id] = { name: node.name, color: node.color, radius: node.radius };
-
             }
             this.nodes = nodes;
 
@@ -54,24 +55,20 @@ export const useGraphStore = defineStore({
             this.layouts = layouts;
 
             // update paths
-            const paths: Paths = {};
+            const paths: Record<string, PathX> = {};
             for (const path of graph_data.paths) {
-                paths[path.id] = { edges: path.edges };
+                paths[path.id] = { edges: path.edges, animate: path.animate, animationSpeed: path.animationSpeed };
             }
             this.paths = paths;
         },
         updateNestedDict(target: any, source: any) {
             for (const key of Object.keys(source)) {
-                // console.log(key, source[key]);
                 if (typeof source[key] === 'object' && source[key].constructor === Object && key in target) {
-                    // console.log("Dict - ", key, ':', target[key], ',', source[key])
                     target[key] = this.updateNestedDict(target[key], source[key]);
                 } else {
-                    // console.log("Config - ", key, ':', target[key], ',', source[key])
                     target[key] = source[key];
                 }
             }
-            // console.log("target:", target);
             return target;
         },
         async updateGraphConfig() {
@@ -92,11 +89,16 @@ export const useGraphStore = defineStore({
                             label: {
                                 fontSize: (node: NodeX) => node.labelFontSize || default_configs.node.label.fontSize,
                             }
+                        },
+                        edge: {
+                        },
+                        path: {
+                            normal: {
+                                animationSpeed: (path: PathX) => path.animationSpeed + 0.001 || default_configs.path.normal.animationSpeed,
+                            }
                         }
                     })
                 ));
-            // this.defined_configs = this.configs;
-
         },
         startPolling() {
             let preGraphData: any;
