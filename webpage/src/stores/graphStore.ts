@@ -1,10 +1,18 @@
 import { defineStore } from 'pinia';
 import { reactive } from "vue";
-import { type Node, type Nodes, type Edges, type Layouts, type Paths, defineConfigs } from 'v-network-graph';
+import { type Node, type Edge, type Path, type Nodes, type Edges, type Layouts, type Paths, defineConfigs } from 'v-network-graph';
 
 interface NodeX extends Node {
     color: string,
     radius: number
+}
+
+interface EdgeX extends Edge {
+
+}
+
+interface PathX extends Path {
+
 }
 
 export const useGraphStore = defineStore({
@@ -14,7 +22,7 @@ export const useGraphStore = defineStore({
         edges: {} as Edges,
         layouts: { "nodes": {} } as Layouts,
         paths: {} as Paths,
-        configs: defineConfigs<NodeX>({}),
+        configs: defineConfigs<NodeX, EdgeX, PathX>({}),
         graph_data_json_path: 'src/data/graph.json',
         graph_config_json_path: 'src/data/graph_config.json',
     }),
@@ -53,27 +61,41 @@ export const useGraphStore = defineStore({
             }
             this.paths = paths;
         },
+        updateNestedDict(target: any, source: any) {
+            for (const key of Object.keys(source)) {
+                // console.log(key, source[key]);
+                if (typeof source[key] === 'object' && source[key].constructor === Object && key in target) {
+                    target[key] = this.updateNestedDict(target[key], source[key]);
+                    console.log("Dict - ", key, ':', target[key], source[key])
+                } else {
+                    target[key] = source[key];
+                    console.log("Config - ", key, ':', target[key], source[key])
+                }
+            }
+            // console.log("target:", target);
+            return target;
+        },
         async updateGraphConfig() {
             const graph_config = await this.fetchJsonData(this.graph_config_json_path)
             // update configs
-            // for (const node in this.nodes) {
-            //     graph_config.configs["node"]["normal"] = 
-            // }
             const default_configs = graph_config.configs;
-            this.configs =
-                defineConfigs<NodeX>(
-                    {
-                        ...graph_config.configs,
-                        ...reactive({
-                            node: {
-                                normal: {
-                                    radius: node => node.radius || default_configs.node.normal.radius,
-                                    color: node => node.color || default_configs.node.normal.color,
-                                }
+            this.configs = defineConfigs<NodeX>(
+                this.updateNestedDict(
+                    default_configs,
+                    reactive({
+                        node: {
+                            normal: {
+                                radius: (node: NodeX) => node.radius || default_configs.node.normal.radius,
+                                color: (node: NodeX) => node.color || default_configs.node.normal.color
+                            },
+                            label: {
+                                fontSize: (node: NodeX) => node.radius || default_configs.node.label.fontSize
                             }
-                        })
+                        }
                     }
+                    )
                 )
+            )
         },
         startPolling() {
             let preGraphData: any;
@@ -103,11 +125,8 @@ export const useGraphStore = defineStore({
                 const new_graph_data = await this.fetchJsonData(this.graph_data_json_path);
                 const new_graph_config = await this.fetchJsonData(this.graph_config_json_path);
 
-                if (isValueChanged(new_graph_data, "graph_data")) {
-                    this.updateGraphData();
-                }
-
                 if (isValueChanged(new_graph_config, "graph_data") || isValueChanged(new_graph_data, "graph_config")) {
+                    this.updateGraphData();
                     this.updateGraphConfig();
                 }
             }

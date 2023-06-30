@@ -14,7 +14,7 @@
             },
             "label": {
                 "visible": true,
-                "fontSize": 10,
+                "fontSize": 12,
                 "directionAutoAdjustment": true
             }
         },
