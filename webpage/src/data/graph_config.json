@@ -14,9 +14,9 @@
             },
             "label": {
                 "visible": true,
-                "fontSize": 12,
                 "directionAutoAdjustment": true
-            }
+            },
+            "selectable": true
         },
         "edge": {
             "gap": 12,
@@ -40,7 +40,8 @@
                     "units": "strokeWidth",
                     "color": null
                 }
-            }
+            },
+            "selectable": true
         },
         "path": {
             "visible": true,
@@ -50,7 +51,9 @@
                 "animate": true,
                 "animationSpeed": 30
             },
-            "end": "edgeOfNode"
+            "end": "edgeOfNode",
+            "margin": 0,
+            "selectable": true
         }
     }
 }

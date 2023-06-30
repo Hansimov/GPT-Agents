@@ -75,10 +75,11 @@ export const useGraphStore = defineStore({
             return target;
         },
         async updateGraphConfig() {
+            // Configurations | v-network-graph
+            // * https://dash14.github.io/v-network-graph/reference/configurations.html
             const graph_configs = (await this.fetchJsonData(this.graph_config_json_path)).configs;
             const default_configs = (await this.fetchJsonData(this.graph_config_json_path)).configs;
             // update configs
-            console.log("Default Config:", default_configs);
             this.configs = defineConfigs<NodeX, EdgeX, PathX>(
                 this.updateNestedDict(
                     graph_configs,
@@ -89,7 +90,7 @@ export const useGraphStore = defineStore({
                                 color: (node: NodeX) => node.color || default_configs.node.normal.color,
                             },
                             label: {
-                                fontSize: (node: NodeX) => node.radius || default_configs.node.label.fontSize,
+                                fontSize: (node: NodeX) => node.labelFontSize || default_configs.node.label.fontSize,
                             }
                         }
                     })
