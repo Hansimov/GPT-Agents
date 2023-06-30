@@ -8,11 +8,9 @@ interface NodeX extends Node {
 }
 
 interface EdgeX extends Edge {
-
 }
 
 interface PathX extends Path {
-
 }
 
 export const useGraphStore = defineStore({
@@ -37,6 +35,7 @@ export const useGraphStore = defineStore({
             const nodes: Record<string, NodeX> = {};
             for (const node of graph_data.nodes) {
                 nodes[node.id] = { name: node.name, color: node.color, radius: node.radius };
+
             }
             this.nodes = nodes;
 
@@ -65,37 +64,38 @@ export const useGraphStore = defineStore({
             for (const key of Object.keys(source)) {
                 // console.log(key, source[key]);
                 if (typeof source[key] === 'object' && source[key].constructor === Object && key in target) {
+                    // console.log("Dict - ", key, ':', target[key], ',', source[key])
                     target[key] = this.updateNestedDict(target[key], source[key]);
-                    console.log("Dict - ", key, ':', target[key], source[key])
                 } else {
+                    // console.log("Config - ", key, ':', target[key], ',', source[key])
                     target[key] = source[key];
-                    console.log("Config - ", key, ':', target[key], source[key])
                 }
             }
             // console.log("target:", target);
             return target;
         },
         async updateGraphConfig() {
-            const graph_config = await this.fetchJsonData(this.graph_config_json_path)
+            const graph_configs = (await this.fetchJsonData(this.graph_config_json_path)).configs;
+            const default_configs = (await this.fetchJsonData(this.graph_config_json_path)).configs;
             // update configs
-            const default_configs = graph_config.configs;
-            this.configs = defineConfigs<NodeX>(
+            console.log("Default Config:", default_configs);
+            this.configs = defineConfigs<NodeX, EdgeX, PathX>(
                 this.updateNestedDict(
-                    default_configs,
+                    graph_configs,
                     reactive({
                         node: {
                             normal: {
                                 radius: (node: NodeX) => node.radius || default_configs.node.normal.radius,
-                                color: (node: NodeX) => node.color || default_configs.node.normal.color
+                                color: (node: NodeX) => node.color || default_configs.node.normal.color,
                             },
                             label: {
-                                fontSize: (node: NodeX) => node.radius || default_configs.node.label.fontSize
+                                fontSize: (node: NodeX) => node.radius || default_configs.node.label.fontSize,
                             }
                         }
-                    }
-                    )
-                )
-            )
+                    })
+                ));
+            // this.defined_configs = this.configs;
+
         },
         startPolling() {
             let preGraphData: any;
