@@ -12,13 +12,15 @@
             "id": "Planet1",
             "name": "Planet1",
             "x": 150.0,
-            "y": 0.0
+            "y": 0.0,
+            "radius": 15
         },
         {
             "id": "Planet2",
             "name": "Planet2",
             "x": 46.4,
-            "y": 142.7
+            "y": 142.7,
+            "color": "pink"
         },
         {
             "id": "Planet3",

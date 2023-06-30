@@ -6,14 +6,15 @@
         "node": {
             "normal": {
                 "type": "circle",
-                "radius": 25
+                "radius": 20,
+                "color": "#88bbff"
             },
             "hover": {
                 "color": "#88bbff"
             },
             "label": {
                 "visible": true,
-                "fontSize": 12,
+                "fontSize": 10,
                 "directionAutoAdjustment": true
             }
         },

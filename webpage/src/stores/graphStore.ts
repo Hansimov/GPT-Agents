@@ -28,16 +28,6 @@ export const useGraphStore = defineStore({
             // update nodes
             const nodes: Record<string, NodeX> = {};
             for (const node of graph_data.nodes) {
-                console.log(node.name, node.color, node.radius);
-
-                if (node.color === undefined) {
-                    node.color = "#000000";
-                }
-
-                if (node.radius === undefined) {
-                    node.radius = 25;
-                }
-
                 nodes[node.id] = { name: node.name, color: node.color, radius: node.radius };
             }
             this.nodes = nodes;
@@ -69,24 +59,21 @@ export const useGraphStore = defineStore({
             // for (const node in this.nodes) {
             //     graph_config.configs["node"]["normal"] = 
             // }
-            const default_configs = defineConfigs(graph_config.configs);
-            this.configs = reactive(defineConfigs<NodeX>({
-                node: {
-                    normal: {
-                        type: "circle",
-                        radius: node => node.radius,
-                        color: node => node.color,
-                    },
-                    hover: {
-                        color: "#88bbff"
-                    },
-                    label: {
-                        visible: true,
-                        fontSize: 12,
-                        directionAutoAdjustment: true
+            const default_configs = graph_config.configs;
+            this.configs =
+                defineConfigs<NodeX>(
+                    {
+                        ...graph_config.configs,
+                        ...reactive({
+                            node: {
+                                normal: {
+                                    radius: node => node.radius || default_configs.node.normal.radius,
+                                    color: node => node.color || default_configs.node.normal.color,
+                                }
+                            }
+                        })
                     }
-                }
-            }))
+                )
         },
         startPolling() {
             let preGraphData: any;
@@ -114,12 +101,13 @@ export const useGraphStore = defineStore({
 
             const poll = async () => {
                 const new_graph_data = await this.fetchJsonData(this.graph_data_json_path);
+                const new_graph_config = await this.fetchJsonData(this.graph_config_json_path);
+
                 if (isValueChanged(new_graph_data, "graph_data")) {
                     this.updateGraphData();
                 }
 
-                const new_graph_config = await this.fetchJsonData(this.graph_config_json_path);
-                if (isValueChanged(new_graph_config, "graph_config")) {
+                if (isValueChanged(new_graph_config, "graph_data") || isValueChanged(new_graph_data, "graph_config")) {
                     this.updateGraphConfig();
                 }
             }
