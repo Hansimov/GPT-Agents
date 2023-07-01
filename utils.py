@@ -15,9 +15,6 @@ from termcolor import colored
 # python -m pip install --upgrade openai
 import openai
 
-# python -m pip install git+https://github.com/dsdanielpark/Bard-API.git
-import bardapi
-from bardapi import Bard
 
 # python -m pip install poe-api
 import poe
@@ -42,7 +39,7 @@ def init_os_envs():
     openai.api_key = os.environ["OPENAI_API_KEY"]
 
 
-init_os_envs()
+# init_os_envs()
 
 
 class ContextManager:
@@ -102,26 +99,6 @@ class ChatGPTAgent:
 
         self.translated_text = response["choices"][0]["message"]["content"]
         return self.translated_text
-
-
-class BardAgent:
-    def __init__(
-        self,
-        prompts=[
-            "Today's Weather of Shanghai Minhang. For temperature, you should Celsius Degree instead of Fahrenheit.",
-            "You should output the above statistics in a format which is friendly readable in terminal output.",
-        ],
-    ):
-        self.prompts = prompts
-        self.bard_session = bardapi.core.Bard(token=os.environ["BARD_API_KEY"])
-
-    def run(self):
-        for prompt in self.prompts:
-            print(f"[Human]: {colored(prompt,'green')}")
-            response = self.bard_session.get_answer(prompt)
-            answer = response["content"]
-            print(f"[Bard]: {colored(answer,'cyan')}")
-            print("-" * shutil.get_terminal_size()[0])
 
 
 class ClaudeAgent:
