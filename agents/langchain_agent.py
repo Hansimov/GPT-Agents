@@ -9,7 +9,7 @@ from langchain.prompts.chat import (
 )
 from langchain.schema import AIMessage, HumanMessage, SystemMessage
 
-init_os_envs()
+init_os_envs("openai")
 
 
 class LangchainAgent:

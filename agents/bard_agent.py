@@ -8,7 +8,7 @@ import bardapi
 from bardapi import Bard
 
 
-init_os_envs()
+init_os_envs("bard")
 
 
 class BardAgent:
