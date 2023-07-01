@@ -6,9 +6,7 @@ import os
 import platform
 import shutil
 import sys
-from langchain.llms import OpenAI
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import AIMessage, HumanMessage, SystemMessage
+
 
 from pathlib import Path
 from termcolor import colored
@@ -41,10 +39,10 @@ def init_os_envs():
     os.environ["OPENAI_API_KEY"] = secrets["openai_api_key"]
     os.environ["BARD_API_KEY"] = secrets["bard_api_key"]
     os.environ["CLAUDE_API_KEY"] = secrets["claude_api_key"]
+    openai.api_key = os.environ["OPENAI_API_KEY"]
 
 
 init_os_envs()
-openai.api_key = os.environ["OPENAI_API_KEY"]
 
 
 class ContextManager:
@@ -104,20 +102,6 @@ class ChatGPTAgent:
 
         self.translated_text = response["choices"][0]["message"]["content"]
         return self.translated_text
-
-
-class LangchainAgent:
-    def __init__(self):
-        pass
-
-    def run(self):
-        llm = OpenAI(
-            model_name="text-davinci-002",
-        )
-        res = llm.predict(
-            "Tell me the latest president of the United States of America."
-        )
-        print(res)
 
 
 class BardAgent:
