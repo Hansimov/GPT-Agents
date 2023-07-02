@@ -11,11 +11,6 @@ import sys
 from pathlib import Path
 
 
-# python -m pip install EdgeGPT --upgrade
-# from EdgeGPT.EdgeGPT import Chatbot
-from EdgeGPT.EdgeUtils import Query, Cookie
-
-
 def init_os_envs(set_proxy=True, apis=["openai", "bard", "claude"]):
     with open(Path(__file__).parent / "secrets.json", "r") as rf:
         secrets = json.load(rf)
@@ -61,21 +56,6 @@ class ChatRequest:
         self.question = question
         self.model = model
         self.datetime = datetime.datetime.now()
-
-
-class BingAgent:
-    def __init__(self):
-        pass
-
-    def run(self):
-        cookie_file = Path(__file__).parent / "bing_cookies_main.json"
-        q = Query(
-            "Hello world",
-            style="precise",
-            proxy=os.environ["http_proxy"],
-            cookie_file=cookie_file,
-        )
-        print(q.output)
 
 
 if __name__ == "__main__":
