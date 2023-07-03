@@ -3,6 +3,7 @@ import shutil
 from gpt4all import GPT4All
 from utils import init_os_envs
 from termcolor import colored
+from managers import MessageManager
 
 init_os_envs()
 
@@ -36,15 +37,7 @@ class GPT4AllAgent:
         else:
             self.model_name = "orca-mini-3b.ggmlv3.q4_0.bin"
         self.streaming = streaming
-        self.chat_seg = "$$$"
-        self.init_prompts = {
-            "chat": {
-                "role": "system",
-                "content": f"I will provide you some chats from different roles, each conversation with '{self.chat_seg} <Role>'. You should complete last chat based on whole conversation.\n",
-            }
-        }
-        self.messages = []
-        self.messages.append(self.init_prompts["chat"])
+        self.message_manager = MessageManager()
 
     def load_model(self, model_name=None):
         if model_name:
@@ -54,26 +47,8 @@ class GPT4AllAgent:
     def ask(self, message=None):
         """One-time Ask and Answer"""
         self.load_model()
-        if not message:
-            message = "Provide me a plan and necessary components for creating a World Simulator"
         output = self.model.generate(message)
         return output
-
-    def simulate_chat_prompt(self, prompt, role="human", assistant_role="assistant"):
-        chat_prompt = ""
-        for message in self.messages:
-            chat_prompt += f"{self.chat_seg} {message['role'].capitalize()}: {message['content']}\n"
-
-        chat_prompt += f"{self.chat_seg} {role.capitalize()}: {prompt}\n"
-        chat_prompt += f"{self.chat_seg} {assistant_role.capitalize()}:"
-
-        # print(chat_prompt)
-        return chat_prompt
-
-    def stream_generate(self, prompt):
-        for token in self.model.generate(prompt=prompt, top_k=1, streaming=True):
-            yield token
-            # print(token)
 
     def chat(self, prompts=None):
         """Interactive Chat"""
@@ -86,7 +61,7 @@ class GPT4AllAgent:
 
         for prompt in prompts:
             print(colored(prompt, "cyan"))
-            chat_prompt = self.simulate_chat_prompt(prompt)
+            chat_prompt = self.message_manager.full_chat_prompt(prompt)
             response = []
             if self.streaming:
                 for token in self.model.generate(
@@ -103,7 +78,7 @@ class GPT4AllAgent:
                 response = self.model.generate(chat_prompt)
                 print(response)
 
-            self.messages.extend(
+            self.message_manager.add_messages(
                 [
                     {"role": "user", "content": prompt},
                     {"role": "assistant", "content": "".join(response)},
