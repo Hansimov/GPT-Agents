@@ -1,5 +1,12 @@
 # from utils import ChatGPTAgent, BardAgent, ClaudeAgent, BingAgent, LangchainAgent
-from agents import LangchainAgent, BardAgent, ClaudeAgent, ChatGPTAgent, BingAgent
+from agents import (
+    LangchainAgent,
+    BardAgent,
+    ClaudeAgent,
+    ChatGPTAgent,
+    BingAgent,
+    OrcaMini3BAgent,
+)
 
 # original_text = "Hello World"
 # chatgpt_agent = ChatGPTAgent(original_text)
@@ -14,8 +21,11 @@ from agents import LangchainAgent, BardAgent, ClaudeAgent, ChatGPTAgent, BingAge
 # claude_agent = ClaudeAgent("Claude-instant")
 # claude_agent.run()
 
-bing_agent = BingAgent()
-bing_agent.run()
+# bing_agent = BingAgent()
+# bing_agent.run()
 
 # langchain_agent = LangchainAgent()
 # langchain_agent.run()
+
+orca_mini_13b_agent = OrcaMini3BAgent()
+orca_mini_13b_agent.run()
