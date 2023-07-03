@@ -5,7 +5,7 @@ from agents import (
     ClaudeAgent,
     ChatGPTAgent,
     BingAgent,
-    OrcaMini3BAgent,
+    GPT4AllAgent,
 )
 
 # original_text = "Hello World"
@@ -27,5 +27,12 @@ from agents import (
 # langchain_agent = LangchainAgent()
 # langchain_agent.run()
 
-orca_mini_13b_agent = OrcaMini3BAgent()
-orca_mini_13b_agent.run()
+orca_mini_13b_agent = GPT4AllAgent(model_name="orca-mini-3b.ggmlv3.q4_0.bin")
+orca_mini_13b_agent.chat(
+    prompts=[
+        "Provide me a 5-step plan and necessary components for creating a World Simulator",
+        "For last step, provide more details",
+        "Criticize the details for last step, then provide three suggestions on how to improve it",
+        "How many rounds of the chats in above conversation?",
+    ]
+)
