@@ -1,5 +1,6 @@
 import os
 import shutil
+from pathlib import Path
 from gpt4all import GPT4All
 from utils import init_os_envs
 from termcolor import colored
@@ -9,6 +10,8 @@ init_os_envs()
 
 
 class GPT4AllAgent:
+    model_path_root = str(Path(__file__).parents[1] / ".cache/gpt4all")
+
     def __init__(self, model_name=None, streaming=True):
         """
         GPT4All: https://gpt4all.io/index.html
@@ -42,7 +45,11 @@ class GPT4AllAgent:
     def load_model(self, model_name=None):
         if model_name:
             self.model_name = model_name
-        self.model = GPT4All(model_name=self.model_name)
+
+        self.model = GPT4All(
+            model_name=self.model_name,
+            model_path=self.model_path_root,
+        )
 
     def ask(self, message=None):
         """One-time Ask and Answer"""
