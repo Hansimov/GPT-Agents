@@ -34,6 +34,10 @@ def init_os_envs(apis=["openai", "bard", "claude"], set_proxy=True):
         os.environ["CLAUDE_API_KEY"] = secrets["claude_api_key"]
 
     if "huggingface" in apis:
+        """
+        https://stackoverflow.com/questions/63312859/how-to-change-huggingface-transformers-default-cache-directory
+        https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables
+        """
         hf_envs = {
             "TRANSFORMERS_CACHE": "models",
             "HF_DATASETS_CACHE": "datasets",
