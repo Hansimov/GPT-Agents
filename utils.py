@@ -11,16 +11,17 @@ import sys
 from pathlib import Path
 
 
-def init_os_envs(set_proxy=True, apis=["openai", "bard", "claude"]):
+def init_os_envs(apis=["openai", "bard", "claude"], set_proxy=True):
     with open(Path(__file__).parent / "secrets.json", "r") as rf:
         secrets = json.load(rf)
+
+    if type(apis) == str:
+        apis = [apis]
 
     if set_proxy:
         for proxy_env in ["http_proxy", "https_proxy"]:
             os.environ[proxy_env] = secrets["http_proxy"]
 
-    if type(apis) == str:
-        apis = [apis]
     apis = [api.lower() for api in apis]
 
     if "openai" in apis:
@@ -31,6 +32,17 @@ def init_os_envs(set_proxy=True, apis=["openai", "bard", "claude"]):
 
     if "claude" in apis:
         os.environ["CLAUDE_API_KEY"] = secrets["claude_api_key"]
+
+    if "huggingface" in apis:
+        hf_envs = {
+            "TRANSFORMERS_CACHE": "models",
+            "HF_DATASETS_CACHE": "datasets",
+            "HF_HOME": "misc",
+        }
+        for env_name, env_path in hf_envs.items():
+            os.environ[env_name] = str(
+                Path(__file__).parent / f".cache/huggingface/{env_path}"
+            )
 
 
 # init_os_envs()
