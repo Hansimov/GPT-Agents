@@ -2,3 +2,5 @@ secrets.json
 bing_cookies_*.json
 __pycache__/
 .vscode
+llm/
+.cache/

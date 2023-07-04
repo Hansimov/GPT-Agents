@@ -5,6 +5,16 @@ Multiple GPT Agents to have brainstorms and make decisions
 
 ## Setup
 
+Create python venv:
+
+```bash
+python -m venv llm
+./llm/Scripts/activate # Windows
+source ./llm/bin/activate # Linux
+```
+
+Install packages:
+
 ```bash
 python -m pip install --upgrade --force-reinstall -r requirements.txt
 ```
