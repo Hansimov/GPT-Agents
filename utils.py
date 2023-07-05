@@ -50,36 +50,3 @@ def init_os_envs(apis=["openai", "bard", "claude"], set_proxy=True, cuda_device=
 
     if cuda_device:
         os.environ["CUDA_VISIBLE_DEVICES"] = str(cuda_device)
-
-
-# init_os_envs()
-
-
-class ContextManager:
-    def __init__(self):
-        self.chat_history = []
-        request_body = {
-            "model": None,
-            "question": None,
-            "datetime": None,
-        }
-
-
-class ChatResponse:
-    def __init__(self):
-        self.question = None
-
-
-class ChatRequest:
-    def __init__(self, question, model):
-        self.question = question
-        self.model = model
-        self.datetime = datetime.datetime.now()
-
-
-if __name__ == "__main__":
-    translater = ChatGPTAgent(
-        "Evaluation of GPT-3.5 and GPT-4 for supporting real-world information needs in healthcare delivery"
-    )
-    translater.run()
-    print(translater.translated_text)
