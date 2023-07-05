@@ -5,6 +5,8 @@ from utils import init_os_envs
 
 init_os_envs("huggingface", set_proxy=False)
 from transformers import AutoTokenizer, pipeline, logging
+
+# BUILD_CUDA_EXT=0 python -m pip install auto-gptq
 from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
 
 
@@ -23,7 +25,6 @@ class AutoGPTQAgent:
             model_basename=self.model_basename,
             use_safetensors=True,
             trust_remote_code=True,
-            device="cuda:0",
             use_triton=False,
             quantize_config=None,
         )

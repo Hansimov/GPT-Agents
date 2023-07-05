@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 
-def init_os_envs(apis=["openai", "bard", "claude"], set_proxy=True):
+def init_os_envs(apis=["openai", "bard", "claude"], set_proxy=True, cuda_device=None):
     with open(Path(__file__).parent / "secrets.json", "r") as rf:
         secrets = json.load(rf)
 
@@ -47,6 +47,9 @@ def init_os_envs(apis=["openai", "bard", "claude"], set_proxy=True):
             os.environ[env_name] = str(
                 Path(__file__).parent / f".cache/huggingface/{env_path}"
             )
+
+    if cuda_device:
+        os.environ["CUDA_VISIBLE_DEVICES"] = str(cuda_device)
 
 
 # init_os_envs()

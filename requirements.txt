@@ -6,3 +6,4 @@ git+https://github.com/dsdanielpark/Bard-API.git
 gpt4all
 termcolor
 transformers
+# auto-gptq # BUILD_CUDA_EXT=0 python -m pip install auto-gptq
