@@ -11,6 +11,7 @@ import HelloWorld from '@/components/HelloWorld.vue'
       <nav>
         <RouterLink to="/">Console</RouterLink>
         <RouterLink to="/agents">Agents</RouterLink>
+        <RouterLink to="/chat">Chat</RouterLink>
       </nav>
     </div>
   </header>

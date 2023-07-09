@@ -4,6 +4,7 @@ Multiple GPT Agents to have brainstorms and make decisions
 
 ## Todos
 - [ ] [UI] A group chat UI
+  - [ ] multiple styles for different agents and messages
 - [ ] [CLI] Command line args to specify agents or api
 - [ ] Fork or new chat branch
   - [ ] Chat history replay
@@ -13,11 +14,15 @@ Multiple GPT Agents to have brainstorms and make decisions
   - [ ] `/list agents` - list agents
   - [ ] `/list chats` - list chat history
   - [ ] `/list chats @<agent>` - list chat history
-  - [ ] `/create @<name>` - create agent with name
-  - [ ] `/create :<prompts>` - create agent with initial prompts
   - [ ] `/create` - create agent with random name and random prompt
+  - [ ] `/create @<name>` - create agent with name
+  - [ ] `/create :<prompt>` - create agent with initial prompt
+  - [ ] `/create @<name> :<prompt>` - create agent with name and initial prompt
   - [ ] `/set @<agent> :<prompt>` - set `agent` with `prompt`
   - [ ] `/set @<agent>` - set `agent` with random prompt
+  - [ ] `/inject` - inject random memory and prompt to all agents
+  - [ ] `/inject @<agent> :<prompt>` - inject `prompt` to `agent`
+  - [ ] `/inject @<agent> #<memory>` - inject `memory` to `agent`
   - [ ] `/reset` - reset the memory and chat history of all agents
   - [ ] `/reset @<agent>` - reset the memory and chat history of `agent`
   - [ ] `/reset memory` - reset memory of all agents
@@ -28,8 +33,8 @@ Multiple GPT Agents to have brainstorms and make decisions
   - [ ] `/reset chat @<agent>` - reset the chat history of `agent`
   - [ ] `/remove` - remove all agents
   - [ ] `/remove @<agent>` - remove `agent`
-  - [ ] `/undo`- undo last command
-  - [ ] `/redo`- redo last command
+  - [ ] `/undo` - undo last command
+  - [ ] `/redo` - redo last command
   - [ ] `/call @<agent>` - call `agent` with `prompt`
   - [ ] `/call @<agent> :<prompt>` - call `agent` with `prompt`
 - [ ] Multiple types of agent engine

@@ -29,15 +29,15 @@ from agents import (
 # langchain_agent.run()
 
 # orca_mini_13b_agent = GPT4AllAgent(model_name="orca-mini-3b.ggmlv3.q4_0.bin")
-# nous_hermes_13b_agent = GPT4AllAgent(model_name="nous-hermes-13b.ggmlv3.q4_0.bin")
-# nous_hermes_13b_agent.chat(
-#     prompts=[
-#         "Provide me a 5-step plan and necessary components for creating a World Simulator",
-#         "For last step, provide more details",
-#         "Criticize the details for last step, then provide three suggestions on how to improve it",
-#         "How many rounds of the chats in above conversation?",
-#     ]
-# )
+nous_hermes_13b_agent = GPT4AllAgent(model_name="nous-hermes-13b.ggmlv3.q4_0.bin")
+nous_hermes_13b_agent.chat(
+    prompts=[
+        "Provide me a 5-step plan and necessary components for creating a World Simulator",
+        "For last step, provide more details",
+        "Criticize the details for last step, then provide three suggestions on how to improve it",
+        "How many rounds of the chats in above conversation?",
+    ]
+)
 
-auto_gptq_agent = AutoGPTQAgent()
-auto_gptq_agent.run()
+# auto_gptq_agent = AutoGPTQAgent()
+# auto_gptq_agent.run()
