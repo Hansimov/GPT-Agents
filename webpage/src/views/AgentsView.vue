@@ -22,10 +22,10 @@ onMounted(() => {
   />
 </template>
 
-<style>
+<style scope>
 .graph {
   width: 800px;
-  height: 900px;
+  height: 100vh;
   border: 1px solid gray;
 }
 </style>

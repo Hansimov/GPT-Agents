@@ -1,15 +1,10 @@
 @import './base.css';
 
-html,body { 
-  /* height: 100%; */
-}
-
 #app {
   max-width: 100%;
   max-height: 100vh;
   margin: 0 auto;
-  padding: 2rem;
-
+  padding: 0;
   font-weight: normal;
 }
 
@@ -35,11 +30,9 @@ a,
   
   #app {
     display: grid;
-    width: 100%;
+    width: 100vw;
     height: 100%;
-    /* top:0; */
-    /* bottom: 0; */
     grid-template-columns: 1fr;
-    padding: 0 2rem;
+    /* padding: 0 2rem; */
   }
 }
