@@ -55,12 +55,30 @@
             "roomName": "Room Y",
             "users": [
                 {
-                    "_id": "1234",
-                    "username": "John Doe",
-                    "avatar": "assets/imgs/doe.png",
+                    "_id": "0",
+                    "username": "Me",
+                    "avatar": "src/assets/cat.png",
                     "status": {
                         "state": "online",
                         "lastChanged": "today, 14:30"
+                    }
+                },
+                {
+                    "_id": "1",
+                    "username": "Jeff Dean",
+                    "avatar": "src/assets/ai-bot.png",
+                    "status": {
+                        "state": "offline",
+                        "lastChanged": "14 July, 20:00"
+                    }
+                },
+                {
+                    "_id": "2",
+                    "username": "Bill Gates",
+                    "avatar": "src/assets/ai-brain.png",
+                    "status": {
+                        "state": "offline",
+                        "lastChanged": "02 July, 20:00"
                     }
                 }
             ],
@@ -99,6 +117,30 @@
                     "content": "Message2: This message needs reply",
                     "senderId": "1"
                 }
+            },
+            {
+                "_id": "405bddb93eb8feda083481a65ac486bb",
+                "sender_id": "0",
+                "content": "hi",
+                "date": "2023/07/10 19:57:25",
+                "timestamp": "1688990245",
+                "replyMessage": {}
+            },
+            {
+                "_id": "e889751a7883b69505e7d5108e5da742",
+                "sender_id": "0",
+                "content": "today is a good day?",
+                "date": "2023/07/10 19:57:43",
+                "timestamp": "1688990263",
+                "replyMessage": {}
+            },
+            {
+                "_id": "dd9209975f3791b3284821deb31afb8a",
+                "senderId": "0",
+                "content": "hey, what is the time now\uff1f\ud83d\ude44",
+                "date": "2023/07/10 19:59:08",
+                "timestamp": "1688990348",
+                "replyMessage": {}
             }
         ],
         "2": [
@@ -135,6 +177,40 @@
                 "failure": true,
                 "disableActions": false,
                 "disableReactions": false
+            },
+            {
+                "_id": "9989",
+                "senderId": "1",
+                "content": "Message 5"
+            },
+            {
+                "_id": "4ff447fddacfbfb3a0778390fd139c67",
+                "senderId": "0",
+                "content": "this is room2 message, right?",
+                "date": "2023/07/10 20:00:14",
+                "timestamp": "1688990414",
+                "replyMessage": {}
+            },
+            {
+                "_id": "af596e2e7b2a7e9abdd54714cade30a8",
+                "senderId": "0",
+                "content": "ok..",
+                "timestamp": "2023/07/10 20:00:53",
+                "replyMessage": {}
+            },
+            {
+                "_id": "3867750aa2b4e07499539afec9a5e4f7",
+                "senderId": "0",
+                "content": "who are you?",
+                "timestamp": "2023/07/10 20:01:20",
+                "replyMessage": {}
+            },
+            {
+                "_id": "e8acc97c1e5956ed5f15fe809d13e34c",
+                "senderId": "0",
+                "content": "TypeError: Cannot read properties of undefined (reading 'matchAll')",
+                "timestamp": "2023/07/10 20:01:37",
+                "replyMessage": {}
             }
         ]
     }
