@@ -23,11 +23,9 @@ onMounted(() => {
 </template>
 
 <style>
-@media (min-width: 1024px) {
-  .graph {
-    width: 800px;
-    height: 600px;
-    border: 1px solid gray;
-  }
+.graph {
+  width: 800px;
+  height: 900px;
+  border: 1px solid gray;
 }
 </style>

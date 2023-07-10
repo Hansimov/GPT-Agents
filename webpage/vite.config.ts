@@ -12,7 +12,7 @@ export default defineConfig({
         compilerOptions: {
           isCustomElement: tagName => {
             return tagName === 'vue-advanced-chat' || tagName === 'emoji-picker'
-          }
+          },
         }
       }
     }),
@@ -22,5 +22,5 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
 })

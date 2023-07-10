@@ -62,9 +62,16 @@ export default {
 
 <template>
   <vue-advanced-chat
+    class="chat-window"
     :current-user-id="currentUserId"
     :rooms="JSON.stringify(rooms)"
     :messages="JSON.stringify(messages)"
     :room-actions="JSON.stringify(roomActions)"
   />
 </template>
+
+<style>
+.chat-window {
+  height: 100vh;
+}
+</style>
