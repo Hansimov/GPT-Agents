@@ -8,7 +8,7 @@
             "index": 3,
             "lastMessage": {
                 "_id": "xyz",
-                "content": "Last message received",
+                "content": "Hi Asimov",
                 "senderId": "1234",
                 "username": "John Doe",
                 "timestamp": "10:20",
@@ -19,18 +19,18 @@
             },
             "users": [
                 {
-                    "_id": "1234",
-                    "username": "John Doe",
-                    "avatar": "assets/imgs/doe.png",
+                    "_id": "0",
+                    "username": "Me",
+                    "avatar": "../src/assets/ai-brain.png",
                     "status": {
                         "state": "online",
                         "lastChanged": "today, 14:30"
                     }
                 },
                 {
-                    "_id": "4321",
-                    "username": "John Snow",
-                    "avatar": "assets/imgs/snow.png",
+                    "_id": "1",
+                    "username": "Jeff Dean",
+                    "avatar": "src/assets/ai-bot.png",
                     "status": {
                         "state": "offline",
                         "lastChanged": "14 July, 20:00"
@@ -40,6 +40,93 @@
             "typingUsers": [
                 "4321"
             ]
+        },
+        {
+            "roomId": "2",
+            "roomName": "Room Y",
+            "users": [
+                {
+                    "_id": "1234",
+                    "username": "John Doe",
+                    "avatar": "assets/imgs/doe.png",
+                    "status": {
+                        "state": "online",
+                        "lastChanged": "today, 14:30"
+                    }
+                }
+            ],
+            "lastMessage": {
+                "_id": "bbc",
+                "content": "I'm GPT4",
+                "senderId": "1234",
+                "username": "John Doe",
+                "timestamp": "10:20",
+                "saved": true,
+                "distributed": false,
+                "seen": false,
+                "new": false
+            }
         }
-    ]
+    ],
+    "roomMessages": {
+        "1": [
+            {
+                "_id": "7890",
+                "indexId": 12092,
+                "content": "Message 1",
+                "senderId": "0",
+                "avatar": "src/assets/cat.png",
+                "date": "2023/07/10",
+                "timestamp": "16:06",
+                "system": false,
+                "saved": true,
+                "distributed": true,
+                "seen": false,
+                "deleted": false,
+                "failure": true,
+                "disableActions": false,
+                "disableReactions": false,
+                "replyMessage": {
+                    "content": "Message2: This message needs reply",
+                    "senderId": "1"
+                }
+            }
+        ],
+        "2": [
+            {
+                "_id": "9789",
+                "indexId": 12093,
+                "content": "Message 3",
+                "senderId": "0",
+                "avatar": "src/assets/cat.png",
+                "date": "2023/07/10",
+                "timestamp": "16:08",
+                "system": false,
+                "saved": true,
+                "distributed": false,
+                "seen": true,
+                "deleted": false,
+                "failure": false,
+                "disableActions": false,
+                "disableReactions": false
+            },
+            {
+                "_id": "9988",
+                "indexId": 12094,
+                "content": "Message 4",
+                "senderId": "1",
+                "avatar": "src/assets/ai-bot.png",
+                "date": "2023/07/10",
+                "timestamp": "16:09",
+                "system": false,
+                "saved": true,
+                "distributed": true,
+                "seen": true,
+                "deleted": false,
+                "failure": true,
+                "disableActions": false,
+                "disableReactions": false
+            }
+        ]
+    }
 }

@@ -4,6 +4,8 @@ export const useChatStore = defineStore({
     id: 'chat',
     state: () => ({
         rooms: [],
+        roomId: '2',
+        messages: [],
         chat_data_json_path: 'src/data/vue_chats.json',
     }),
     actions: {
@@ -14,6 +16,8 @@ export const useChatStore = defineStore({
         async updateChatData() {
             const chat_data = await this.fetchJsonData(this.chat_data_json_path);
             this.rooms = chat_data.rooms;
+            // this.roomId = "1"
+            this.messages = chat_data.roomMessages[this.roomId];
         },
         updateNestedDict(target: any, source: any) {
             for (const key of Object.keys(source)) {
