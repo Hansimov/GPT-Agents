@@ -33,6 +33,6 @@ a,
     width: 100vw;
     height: 100%;
     grid-template-columns: 1fr;
-    /* padding: 0 2rem; */
+    padding: 0 2rem;
   }
 }
