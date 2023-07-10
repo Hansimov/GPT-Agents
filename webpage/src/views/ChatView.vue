@@ -11,12 +11,16 @@ onMounted(() => {
 })
 
 const currentUserId = '0'
-const roomId = '1'
+let roomId = '1'
+let messagesLoaded = false
+
 const roomActions = [
   { name: 'inviteUser', title: 'Invite User' },
   { name: 'removeUser', title: 'Remove User' },
   { name: 'deleteRoom', title: 'Delete Room' }
 ]
+
+// ================================================= //
 
 function sendMessage(event) {
   console.log('sendMessage:', event.detail)
@@ -27,8 +31,19 @@ function sendMessage(event) {
   const replyMessage = detail.replyMessage
   console.log(`You: ${content}`)
 }
-function fetchMessage(event) {
-  console.log('fetchMessage:', event)
+
+function fetchMessages(event) {
+  console.log('fetchMessages:', event)
+  console.log('fetchMessages:', event.detail)
+  const chat_window = event.target
+  const detail = event.detail[0]
+  const detail_room = detail.room
+  const detail_roomId = detail.room.roomId
+  chat_window.messagesLoaded = false
+  chatStore.updateChatData(detail_roomId)
+  console.log(`New roomId: ${detail_roomId}`)
+  console.log(`fetch messages from Room ${detail_roomId} `)
+  chat_window.messagesLoaded = true
 }
 
 function sendMessageReaction(event) {
@@ -48,17 +63,17 @@ function sendMessageReaction(event) {
 <template>
   <vue-advanced-chat
     class="chat-window"
-    :room-id="roomId"
+    :room-id="chatStore.$state.roomId"
     :current-user-id="currentUserId"
     :rooms="JSON.stringify(chatStore.$state.rooms)"
     :messages="JSON.stringify(chatStore.$state.messages)"
     :room-actions="JSON.stringify(roomActions)"
     rooms-loaded="true"
-    messages-loaded="true"
     height="99vh"
     single-room="false"
     @send-message="sendMessage($event)"
     @send-message-reaction="sendMessageReaction($event)"
+    @fetch-messages="fetchMessages($event)"
   />
 </template>
 

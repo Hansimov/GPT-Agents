@@ -4,7 +4,7 @@ export const useChatStore = defineStore({
     id: 'chat',
     state: () => ({
         rooms: [],
-        roomId: '2',
+        roomId: "1" as string,
         messages: [],
         chat_data_json_path: 'src/data/vue_chats.json',
     }),
@@ -13,11 +13,15 @@ export const useChatStore = defineStore({
             const response = await fetch(json_path);
             return await response.json();
         },
-        async updateChatData() {
+        async updateChatData(roomId: string = "x") {
             const chat_data = await this.fetchJsonData(this.chat_data_json_path);
             this.rooms = chat_data.rooms;
-            // this.roomId = "1"
             this.messages = chat_data.roomMessages[this.roomId];
+            if (roomId != "x") {
+                this.roomId = roomId
+            }
+            console.log(`roomId: ${this.roomId}`)
+            return this.messages
         },
         updateNestedDict(target: any, source: any) {
             for (const key of Object.keys(source)) {

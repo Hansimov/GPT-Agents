@@ -21,7 +21,7 @@
                 {
                     "_id": "0",
                     "username": "Me",
-                    "avatar": "../src/assets/ai-brain.png",
+                    "avatar": "src/assets/cat.png",
                     "status": {
                         "state": "online",
                         "lastChanged": "today, 14:30"
@@ -35,10 +35,19 @@
                         "state": "offline",
                         "lastChanged": "14 July, 20:00"
                     }
+                },
+                {
+                    "_id": "2",
+                    "username": "Bill Gates",
+                    "avatar": "src/assets/ai-brain.png",
+                    "status": {
+                        "state": "offline",
+                        "lastChanged": "02 July, 20:00"
+                    }
                 }
             ],
             "typingUsers": [
-                "4321"
+                "0"
             ]
         },
         {
