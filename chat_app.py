@@ -24,7 +24,6 @@ def generate_message_from_content(content, sender_id="0"):
         "content": content,
         # "date": message_datetime,
         "timestamp": message_datetime,
-        "replyMessage": {},
     }
     return message
 

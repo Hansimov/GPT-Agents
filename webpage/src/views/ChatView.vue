@@ -74,6 +74,7 @@ function sendMessageReaction(event) {
     rooms-loaded="true"
     height="99vh"
     single-room="false"
+    user-tags-enabled="true"
     @send-message="sendMessage($event)"
     @send-message-reaction="sendMessageReaction($event)"
     @fetch-messages="fetchMessages($event)"
