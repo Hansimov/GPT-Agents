@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import axios from 'axios'
 import { register } from 'vue-advanced-chat'
 import { onMounted } from 'vue'
 import { useChatStore } from '@/stores/chatStore'
@@ -22,13 +23,15 @@ const roomActions = [
 
 // ================================================= //
 
-function sendMessage(event) {
+async function sendMessage(event) {
   console.log('sendMessage:', event.detail)
   const detail = event.detail[0]
   const content = detail.content
   const files = detail.files
   const roomId = detail.roomId
   const replyMessage = detail.replyMessage
+  const response = await axios.post('http://127.0.0.1:8888/message', detail)
+  console.log(response)
   console.log(`You: ${content}`)
 }
 
