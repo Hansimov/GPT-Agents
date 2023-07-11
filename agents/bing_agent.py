@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from utils import init_os_envs
 
-sys.path.insert(0, str(Path("E:/_codes/EdgeGPT/src")))
+# sys.path.insert(0, str(Path("E:/_codes/EdgeGPT/src")))
 # python -m pip install EdgeGPT --upgrade
 # from EdgeGPT.EdgeUtils import Query, Cookie
 

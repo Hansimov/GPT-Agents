@@ -11,7 +11,11 @@ import sys
 from pathlib import Path
 
 
-def init_os_envs(apis=["openai", "bard", "claude"], set_proxy=True, cuda_device=None):
+def init_os_envs(
+    apis=["openai", "bard", "claude", "chimera", "huggingface"],
+    set_proxy=True,
+    cuda_device=None,
+):
     with open(Path(__file__).parent / "secrets.json", "r") as rf:
         secrets = json.load(rf)
 
@@ -32,6 +36,9 @@ def init_os_envs(apis=["openai", "bard", "claude"], set_proxy=True, cuda_device=
 
     if "claude" in apis:
         os.environ["CLAUDE_API_KEY"] = secrets["claude_api_key"]
+
+    if "chimera" in apis:
+        os.environ["CHIMERA_API_KEY"] = secrets["chimera_api_key"]
 
     if "huggingface" in apis:
         """
