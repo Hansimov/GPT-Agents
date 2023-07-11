@@ -1,1 +1,2 @@
-from managers.message_manager import MessageManager
+from managers.instruct_message_manager import InstructMessageManager
+from managers.chat_message_manager import ChatMessageManager
