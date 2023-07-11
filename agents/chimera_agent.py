@@ -94,6 +94,9 @@ class ChimeraAgent:
             }
         }
         ```
+        
+        ## Available models
+        * https://chimeragpt.adventblocks.cc/v1/models
         """
         self.requests_payload = {
             "model": self.model,
@@ -103,9 +106,11 @@ class ChimeraAgent:
         response = requests.post(
             self.chat_api,
             headers=self.requests_headers,
-            data=self.requests_payload,
+            json=self.requests_payload,
         )
-        return response.json()
+        response_data = response.json()
+        print(response_data)
+        return response_data
 
     def test_prompt(self):
         self.system_message = (
@@ -115,4 +120,8 @@ class ChimeraAgent:
         prompt = "In this paper, we introduce Semantic-SAM, a universal image segmentation model to enable segment and recognize anything at any desired granularity."
         messages = self.construct_messages(prompt)
         model = "gpt-3.5-turbo"
+        print(messages)
         self.chat(messages, model)
+
+    def run(self):
+        self.test_prompt()

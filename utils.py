@@ -12,7 +12,7 @@ from pathlib import Path
 
 
 def init_os_envs(
-    apis=["openai", "bard", "claude", "chimera", "huggingface"],
+    apis=[],
     set_proxy=True,
     cuda_device=None,
 ):
