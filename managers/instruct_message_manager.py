@@ -1,4 +1,4 @@
-class MessageManager:
+class InstructMessageManager:
     def __init__(self, system_message_style="chat", system_message_str=None):
         self.chat_seg = "$" * 3
         self.messages = []
@@ -8,7 +8,7 @@ class MessageManager:
         self.system_message_styles = {
             "chat": {
                 "role": "system",
-                "content": f"I will provide you some chats from different roles, each conversation with '{self.chat_seg} [Role]'. You should complete the last chat based on whole conversation.\n",
+                "content": f"I will provide you some chats from different roles, each conversation starts with '{self.chat_seg} [Role]'. You should complete the last chat based on whole conversation.\n",
             }
         }
         self.system_message_style = system_message_style

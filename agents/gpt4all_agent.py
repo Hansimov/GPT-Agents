@@ -4,7 +4,7 @@ from pathlib import Path
 from gpt4all import GPT4All
 from utils import init_os_envs
 from termcolor import colored
-from managers import MessageManager
+from managers import InstructMessageManager
 
 init_os_envs()
 
@@ -40,7 +40,7 @@ class GPT4AllAgent:
         else:
             self.model_name = "orca-mini-3b.ggmlv3.q4_0.bin"
         self.streaming = streaming
-        self.message_manager = MessageManager()
+        self.message_manager = InstructMessageManager()
 
     def load_model(self, model_name=None):
         if model_name:
