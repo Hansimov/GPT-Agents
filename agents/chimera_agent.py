@@ -79,12 +79,12 @@ class ChimeraAgent:
             "model": "gpt-3.5-turbo",
             "choices": [
                 {
-                "index": 0,
-                "message": {
-                    "role": "assistant",
-                    "content": "This is a test!"
-                },
-                "finish_reason": "stop"
+                    "index": 0,
+                    "message": {
+                        "role": "assistant",
+                        "content": "This is a test!"
+                    },
+                    "finish_reason": "stop"
                 }
             ],
             "usage": {
@@ -95,8 +95,7 @@ class ChimeraAgent:
         }
         ```
         
-        ## Available models
-        * https://chimeragpt.adventblocks.cc/v1/models
+
         """
         self.requests_payload = {
             "model": self.model,
@@ -112,6 +111,30 @@ class ChimeraAgent:
         print(response_data)
         return response_data
 
+    def get_available_models(self):
+        """
+        ## Available models
+        * https://chimeragpt.adventblocks.cc/v1/models
+
+        ```py
+        [
+            'gpt-4', 'gpt-4-32k', 'gpt-4-0613',
+            'gpt-3.5-turbo', 'gpt-3.5-turbo-openai', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-openai',
+            'gpt-4-poe', 'gpt-3.5-turbo-poe', 'sage',
+            'claude-instant', 'claude+', 'claude-instant-100k', 'chat-bison-001',
+        ]
+        ```
+        """
+        self.models_api = f"{self.api}/v1/models"
+        response = requests.get(self.models_api)
+        data = response.json()["data"]
+        self.available_models = []
+
+        for item in data:
+            if "/v1/chat/completions" in item["endpoints"]:
+                self.available_models.append(item["id"])
+        print(self.available_models)
+
     def test_prompt(self):
         self.system_message = (
             f"你是一个专业的中英双语专家。如果给出中文，你需要如实翻译成英文；如果给出中文，你需要如实翻译成英文。"
@@ -124,4 +147,5 @@ class ChimeraAgent:
         self.chat(messages, model)
 
     def run(self):
-        self.test_prompt()
+        self.get_available_models()
+        # self.test_prompt()
