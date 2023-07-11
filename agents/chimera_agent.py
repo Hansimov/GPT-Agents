@@ -17,36 +17,42 @@ class ChimeraAgent:
 
     def __init__(
         self,
-        prompt=None,
+        name,  # name of the agent, also use "role" as alias
+        model="gpt-3.5-turbo-16k",
+        temperature=0,
         system_message=None,
-        model="gpt-3.5-turbo",
     ):
+        self.name = name
         self.chat_api = f"{self.api}/v1/chat/completions"
         self.requests_headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {os.environ['CHIMERA_API_KEY']}",
         }
         self.model = model
+        self.temperature = temperature
         self.system_message = system_message
 
     def content_to_message(self, role, content):
         return {"role": role, "content": content}
 
-    def construct_messages(self, prompt):
-        messages = []
+    def construct_request_messages_with_prompt(self, prompt):
+        request_messages = []
         if self.system_message:
-            messages.append(self.content_to_message("system", self.system_message))
-        messages.append(self.content_to_message("user", prompt))
-        return messages
+            request_messages.append(
+                self.content_to_message("system", self.system_message)
+            )
+        request_messages.append(self.content_to_message("user", prompt))
+        return request_messages
 
     def chat(
         self,
+        # model,
+        # temperature,
         messages,
-        model,
-        temperature=0,
+        history_messages=None,
+        stream=False,
         top_p=1,
         n=1,
-        stream=False,
         stop=None,
         max_tokens=8096,
         functions=None,
@@ -100,7 +106,8 @@ class ChimeraAgent:
         self.requests_payload = {
             "model": self.model,
             "messages": messages,
-            "temperature": temperature,
+            "temperature": self.temperature,
+            "stream": stream,
         }
         response = requests.post(
             self.chat_api,
@@ -108,7 +115,7 @@ class ChimeraAgent:
             json=self.requests_payload,
         )
         response_data = response.json()
-        print(response_data)
+        # print(f'{[self.name]}: {response_data["choices"][0]["message"]["content"]}')
         return response_data
 
     def get_available_models(self):
@@ -141,11 +148,12 @@ class ChimeraAgent:
             f"你的翻译应当是严谨的和自然的，不要删改原文。请按照要求翻译如下文本："
         )
         prompt = "In this paper, we introduce Semantic-SAM, a universal image segmentation model to enable segment and recognize anything at any desired granularity."
-        messages = self.construct_messages(prompt)
+        messages = self.construct_request_messages_with_prompt(prompt)
         model = "gpt-3.5-turbo"
         print(messages)
         self.chat(messages, model)
 
     def run(self):
-        self.get_available_models()
+        # self.get_available_models()
         # self.test_prompt()
+        pass
