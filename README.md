@@ -2,6 +2,26 @@
 
 Multiple GPT Agents to have brainstorms and make decisions
 
+## Examples
+
+```py
+chat_message_manager = ChatMessageManager()
+chat_message_manager.add_agents(
+    [
+        imaginer_agent,
+        questioner_agent,
+        answerer_agent,
+        criticizer_agent,
+        supporter_agent,
+        summarizer_agent,
+        statist_agent,
+    ]
+)
+chat_message_manager.sequential_chat("我如何才能成为百万富翁？", rounds=2)
+```
+
+![Agents Sequential Chats](./examples/agents-sequential-chats.png)
+
 ## Todos
 - [ ] [UI] A group chat UI
   - [ ] multiple styles for different agents and messages
