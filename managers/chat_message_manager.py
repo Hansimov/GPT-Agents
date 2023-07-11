@@ -8,6 +8,8 @@ class ChatMessageManager:
         self.chat_messages = []
         self.agents = []
         self.chat_roles_system_message = f"I will provide you some chats from different roles, each conversation starts with `{self.chat_seg} [Role]:`. You should keep in mind your own role, then response accordingly based on the context."
+        self.term_colors = ["cyan", "green"]
+        self.term_index = 0
 
     def content_to_message(self, role, content):
         return {"role": role, "content": content}
@@ -64,14 +66,25 @@ class ChatMessageManager:
         request_messages.append(current_role_system_message)
         return request_messages
 
-    def color_print_message(self, message):
+    def next_term_color(self):
+        self.term_color = self.term_colors[self.term_index % len(self.term_colors)]
+        self.term_index += 1
+        return self.term_color
+
+    def color_print_message(self, message, color=None):
         role = message["role"]
         content = message["content"]
-        print(f"[{colored(role, 'magenta')}]: {colored(content, 'cyan')}")
+        if color is None:
+            role_color = "magenta"
+            content_color = "cyan"
+        else:
+            role_color = color
+            content_color = color
+        print(f"[{colored(role, role_color)}]: {colored(content, content_color)}")
 
     def sequential_chat(self, init_content, rounds=1):
         init_message = self.content_to_message("user", init_content)
-        self.color_print_message(init_message)
+        self.color_print_message(init_message, color="yellow")
         self.add_to_chat_messages(init_message)
 
         for i in range(rounds):
@@ -84,17 +97,18 @@ class ChatMessageManager:
                     )
                 )
                 # print(f"current_request_messages: {current_request_messages}")
-                print(f'[{colored(agent.name, "magenta")}]: ', end="")
+                print(f"[{colored(agent.name, self.next_term_color())}]: ", end="")
                 response_data = agent.chat(current_request_messages)
                 current_role_chat_content = re.sub(
                     r"^\s*\$\$\$\s*\[.*?\]:\s*",
                     "",
                     response_data["choices"][0]["message"]["content"],
+                    flags=re.MULTILINE,
                 )
                 current_role_chat_message = {
                     "role": agent.name,
                     "content": current_role_chat_content,
                 }
-                print(f'{colored(current_role_chat_content, "cyan")}')
+                print(f"{colored(current_role_chat_content, self.term_color)}")
                 # self.color_print_message(current_role_chat_message)
                 self.add_to_chat_messages(current_role_chat_message)
