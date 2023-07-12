@@ -1,9 +1,10 @@
+import json
+import os
 import requests
 from requests.adapters import HTTPAdapter, Retry
-import os
 from utils import init_os_envs
 
-init_os_envs("chimera")
+init_os_envs("chimera", set_proxy=True)
 
 
 class ChimeraAgent:
@@ -50,7 +51,6 @@ class ChimeraAgent:
         # model,
         # temperature,
         messages,
-        history_messages=None,
         stream=False,
         top_p=1,
         n=1,
@@ -77,6 +77,7 @@ class ChimeraAgent:
                 "temperature": 0
             }'
         ```
+        
         ## Response
         ```json
         {
@@ -112,17 +113,25 @@ class ChimeraAgent:
         }
         requests_session = requests.session()
 
-        retires = Retry(total=3, backoff_factor=0.1)
-        requests_session.mount("https://", HTTPAdapter(max_retries=retires))
+        # retires = Retry(total=3, backoff_factor=0.1)
+        # requests_session.mount("https://", HTTPAdapter(max_retries=retires))
 
         response = requests_session.post(
             self.chat_api,
             headers=self.requests_headers,
             json=self.requests_payload,
+            timeout=30,
+            stream=stream,
         )
-        response_data = response.json()
-        # print(f'{[self.name]}: {response_data["choices"][0]["message"]["content"]}')
-        return response_data
+        if not stream:
+            response_data = response.json()
+            # print(f'{[self.name]}: {response_data["choices"][0]["message"]["content"]}')
+            return response_data
+        else:
+            # print(response)
+            # print(response.content)
+            # https://github.com/openai/openai-cookbook/blob/main/examples/How_to_stream_completions.ipynb
+            return response
 
     def get_available_models(self):
         """
@@ -148,16 +157,44 @@ class ChimeraAgent:
                 self.available_models.append(item["id"])
         print(self.available_models)
 
-    def test_prompt(self):
+    def test_prompt(self, stream=True):
         self.system_message = (
             f"你是一个专业的中英双语专家。如果给出中文，你需要如实翻译成英文；如果给出中文，你需要如实翻译成英文。"
             f"你的翻译应当是严谨的和自然的，不要删改原文。请按照要求翻译如下文本："
         )
-        prompt = "In this paper, we introduce Semantic-SAM, a universal image segmentation model to enable segment and recognize anything at any desired granularity."
+        prompt = "In this paper, we introduce Semantic-SAM, a universal image segmentation model to enable segment and recognize anything at any desired granularity. Our model offers two key advantages: semantic-awareness and granularity-abundance. To achieve semantic-awareness, we consolidate multiple datasets across three granularities and introduce decoupled classification for objects and parts. This allows our model to capture rich semantic information. For the multi-granularity capability, we propose a multi-choice learning scheme during training, enabling each click to generate masks at multiple levels that correspond to multiple ground-truth masks. Notably, this work represents the first attempt to jointly train a model on SA-1B, generic, and part segmentation datasets. Experimental results and visualizations demonstrate that our model successfully achieves semantic-awareness and granularity-abundance. Furthermore, combining SA-1B training with other segmentation tasks, such as panoptic and part segmentation, leads to performance improvements. We will provide code and a demo for further exploration and evaluation."
         messages = self.construct_request_messages_with_prompt(prompt)
-        model = "gpt-3.5-turbo"
-        print(messages)
-        self.chat(messages, model)
+        print(messages, flush=True)
+        response = self.chat(messages, stream=stream)
+        if not stream:
+            content = response["choices"][0]["message"]["content"]
+            print(content)
+        else:
+            """
+            requests.iter_content():
+              - https://requests.readthedocs.io/en/latest/api/#requests.Response.iter_content
+              - https://requests.readthedocs.io/en/latest/_modules/requests/models/#Response.iter_content
+
+            requests.iter_lines():
+              - https://requests.readthedocs.io/en/latest/api/#requests.Response.iter_lines
+              - https://requests.readthedocs.io/en/latest/_modules/requests/models/#Response.iter_lines
+            """
+            for chunk in response.iter_lines():
+                chunk_str = chunk.decode("utf-8")
+                if chunk_str:
+                    print(chunk_str, flush=True)
+                # chunk_data = json.loads(chunk)
+                # # print(chunk_data)
+                # delta_data = chunk_data["choices"][0]["delta"]
+                # finish_reason = chunk_data["choices"][0]["finish_reason"]
+                # if "role" in delta_data:
+                #     role = delta_data["role"]
+                #     print(f"Role: {role}", end="", flush=True)
+                # if "content" in delta_data:
+                #     delta_content = delta_data["content"]
+                #     print(delta_content)
+                # if finish_reason == "stop":
+                #     break
 
     def run(self):
         # self.get_available_models()
