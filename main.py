@@ -106,10 +106,43 @@ def test_get_available_models():
     chimera_agent.get_available_models()
 
 
+def test_who_is_spy():
+    alice_agent = ChimeraAgent(
+        name="Alice",
+        system_message="你的名字是 `Alice`。你的单词令牌是“牛肉干”。你的目标是尽可能确认自己的队友，然后找出间谍。你喜欢在描述中增加细节。现在，请你用一句话描述你的单词。注意，你的描述不能和已经说过的重复，否则你也会立刻出局。",
+    )
+    bob_agent = ChimeraAgent(
+        name="Bob",
+        system_message="你的名字是 `Bob`。你的单词令牌是“牛肉干”。你的目标是尽可能确认自己的队友，然后找出间谍。你喜欢稍微修改别人的描述。现在，请你用一句话描述你的单词。注意，你的描述不能和已经说过的重复，否则你也会立刻出局。",
+    )
+    charlie_agent = ChimeraAgent(
+        name="Charlie",
+        system_message="你的名字是 `Charlie`。你的单词令牌是“牛肉干”。你的目标是尽可能确认自己的队友，然后找出间谍。你喜欢在描述中减少细节。现在，请你用一句话描述你的单词。注意，你的描述不能和已经说过的重复，否则你也会立刻出局。",
+    )
+    diana_agent = ChimeraAgent(
+        name="Diana",
+        system_message="你的名字是 `Diana`。你是全场唯一的卧底。你的单词令牌是“猪肉脯”。你的目标是尽可能隐藏自己的身份，一旦被发现，你就会被销毁。你会尽可能整合前面所有人的描述。现在，请你用一句话描述你的单词。注意，你的描述不能和已经说过的重复，否则你也会立刻出局。",
+    )
+    manager_system_message = "你正在和几个人一起玩一个名为“谁是卧底”的游戏。游戏规则是：所有人都会拿到一个单词令牌，除了卧底的令牌不同以外，其他人的令牌都是相同的。卧底单独一队，其他人同为一队。每人每次只能说一句话描述自己拿到的单词令牌，但不能直接说出该单词，否则就会立刻出局。"
+    chat_message_manager = ChatMessageManager(
+        manager_system_message=manager_system_message,
+    )
+    chat_message_manager.add_agents(
+        [
+            alice_agent,
+            bob_agent,
+            diana_agent,
+            charlie_agent,
+        ]
+    )
+    chat_message_manager.sequential_chat(rounds=3)
+
+
 if __name__ == "__main__":
     with Runtimer():
         # print("Run!")
         # test_get_available_models()
-        test_sequential_chat()
+        # test_sequential_chat()
+        test_who_is_spy()
         # test_stream_chat(stream=False)
         # test_stream_chat(stream=True)

@@ -55,7 +55,7 @@ class ChimeraAgent:
     def __init__(
         self,
         name,  # name of the agent, also use "role" as alias
-        model="gpt-3.5-turbo-16k",
+        model="gpt-3.5-turbo",
         temperature=0,
         system_message=None,
         max_input_message_chars=None,

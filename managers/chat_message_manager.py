@@ -4,14 +4,22 @@ from agents.chimera_agent import output_stream_response
 
 
 class ChatMessageManager:
-    def __init__(self, multiple_chat_roles=True, lang="zh"):
+    def __init__(
+        self,
+        manager_system_message=None,
+        lang="zh",
+    ):
         self.chat_seg = "" * 3
         self.chat_messages = []
         self.agents = []
         if lang == "zh":
-            self.chat_roles_system_message = f"这些来自不同人的对话记录，每个对话以 `{self.chat_seg} [人物]:` 开头。你需要牢记自己的角色和身份，然后基于上下文作出相应的回应。你的回答不需要加上人物开头。"
+            self.chat_roles_system_message = f"这些是来自不同人的对话记录，每个对话以 `{self.chat_seg} [人物]:` 开头。你需要牢记自己的角色和身份，然后基于上下文作出相应的回应。你的回答不需要加上人物开头。"
         else:
             self.chat_roles_system_message = f"These are some chats from different roles, each conversation starts with `{self.chat_seg} [Role]:`. You should keep in mind your own role, then response accordingly based on the context."
+        if manager_system_message is None:
+            self.manager_system_message = ""
+        else:
+            self.manager_system_message = manager_system_message
         self.term_colors = ["cyan", "green"]
         self.term_index = 0
 
@@ -43,7 +51,11 @@ class ChatMessageManager:
     def cut_input_messages_for_agent(self, agent, input_messages):
         max_input_message_chars = agent.max_input_message_chars
         max_input_message_chars -= len(
-            (self.chat_roles_system_message + agent.system_message).encode("utf-8")
+            (
+                self.manager_system_message
+                + self.chat_roles_system_message
+                + agent.system_message
+            ).encode("utf-8")
         )
         cutted_input_messages = []
         for input_message in input_messages[::-1]:
@@ -89,8 +101,13 @@ class ChatMessageManager:
             "role": "system",
             "content": self.chat_roles_system_message,
         }
+        manager_system_message = {
+            "role": "system",
+            "content": self.manager_system_message,
+        }
         request_messages.extend(
             [
+                manager_system_message,
                 chat_roles_system_message,
                 current_role_system_message,
             ]
