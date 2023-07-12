@@ -55,12 +55,10 @@ class ChimeraAgent:
     def __init__(
         self,
         name,  # name of the agent, also use "role" as alias
-        model="gpt-3.5-turbo-openai",
+        model="gpt-4-32k-poe",
         temperature=0,
         system_message=None,
     ):
-        # Available models:
-        # ['gpt-4', 'gpt-4-32k', 'gpt-4-0613', 'gpt-3.5-turbo', 'gpt-3.5-turbo-openai', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-openai','gpt-4-poe', 'gpt-3.5-turbo-poe', 'sage','claude-instant', 'claude+', 'claude-instant-100k', 'chat-bison-001']
         self.name = name
         self.chat_api = f"{self.api}/v1/chat/completions"
         self.requests_headers = {
@@ -172,15 +170,15 @@ class ChimeraAgent:
 
     def get_available_models(self):
         """
-        ## Available models
+        ## ANCHOR Available models
         * https://chimeragpt.adventblocks.cc/v1/models
 
         ```py
         [
-            'gpt-4', 'gpt-4-32k', 'gpt-4-0613',
-            'gpt-3.5-turbo', 'gpt-3.5-turbo-openai', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-openai',
-            'gpt-4-poe', 'gpt-3.5-turbo-poe', 'sage',
-            'claude-instant', 'claude+', 'claude-instant-100k', 'chat-bison-001',
+            'gpt-4', 'gpt-4-32k', 'gpt-4-0613', 'gpt-4-poe', 'gpt-4-32k-poe',
+            'gpt-3.5-turbo', 'gpt-3.5-turbo-poe', 'gpt-3.5-turbo-openai',
+            'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-openai', 'gpt-3.5-turbo-16k-poe',
+            'sage', 'claude-instant', 'claude-2-100k', 'claude-instant-100k', 'chat-bison-001'
         ]
         ```
         """
@@ -193,6 +191,7 @@ class ChimeraAgent:
             if "/v1/chat/completions" in item["endpoints"]:
                 self.available_models.append(item["id"])
         print(self.available_models)
+        return self.available_models
 
     def test_prompt(self, stream=True):
         self.system_message = (

@@ -3,18 +3,9 @@ from termcolor import colored
 from agents.chimera_agent import output_stream_response
 
 
-def cleanse_chat_content(chat_content):
-    return re.sub(
-        r"^\s*\$\$\$\s*\[.*?\]:",
-        "",
-        chat_content,
-        flags=re.MULTILINE,
-    )
-
-
 class ChatMessageManager:
     def __init__(self, multiple_chat_roles=True, lang="zh"):
-        self.chat_seg = "$" * 3
+        self.chat_seg = "" * 3
         self.chat_messages = []
         self.agents = []
         if lang == "zh":
@@ -23,6 +14,14 @@ class ChatMessageManager:
             self.chat_roles_system_message = f"I will provide you some chats from different roles, each conversation starts with `{self.chat_seg} [Role]:`. You should keep in mind your own role, then response accordingly based on the context."
         self.term_colors = ["cyan", "green"]
         self.term_index = 0
+
+    def cleanse_chat_content(self, chat_content):
+        return re.sub(
+            f"^\s*{self.chat_seg}\s*\[.*?\]:",
+            "",
+            chat_content,
+            flags=re.MULTILINE,
+        )
 
     def content_to_message(self, role, content):
         return {"role": role, "content": content}
@@ -75,8 +74,8 @@ class ChatMessageManager:
                 request_message = {"role": "user", **suffixed_content}
             request_messages.append(request_message)
 
-        # # To increase weights of system message
-        # request_messages.append(current_role_system_message)
+        # To increase weights of system message
+        request_messages.append(current_role_system_message)
         return request_messages
 
     def next_term_color(self):
@@ -122,7 +121,7 @@ class ChatMessageManager:
                 current_role_chat_message = {"role": agent.name, "content": ""}
 
                 if not stream_chat:
-                    current_role_chat_content = cleanse_chat_content(
+                    current_role_chat_content = self.cleanse_chat_content(
                         response["choices"][0]["message"]["content"]
                     )
                     current_role_chat_message["content"] = current_role_chat_content
@@ -131,7 +130,7 @@ class ChatMessageManager:
                 else:
                     current_role_chat_message["content"] = output_stream_response(
                         response,
-                        cleanse_chat_content,
+                        self.cleanse_chat_content,
                         content_color=self.term_color,
                     )
 

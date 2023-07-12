@@ -50,19 +50,19 @@ from utils import start_time, end_time, elapsed_time
 def test_sequential_chat():
     criticizer_agent = ChimeraAgent(
         name="Criticizer",
-        system_message="你的名字叫 `Criticizer`。你是一个喜欢批评的人。对于前一个的观点，你总是加以怀疑和反驳，并举出反例。",
+        system_message="你的名字叫 `Criticizer`。你是一个喜欢批评的人。对于前一个人的观点，你总是加以怀疑和反驳，并举出反例。",
     )
     summarizer_agent = ChimeraAgent(
         name="Summarizer",
-        system_message="你的名字叫 `Summarizer`。你是一个擅长总结的人。对于所有人的聊天，你总是给出简短的总结。",
+        system_message="你的名字叫 `Summarizer`。你是一个擅长总结的人。你总是尽可能给出所有人对话内容的简短总结。",
     )
     questioner_agent = ChimeraAgent(
         name="Questioner",
-        system_message="你的名字叫 `Questioner`。你是一个善于提问的人。对于前一个人的观点，你总是提出三个与之相关的问题。",
+        system_message="你的名字叫 `Questioner`。你是一个善于提问的人。对于前一个人的观点，你总是尽可能提出三个与之相关的问题。",
     )
     answerer_agent = ChimeraAgent(
         name="Answerer",
-        system_message="你的名字叫 `Answerer`。你是一个善于回答的人。对于前一个人的问题，你总是给出三个与之相关的答案。",
+        system_message="你的名字叫 `Answerer`。你是一个喜欢回答的人。对于前一个人的每个问题，你总是尽可能给出与之相关的答案。",
     )
     supporter_agent = ChimeraAgent(
         name="Supporter",
@@ -76,8 +76,8 @@ def test_sequential_chat():
 
     statist_agent = ChimeraAgent(
         name="Statist",
-        system_message="你的名字叫 `Statist`。你是一个擅长统计的人，请你给出上面每个人各发言了几次，并以该格式输出：```<角色>:<发言次数>```",
-        model="claude-instant-100k",
+        system_message="你的名字叫 `Statist`。请你给出上面每个人各发言了几次，并以该格式输出：```<角色>:<发言次数>```",
+        model="gpt-4-32k",
     )
 
     chat_message_manager = ChatMessageManager()
@@ -101,6 +101,11 @@ def test_stream_chat(stream=False):
     chimera_agent.test_prompt(stream=stream)
 
 
+def test_get_available_models():
+    chimera_agent = ChimeraAgent(name="TestStream")
+    chimera_agent.get_available_models()
+
+
 if __name__ == "__main__":
     # t1, _ = start_time()
     # test_stream_chat(stream=False)
@@ -113,6 +118,7 @@ if __name__ == "__main__":
     # elapsed_time(t4 - t3)
 
     t5, _ = start_time()
-    test_sequential_chat()
+    # test_sequential_chat()
+    test_get_available_models()
     t6, _ = end_time()
     elapsed_time(t6 - t5)
