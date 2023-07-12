@@ -110,6 +110,7 @@ class ChatMessageManager:
                 manager_system_message,
                 chat_roles_system_message,
                 current_role_system_message,
+                {"role": "assistant", "content": f"[{agent.name}]:"},
             ]
         )
         # To increase weights of system message
