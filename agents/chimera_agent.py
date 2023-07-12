@@ -55,7 +55,7 @@ class ChimeraAgent:
     def __init__(
         self,
         name,  # name of the agent, also use "role" as alias
-        model="gpt-4-32k-poe",
+        model="gpt-3.5-turbo-16k",
         temperature=0,
         system_message=None,
     ):
@@ -68,6 +68,31 @@ class ChimeraAgent:
         self.model = model
         self.temperature = temperature
         self.system_message = system_message
+
+    def get_available_models(self):
+        """
+        ## ANCHOR Available models
+        * https://chimeragpt.adventblocks.cc/v1/models
+
+        ```py
+        [
+            'gpt-4', 'gpt-4-32k', 'gpt-4-0613', 'gpt-4-poe', 'gpt-4-32k-poe',
+            'gpt-3.5-turbo', 'gpt-3.5-turbo-poe', 'gpt-3.5-turbo-openai',
+            'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-openai', 'gpt-3.5-turbo-16k-poe',
+            'sage', 'claude-instant', 'claude-2-100k', 'claude-instant-100k', 'chat-bison-001'
+        ]
+        ```
+        """
+        self.models_api = f"{self.api}/v1/models"
+        response = requests.get(self.models_api)
+        data = response.json()["data"]
+        self.available_models = []
+
+        for item in data:
+            if "/v1/chat/completions" in item["endpoints"]:
+                self.available_models.append(item["id"])
+        print(self.available_models)
+        return self.available_models
 
     def content_to_message(self, role, content):
         return {"role": role, "content": content}
@@ -167,31 +192,6 @@ class ChimeraAgent:
             # print(response.content)
             # https://github.com/openai/openai-cookbook/blob/main/examples/How_to_stream_completions.ipynb
             return response
-
-    def get_available_models(self):
-        """
-        ## ANCHOR Available models
-        * https://chimeragpt.adventblocks.cc/v1/models
-
-        ```py
-        [
-            'gpt-4', 'gpt-4-32k', 'gpt-4-0613', 'gpt-4-poe', 'gpt-4-32k-poe',
-            'gpt-3.5-turbo', 'gpt-3.5-turbo-poe', 'gpt-3.5-turbo-openai',
-            'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-openai', 'gpt-3.5-turbo-16k-poe',
-            'sage', 'claude-instant', 'claude-2-100k', 'claude-instant-100k', 'chat-bison-001'
-        ]
-        ```
-        """
-        self.models_api = f"{self.api}/v1/models"
-        response = requests.get(self.models_api)
-        data = response.json()["data"]
-        self.available_models = []
-
-        for item in data:
-            if "/v1/chat/completions" in item["endpoints"]:
-                self.available_models.append(item["id"])
-        print(self.available_models)
-        return self.available_models
 
     def test_prompt(self, stream=True):
         self.system_message = (
