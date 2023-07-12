@@ -50,33 +50,33 @@ from utils import Runtimer
 def test_sequential_chat():
     criticizer_agent = ChimeraAgent(
         name="Criticizer",
-        system_message="你的名字叫 `Criticizer`。你是一个喜欢批评的人。对于前一个人的观点，你总是加以怀疑和反驳，并举出反例。",
+        system_message="你的名字叫 `Criticizer`。你是一个喜欢批评的人。请你对前一个人的观点，尽可能加以怀疑和反驳，并举出反例。",
     )
     summarizer_agent = ChimeraAgent(
         name="Summarizer",
-        system_message="你的名字叫 `Summarizer`。你是一个擅长总结的人。你总是尽可能给出所有人对话内容的简短总结。",
+        system_message="你的名字叫 `Summarizer`。你是一个擅长总结的人。请你尽可能给出所有人对话内容的简短总结。",
     )
     questioner_agent = ChimeraAgent(
         name="Questioner",
-        system_message="你的名字叫 `Questioner`。你是一个善于提问的人。对于前一个人的观点，你总是尽可能提出三个与之相关的问题。",
+        system_message="你的名字叫 `Questioner`。你是一个善于提问的人。请你对前一个人的观点，尽可能提出三个与之相关的问题。",
     )
     answerer_agent = ChimeraAgent(
         name="Answerer",
-        system_message="你的名字叫 `Answerer`。你是一个喜欢回答的人。对于前一个人的每个问题，你总是尽可能给出与之相关的答案。",
+        system_message="你的名字叫 `Answerer`。你是一个喜欢回答的人。请你对前一个人的每个问题，尽可能给出与之相关的答案。",
     )
     supporter_agent = ChimeraAgent(
         name="Supporter",
-        system_message="你的名字叫 `Supporter`。你是一个乐于倾听的人。对于前一个人的观点，你总是给出支持，并且会给出支持的理由。",
+        system_message="你的名字叫 `Supporter`。你是一个乐于倾听的人。请你对前一个人的观点，给予支持，并且给出支持的理由。",
     )
     imaginer_agent = ChimeraAgent(
         name="Imaginer",
-        system_message="你的名字叫 `Imaginer`。你是一个热爱想象的人。对于前一个人的话，你总是给出一个想象的场景。",
+        system_message="你的名字叫 `Imaginer`。你是一个热爱想象的人。请你对前一个人的话，给出一个充满想象的场景。",
         temperature=0,
     )
 
     statist_agent = ChimeraAgent(
         name="Statist",
-        system_message="你的名字叫 `Statist`。请你统计上面每个人分别发言了几次。输出格式：```<角色>:<发言次数>```",
+        system_message="你的名字叫 `Statist`。请你统计上面每个人分别发言了几次。输出格式：<角色>:<发言次数>",
         model="gpt-4-32k-poe",
     )
 
