@@ -1,6 +1,6 @@
 from agents.chimera_agent import ChimeraAgent
 from managers.chat_message_manager import ChatMessageManager
-from utils import start_time, end_time, elapsed_time
+from utils import Runtimer
 
 # from agents import (
 #     LangchainAgent,
@@ -76,8 +76,8 @@ def test_sequential_chat():
 
     statist_agent = ChimeraAgent(
         name="Statist",
-        system_message="你的名字叫 `Statist`。请你给出上面每个人各发言了几次，并以该格式输出：```<角色>:<发言次数>```",
-        model="gpt-4-32k",
+        system_message="你的名字叫 `Statist`。请你统计上面每个人分别发言了几次。输出格式：```<角色>:<发言次数>```",
+        model="gpt-4-32k-poe",
     )
 
     chat_message_manager = ChatMessageManager()
@@ -107,18 +107,9 @@ def test_get_available_models():
 
 
 if __name__ == "__main__":
-    # t1, _ = start_time()
-    # test_stream_chat(stream=False)
-    # t2, _ = end_time()
-    # elapsed_time(t2 - t1)
-
-    # t3, _ = start_time()
-    # test_stream_chat(stream=True)
-    # t4, _ = end_time()
-    # elapsed_time(t4 - t3)
-
-    t5, _ = start_time()
-    # test_sequential_chat()
-    test_get_available_models()
-    t6, _ = end_time()
-    elapsed_time(t6 - t5)
+    with Runtimer():
+        # print("Run!")
+        # test_get_available_models()
+        test_sequential_chat()
+        # test_stream_chat(stream=False)
+        # test_stream_chat(stream=True)
