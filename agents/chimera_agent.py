@@ -1,10 +1,45 @@
 import json
 import os
+import re
 import requests
 from requests.adapters import HTTPAdapter, Retry
+from termcolor import colored
 from utils import init_os_envs
 
 init_os_envs("chimera", set_proxy=True)
+
+
+def output_stream_response(
+    response,
+    cleanse_chat_content=None,
+    content_color="cyan",
+):
+    whole_content = ""
+    for chunk in response.iter_lines():
+        chunk_str = chunk.decode("utf-8")
+        if chunk_str:
+            chunk_str = re.sub(r"^\s*data:\s*", "", chunk_str)
+            if chunk_str.lower() == "[DONE]":
+                break
+            chunk_data = json.loads(chunk_str)
+            try:
+                delta_data = chunk_data["choices"][0]["delta"]
+            except:
+                print(chunk_data, flush=True)
+                continue
+            finish_reason = chunk_data["choices"][0]["finish_reason"]
+            if "role" in delta_data:
+                role = delta_data["role"]
+                # print(f"Role: {role}", end="", flush=True)
+            if "content" in delta_data:
+                delta_content = delta_data["content"]
+                print(colored(delta_content, content_color), end="", flush=True)
+                whole_content += delta_content
+            if finish_reason == "stop":
+                print()
+                break
+    whole_content = cleanse_chat_content(whole_content)
+    return whole_content
 
 
 class ChimeraAgent:
@@ -20,10 +55,12 @@ class ChimeraAgent:
     def __init__(
         self,
         name,  # name of the agent, also use "role" as alias
-        model="gpt-3.5-turbo-16k",
+        model="gpt-3.5-turbo-openai",
         temperature=0,
         system_message=None,
     ):
+        # Available models:
+        # ['gpt-4', 'gpt-4-32k', 'gpt-4-0613', 'gpt-3.5-turbo', 'gpt-3.5-turbo-openai', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-openai','gpt-4-poe', 'gpt-3.5-turbo-poe', 'sage','claude-instant', 'claude+', 'claude-instant-100k', 'chat-bison-001']
         self.name = name
         self.chat_api = f"{self.api}/v1/chat/completions"
         self.requests_headers = {
@@ -182,19 +219,22 @@ class ChimeraAgent:
             for chunk in response.iter_lines():
                 chunk_str = chunk.decode("utf-8")
                 if chunk_str:
-                    print(chunk_str, flush=True)
-                # chunk_data = json.loads(chunk)
-                # # print(chunk_data)
-                # delta_data = chunk_data["choices"][0]["delta"]
-                # finish_reason = chunk_data["choices"][0]["finish_reason"]
-                # if "role" in delta_data:
-                #     role = delta_data["role"]
-                #     print(f"Role: {role}", end="", flush=True)
-                # if "content" in delta_data:
-                #     delta_content = delta_data["content"]
-                #     print(delta_content)
-                # if finish_reason == "stop":
-                #     break
+                    # print(chunk_str, flush=True)
+                    chunk_str = re.sub(r"^\s*data:\s*", "", chunk_str)
+                    if chunk_str.lower() == "[DONE]":
+                        break
+
+                    chunk_data = json.loads(chunk_str)
+                    delta_data = chunk_data["choices"][0]["delta"]
+                    finish_reason = chunk_data["choices"][0]["finish_reason"]
+                    if "role" in delta_data:
+                        role = delta_data["role"]
+                        print(f"Role: {role}", end="", flush=True)
+                    if "content" in delta_data:
+                        delta_content = delta_data["content"]
+                        print(colored(delta_content, "cyan"), end="", flush=True)
+                    if finish_reason == "stop":
+                        break
 
     def run(self):
         # self.get_available_models()

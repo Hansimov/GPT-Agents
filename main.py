@@ -83,11 +83,11 @@ def test_sequential_chat():
     chat_message_manager = ChatMessageManager()
     chat_message_manager.add_agents(
         [
-            imaginer_agent,
+            # imaginer_agent,
             questioner_agent,
             answerer_agent,
             criticizer_agent,
-            supporter_agent,
+            # supporter_agent,
             summarizer_agent,
         ]
     )
@@ -107,7 +107,12 @@ if __name__ == "__main__":
     # t2, _ = end_time()
     # elapsed_time(t2 - t1)
 
-    t3, _ = start_time()
-    test_stream_chat(stream=True)
-    t4, _ = end_time()
-    elapsed_time(t4 - t3)
+    # t3, _ = start_time()
+    # test_stream_chat(stream=True)
+    # t4, _ = end_time()
+    # elapsed_time(t4 - t3)
+
+    t5, _ = start_time()
+    test_sequential_chat()
+    t6, _ = end_time()
+    elapsed_time(t6 - t5)

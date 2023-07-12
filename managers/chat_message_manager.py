@@ -1,5 +1,15 @@
 import re
 from termcolor import colored
+from agents.chimera_agent import output_stream_response
+
+
+def cleanse_chat_content(chat_content):
+    return re.sub(
+        r"^\s*\$\$\$\s*\[.*?\]:",
+        "",
+        chat_content,
+        flags=re.MULTILINE,
+    )
 
 
 class ChatMessageManager:
@@ -8,7 +18,7 @@ class ChatMessageManager:
         self.chat_messages = []
         self.agents = []
         if lang == "zh":
-            self.chat_roles_system_message = f"我会向你提供来自不同人的一些对话记录，每个对话以 `{self.chat_seg} [人物]:` 开头。你需要牢记自己的角色和身份，然后基于上下文作出相应的回应。"
+            self.chat_roles_system_message = f"我会向你提供来自不同人的一些对话记录，每个对话以 `{self.chat_seg} [人物]:` 开头。你需要牢记自己的角色和身份，然后基于上下文作出相应的回应。你的回答不需要加上人物开头。"
         else:
             self.chat_roles_system_message = f"I will provide you some chats from different roles, each conversation starts with `{self.chat_seg} [Role]:`. You should keep in mind your own role, then response accordingly based on the context."
         self.term_colors = ["cyan", "green"]
@@ -85,7 +95,7 @@ class ChatMessageManager:
             content_color = color
         print(f"[{colored(role, role_color)}]: {colored(content, content_color)}")
 
-    def sequential_chat(self, init_content=None, rounds=1):
+    def sequential_chat(self, init_content=None, rounds=1, stream_chat=True):
         if init_content:
             init_message = self.content_to_message("user", init_content)
             self.color_print_message(init_message, color="yellow")
@@ -106,17 +116,23 @@ class ChatMessageManager:
                     end="",
                     flush=True,
                 )
-                response_data = agent.chat(current_request_messages)
-                current_role_chat_content = re.sub(
-                    r"^\s*\$\$\$\s*\[.*?\]:\s*",
-                    "",
-                    response_data["choices"][0]["message"]["content"],
-                    flags=re.MULTILINE,
-                )
-                current_role_chat_message = {
-                    "role": agent.name,
-                    "content": current_role_chat_content,
-                }
-                print(f"{colored(current_role_chat_content, self.term_color)}")
-                # self.color_print_message(current_role_chat_message)
+
+                response = agent.chat(current_request_messages, stream=stream_chat)
+
+                current_role_chat_message = {"role": agent.name, "content": ""}
+
+                if not stream_chat:
+                    current_role_chat_content = cleanse_chat_content(
+                        response["choices"][0]["message"]["content"]
+                    )
+                    current_role_chat_message["content"] = current_role_chat_content
+                    print(f"{colored(current_role_chat_content, self.term_color)}")
+                    # self.color_print_message(current_role_chat_message)
+                else:
+                    current_role_chat_message["content"] = output_stream_response(
+                        response,
+                        cleanse_chat_content,
+                        content_color=self.term_color,
+                    )
+
                 self.add_to_chat_messages(current_role_chat_message)
