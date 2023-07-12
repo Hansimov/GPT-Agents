@@ -58,6 +58,7 @@ class ChimeraAgent:
         model="gpt-3.5-turbo-16k",
         temperature=0,
         system_message=None,
+        max_input_message_chars=None,
     ):
         self.name = name
         self.chat_api = f"{self.api}/v1/chat/completions"
@@ -68,6 +69,8 @@ class ChimeraAgent:
         self.model = model
         self.temperature = temperature
         self.system_message = system_message
+        self.max_input_message_chars = max_input_message_chars
+        self.calc_max_input_message_chars()
 
     def get_available_models(self):
         """
@@ -93,6 +96,23 @@ class ChimeraAgent:
                 self.available_models.append(item["id"])
         print(self.available_models)
         return self.available_models
+
+    def calc_max_input_message_chars(self):
+        if self.max_input_message_chars is None:
+            max_input_chars_per_model = {
+                16000: [
+                    "gpt-3.5-turbo-16k",
+                    "gpt-3.5-turbo-16k-openai",
+                    "gpt-3.5-turbo-16k-poe",
+                ],
+                32000: ["gpt-4-32k", "gpt-4-32k-poe"],
+                100000: ["claude-2-100k", "claude-instant-100k"],
+            }
+            self.max_input_message_chars = 8000
+            for max_chars, models in max_input_chars_per_model.items():
+                if self.model in models:
+                    self.max_input_message_chars = max_chars
+                    break
 
     def content_to_message(self, role, content):
         return {"role": role, "content": content}

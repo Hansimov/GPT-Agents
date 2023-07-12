@@ -9,11 +9,17 @@ class ChatMessageManager:
         self.chat_messages = []
         self.agents = []
         if lang == "zh":
-            self.chat_roles_system_message = f"我会向你提供来自不同人的一些对话记录，每个对话以 `{self.chat_seg} [人物]:` 开头。你需要牢记自己的角色和身份，然后基于上下文作出相应的回应。你的回答不需要加上人物开头。"
+            self.chat_roles_system_message = f"这些来自不同人的对话记录，每个对话以 `{self.chat_seg} [人物]:` 开头。你需要牢记自己的角色和身份，然后基于上下文作出相应的回应。你的回答不需要加上人物开头。"
         else:
-            self.chat_roles_system_message = f"I will provide you some chats from different roles, each conversation starts with `{self.chat_seg} [Role]:`. You should keep in mind your own role, then response accordingly based on the context."
+            self.chat_roles_system_message = f"These are some chats from different roles, each conversation starts with `{self.chat_seg} [Role]:`. You should keep in mind your own role, then response accordingly based on the context."
         self.term_colors = ["cyan", "green"]
         self.term_index = 0
+
+    def add_agents(self, agents):
+        if type(agents) == list:
+            self.agents.extend(agents)
+        else:
+            self.agents.append(agents)
 
     def cleanse_chat_content(self, chat_content):
         return re.sub(
@@ -26,12 +32,6 @@ class ChatMessageManager:
     def content_to_message(self, role, content):
         return {"role": role, "content": content}
 
-    def add_agents(self, agents):
-        if type(agents) == list:
-            self.agents.extend(agents)
-        else:
-            self.agents.append(agents)
-
     def add_to_chat_messages(self, chat_message):
         if type(chat_message) == list:
             self.chat_messages.extend(chat_message)
@@ -40,26 +40,31 @@ class ChatMessageManager:
         else:
             pass
 
-    def construct_request_messages_from_chat_messages(
-        self,
-        current_role,
-        current_role_system_content,
-    ):
-        request_messages = []
-        current_role_system_message = {
-            "role": "system",
-            "content": current_role_system_content,
-        }
-        chat_roles_system_message = {
-            "role": "system",
-            "content": self.chat_roles_system_message,
-        }
-        request_messages.extend(
-            [
-                current_role_system_message,
-                chat_roles_system_message,
-            ]
+    def cut_input_messages_for_agent(self, agent, input_messages):
+        max_input_message_chars = agent.max_input_message_chars
+        max_input_message_chars -= len(
+            (self.chat_roles_system_message + agent.system_message).encode("utf-8")
         )
+        cutted_input_messages = []
+        for input_message in input_messages[::-1]:
+            content_len = len(input_message["content"].encode("utf-8"))
+            max_input_message_chars -= content_len
+            if max_input_message_chars >= 0:
+                cutted_input_messages.insert(0, input_message)
+            else:
+                break
+
+        dropped_input_messages_num = len(input_messages) - len(cutted_input_messages)
+        if dropped_input_messages_num > 0:
+            print(colored(f"(Dropped {dropped_input_messages_num} messages) ", "red"))
+
+        return cutted_input_messages
+
+    def construct_request_messages_for_agent(self, agent):
+        current_role = agent.name
+        current_role_system_content = agent.system_message
+        request_messages = []
+
         for chat_message in self.chat_messages:
             role = chat_message["role"]
             content = chat_message["content"]
@@ -74,8 +79,24 @@ class ChatMessageManager:
                 request_message = {"role": "user", **suffixed_content}
             request_messages.append(request_message)
 
+        request_messages = self.cut_input_messages_for_agent(agent, request_messages)
+
+        current_role_system_message = {
+            "role": "system",
+            "content": current_role_system_content,
+        }
+        chat_roles_system_message = {
+            "role": "system",
+            "content": self.chat_roles_system_message,
+        }
+        request_messages.extend(
+            [
+                chat_roles_system_message,
+                current_role_system_message,
+            ]
+        )
         # To increase weights of system message
-        request_messages.append(current_role_system_message)
+        # request_messages.append(current_role_system_message)
         return request_messages
 
     def next_term_color(self):
@@ -103,11 +124,8 @@ class ChatMessageManager:
         for i in range(rounds):
             for agent in self.agents:
                 # print(f"chat_messages: {self.chat_messages}")
-                current_request_messages = (
-                    self.construct_request_messages_from_chat_messages(
-                        agent.name,
-                        agent.system_message,
-                    )
+                current_request_messages = self.construct_request_messages_for_agent(
+                    agent
                 )
                 # print(f"current_request_messages: {current_request_messages}")
                 print(
