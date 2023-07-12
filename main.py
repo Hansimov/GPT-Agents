@@ -74,6 +74,7 @@ imaginer_agent = ChimeraAgent(
 statist_agent = ChimeraAgent(
     name="Statist",
     system_message="你的名字叫 `Statist`。你是一个擅长统计的人，请你给出上面每个人各发言了几次，并以该格式输出：```<角色>:<发言次数>```",
+    model="claude-instant-100k",
 )
 
 chat_message_manager = ChatMessageManager()
@@ -85,7 +86,8 @@ chat_message_manager.add_agents(
         criticizer_agent,
         supporter_agent,
         summarizer_agent,
-        statist_agent,
     ]
 )
-chat_message_manager.sequential_chat("我如何才能成为百万富翁？", rounds=2)
+chat_message_manager.sequential_chat(init_content="我如何才能成为百万富翁？", rounds=1)
+chat_message_manager.add_agents(statist_agent)
+chat_message_manager.sequential_chat(rounds=1)

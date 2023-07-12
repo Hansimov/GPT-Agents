@@ -1,4 +1,5 @@
 import requests
+from requests.adapters import HTTPAdapter, Retry
 import os
 from utils import init_os_envs
 
@@ -109,7 +110,12 @@ class ChimeraAgent:
             "temperature": self.temperature,
             "stream": stream,
         }
-        response = requests.post(
+        requests_session = requests.session()
+
+        retires = Retry(total=3, backoff_factor=0.1)
+        requests_session.mount("https://", HTTPAdapter(max_retries=retires))
+
+        response = requests_session.post(
             self.chat_api,
             headers=self.requests_headers,
             json=self.requests_payload,
