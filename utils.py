@@ -6,6 +6,7 @@ import os
 import platform
 import shutil
 import sys
+from termcolor import colored
 
 
 from pathlib import Path
@@ -56,3 +57,36 @@ def init_os_envs(
 
     if cuda_device:
         os.environ["CUDA_VISIBLE_DEVICES"] = str(cuda_device)
+
+
+# Convert time to string
+def time2str(t):
+    datetime_str_format = "%Y-%m-%d %H:%M:%S"
+    if isinstance(t, datetime.datetime):
+        return t.strftime(datetime_str_format)
+    elif isinstance(t, datetime.timedelta):
+        return "{} hr {:02} min {:02} s".format(
+            t.seconds // 3600,
+            (t.seconds // 60) % 60,
+            t.seconds % 60,
+        )
+    else:
+        return str(t)
+
+
+# Record program time
+def start_time():
+    t1 = datetime.datetime.now()
+    print(f"\n=== Start time: [{colored(time2str(t1),'magenta')}] ===")
+    return t1, time2str(t1)
+
+
+def end_time():
+    t2 = datetime.datetime.now()
+    print(f"\n=== End time: [{colored(time2str(t2),'magenta')}] ===")
+    return t2, time2str(t2)
+
+
+def elapsed_time(dt):
+    print(f"\n=== Elapsed time: [{colored(time2str(dt),'green')}] ===")
+    return dt, time2str(dt)
