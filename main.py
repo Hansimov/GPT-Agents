@@ -141,8 +141,8 @@ def test_who_is_spy():
 if __name__ == "__main__":
     with Runtimer():
         # print("Run!")
-        # test_get_available_models()
+        test_get_available_models()
         # test_sequential_chat()
-        test_who_is_spy()
+        # test_who_is_spy()
         # test_stream_chat(stream=False)
         # test_stream_chat(stream=True)

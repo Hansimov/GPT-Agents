@@ -22,9 +22,15 @@ chat_message_manager.sequential_chat("我如何才能成为百万富翁？", rou
 
 ![Agents Sequential Chats](./examples/agents-sequential-chats.png)
 
+
 ## Todos
+
+No longer develop the UI part, as I move it to another repo: [GPT-WebUI](https://github.com/Hansimov/GPT-WebUI).
+
 - [ ] [UI] A group chat UI
   - [ ] multiple styles for different agents and messages
+
+
 - [ ] [CLI] Command line args to specify agents or api
 - [ ] Fork or new chat branch
   - [ ] Chat history replay

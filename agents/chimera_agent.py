@@ -79,10 +79,10 @@ class ChimeraAgent:
 
         ```py
         [
-            'gpt-4', 'gpt-4-32k', 'gpt-4-0613', 'gpt-4-poe', 'gpt-4-32k-poe',
-            'gpt-3.5-turbo', 'gpt-3.5-turbo-poe', 'gpt-3.5-turbo-openai',
-            'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-openai', 'gpt-3.5-turbo-16k-poe',
-            'sage', 'claude-instant', 'claude-2-100k', 'claude-instant-100k', 'chat-bison-001'
+            'gpt-4', 'gpt-4-32k', 'gpt-4-0314', 'gpt-4-poe', 'gpt-4-32k-poe',
+            'gpt-3.5-turbo', 'gpt-3.5-turbo-0301', 'gpt-3.5-turbo-poe',
+            'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-poe',
+            'sage', 'claude-instant', 'claude-instant-100k', 'claude-2-100k', 'chat-bison-001'
         ]
         ```
         """
@@ -182,8 +182,6 @@ class ChimeraAgent:
             }
         }
         ```
-        
-
         """
         self.requests_payload = {
             "model": self.model,
@@ -256,6 +254,6 @@ class ChimeraAgent:
                         break
 
     def run(self):
-        # self.get_available_models()
+        self.get_available_models()
         # self.test_prompt()
         pass
