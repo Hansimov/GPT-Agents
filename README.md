@@ -2,6 +2,10 @@
 
 Multiple GPT Agents to have brainstorms and make decisions
 
+## Architecture
+
+![GPT-Agents Architecture](./examples/gpt-agents.png)
+
 ## Examples
 
 ```py
