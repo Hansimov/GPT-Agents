@@ -15,16 +15,21 @@ class AgentsApp:
         self.register_routes()
 
     def register_routes(self):
-        @self.app.route("/api/chat", methods=["POST"])
-        def chat():
-            message = request.get_json()
-            print(message)
-            response_message = {
-                "status": "ok",
-                "content": "Hi I'm Chimera!",
-            }
-            print(response_message)
-            return jsonify(response_message)
+        self.route_func_dict = {
+            ("/api/chat", "POST"): self.chat,
+        }
+        for route, func in self.route_func_dict.items():
+            self.app.route(route[0], methods=[route[1]])(func)
+
+    def chat(self):
+        message = request.get_json()
+        print(message)
+        response_message = {
+            "status": "ok",
+            "content": "Hi, I'm Chimera!",
+        }
+        print(response_message)
+        return jsonify(response_message)
 
     def run(self):
         self.app.run(host=self.host, port=self.port, debug=True)
