@@ -1,3 +1,6 @@
+import json
+import random
+import time
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -21,15 +24,47 @@ class AgentsApp:
         for route, func in self.route_func_dict.items():
             self.app.route(route[0], methods=[route[1]])(func)
 
+    def stream_response_generator(self, response_message):
+        index = 0
+        for key, value in response_message.items():
+            if key == "content":
+                content_chunks = value.split()
+                for chunk in content_chunks:
+                    delta = {"content": f" {chunk}"}
+                    delta_json = json.dumps(
+                        {"delta": delta, "finish_reason": None, "index": index}
+                    )
+                    index += 1
+                    print(delta_json, flush=True)
+                    time.sleep(random.random() * 0.5)
+                    yield delta_json
+            else:
+                time.sleep(random.random() * 0.5)
+                delta = {key: value}
+                yield json.dumps(
+                    {"delta": delta, "finish_reason": None, "index": index}
+                )
+                index += 1
+        last_message = {
+            "delta": {"content": ""},
+            "finish_reason": "stop",
+            "index": index,
+        }
+        yield json.dumps(last_message)
+
     def chat(self):
         message = request.get_json()
         print(message)
         response_message = {
             "status": "ok",
-            "content": "Hi, I'm Chimera!",
+            "content": f"Hi, I'm Chimera! Reply to: [{message['content']}]",
         }
         print(response_message)
-        return jsonify(response_message)
+        response = Response(
+            self.stream_response_generator(response_message),
+            mimetype="application/json",
+        )
+        return response
 
     def run(self):
         self.app.run(host=self.host, port=self.port, debug=True)
