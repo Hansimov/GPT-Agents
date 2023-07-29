@@ -1,3 +1,4 @@
+import inspect
 import json
 import random
 import time
@@ -6,6 +7,19 @@ from flask_cors import CORS
 from pymongo import MongoClient
 from agents.chimera_agent import ChimeraAgent
 from managers.chat_message_manager import ChatMessageManager
+
+
+def timing(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.perf_counter()
+        result = func(*args, **kwargs)
+        end_time = time.perf_counter()
+        elapsed_time = end_time - start_time
+        caller = inspect.currentframe().f_back.f_code.co_name
+        print(f"Elasped time of {caller}.{func.__name__}: {elapsed_time:.3f} s")
+        return result
+
+    return wrapper
 
 
 class AgentsApp:
@@ -42,8 +56,8 @@ class AgentsApp:
                     time.sleep(random.random() * 0.1)
                     yield delta_json
             else:
-                time.sleep(random.random() * 0.1)
                 delta = {key: value}
+                time.sleep(random.random() * 0.1)
                 yield json.dumps(
                     {"delta": delta, "finish_reason": None, "index": index}
                 ) + "\n"
@@ -55,6 +69,7 @@ class AgentsApp:
         }
         yield json.dumps(last_message) + "\n"
 
+    @timing
     def chat(self):
         message = request.get_json()
         print(message)
