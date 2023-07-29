@@ -31,39 +31,39 @@ class AgentsApp:
                 content_chunks = value.split()
                 for chunk in content_chunks:
                     delta = {"content": f" {chunk}"}
-                    delta_json = json.dumps(
-                        {"delta": delta, "finish_reason": None, "index": index}
+                    delta_json = (
+                        json.dumps(
+                            {"delta": delta, "finish_reason": None, "index": index}
+                        )
+                        + "\n"
                     )
                     index += 1
                     print(delta_json, flush=True)
-                    time.sleep(random.random() * 0.5)
+                    time.sleep(random.random() * 0.1)
                     yield delta_json
             else:
-                time.sleep(random.random() * 0.5)
+                time.sleep(random.random() * 0.1)
                 delta = {key: value}
                 yield json.dumps(
                     {"delta": delta, "finish_reason": None, "index": index}
-                )
+                ) + "\n"
                 index += 1
         last_message = {
             "delta": {"content": ""},
             "finish_reason": "stop",
             "index": index,
         }
-        yield json.dumps(last_message)
+        yield json.dumps(last_message) + "\n"
 
     def chat(self):
         message = request.get_json()
         print(message)
         response_message = {
             "status": "ok",
-            "content": f"Hi, I'm Chimera! Reply to: [{message['content']}]",
+            "content": f"Hi, I'm Chimera Agent! Reply to: [{message['content']}]",
         }
         print(response_message)
-        response = Response(
-            self.stream_response_generator(response_message),
-            mimetype="application/json",
-        )
+        response = Response(self.stream_response_generator(response_message))
         return response
 
     def run(self):
