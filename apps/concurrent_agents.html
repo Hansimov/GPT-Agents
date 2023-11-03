@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Concurrent Agents</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-group">
+        <label for="userInput">User Input:</label>
+        <input type="text" class="form-control" id="userInput" />
+      </div>
+      <button id="send-user-input-btn" class="btn btn-primary">Send</button>
+      <button id="stop-chat-btn" class="btn btn-danger">Stop</button>
+      <button id="regenerate-and-append-btn" class="btn btn-info">
+        Regenerate and Append
+      </button>
+      <script src="./js/submit_user_input.js"></script>
+      <div id="response" class="mt-3"></div>
+    </div>
+  </body>
+</html>
