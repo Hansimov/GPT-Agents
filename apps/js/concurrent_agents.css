@@ -9,3 +9,7 @@
     align-items: center;
     justify-content: center;
 }
+.available-model-item:hover {
+    background-color: #dbedff;
+    cursor: pointer;
+}
