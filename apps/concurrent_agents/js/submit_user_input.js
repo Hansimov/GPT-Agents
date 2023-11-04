@@ -86,7 +86,6 @@ function register_user_input_callbacks() {
 
     var url =
         "https://corsproxy.io/?https://magic-api.ninomae.live/v1/chat/completions";
-
     var request_options = {
         method: "POST",
         headers: {
@@ -134,18 +133,16 @@ function register_user_input_callbacks() {
 
 function parse_stream_data_to_json_list(data) {
     var json_list = [];
-    data = data.replace(/^data:\s*/gm, "");
-
     // iterate line by line, and convert each non-pure-whitespace line to json
-    data = data.split("\n");
-    data = data.filter(function (line) {
-        return line.trim().length > 0;
-    });
-    data = data.map(function (line) {
-        line = line.trim();
-        // return JSON.parse(line);
-        json_list.push(JSON.parse(line));
-    });
+    data = data
+        .replace(/^data:\s*/gm, "")
+        .split("\n")
+        .filter(function (line) {
+            return line.trim().length > 0;
+        })
+        .map(function (line) {
+            json_list.push(JSON.parse(line.trim()));
+        });
 
     // append the content to the text of the chats container
     var chats_container = $("#chats-container");
