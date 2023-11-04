@@ -1,6 +1,7 @@
 var current_model;
 var user_input_history = [];
 var user_input_history_idx = 0;
+var chat_models = [];
 
 $("#user-input").on("enter", function () {
     console.log("enter");
@@ -30,12 +31,24 @@ function load_available_models() {
                     return a.id.localeCompare(b.id);
                 })
                 .forEach(function (item) {
+                    let model_id = item.id;
                     var col = $("<span>")
                         .addClass("available-model-item border p-1 m-0")
                         .append($("<span>").text(item.id));
                     col.click(function () {
-                        current_model.text(item.id);
+                        if (chat_models.includes(item.id)) {
+                            chat_models = chat_models.filter(function (value, index, arr) {
+                                return value !== item.id;
+                            });
+                            $(this).css("background-color", "");
+                        }
+                        else {
+                            chat_models.push(item.id);
+                            $(this).css("background-color", "#d4edda");
+                        }
+                        current_model.text(chat_models);
                     });
+                    col.attr("id", model_id);
                     row.append(col);
                 });
             available_models.html(row);
