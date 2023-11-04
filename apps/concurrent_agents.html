@@ -21,22 +21,23 @@
   <body>
     <div class="container">
       <div id="available-models" class="mt-3">Loading available models ...</div>
-      <div id="response" class="mt-3"></div>
+      <div id="conversation-container" class="mt-3"></div>
       <div class="fixed-bottom">
-        <div id="current-model">Chat with:</div>
-        <div class="form-group">
-          <textarea
-            id="user-input"
-            rows="1"
-            type="text"
-            class="form-control"
-          ></textarea>
+        <div id="chat-with">Chat with: [<span id="current-model"></span>]</div>
+        <div class="form-group mt-3">
+          <textarea id="user-input" rows="1" class="form-control"></textarea>
         </div>
-        <button id="send-user-input" class="btn btn-primary">Send</button>
-        <button id="stop-chat" class="btn btn-danger">Stop</button>
-        <button id="regenerate-and-append-btn" class="btn btn-info">
-          Regenerate and Append
-        </button>
+        <div class="mt-3">
+          <button id="send-user-input" class="btn btn-primary">Send</button>
+          <button id="stop-chat" class="btn btn-danger">Stop</button>
+          <button id="prev-user-input" class="btn btn-dark">
+            <span class="fa fa-arrow-left"></span>
+            Prev Input
+          </button>
+          <button id="next-user-input" class="btn btn-dark">
+            Next Input <span class="fa fa-arrow-right"></span>
+          </button>
+        </div>
         <script src="./js/submit_user_input.js"></script>
       </div>
     </div>
