@@ -1,28 +1,28 @@
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 10px;
 }
 
 .available-model-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .available-model-item:hover {
-    background-color: #dbedff;
-    cursor: pointer;
+  background-color: #dbedff;
+  cursor: pointer;
 }
 
 .fixed-bottom {
-    position: fixed; 
-    right: 0; 
-    bottom: 0; 
-    left: 0;
-    padding: 1rem;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
 }
 
 #user-input {
-    resize: none;
-    max-height: 500px;
+  resize: none;
+  max-height: 500px;
 }
