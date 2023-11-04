@@ -2,20 +2,23 @@ var source;
 
 $("#send-user-input-btn").click(function () {
     var userInput = $("#userInput").val();
-    // source = new EventSource("https://your-api-endpoint" + userInput);
+    var url = "https://ifconfig.me/ip";
 
-    // source.onmessage = function (event) {
-    //   $("#response").append("<p>" + event.data + "</p>");
-    // };
+    send_user_input_btn = $(this);
+
     $(this).attr("disabled", true);
-    $("#response").html("<p>" + userInput + "</p>");
-    setTimeout(() => {
-        $(this).attr("disabled", false);
-        $(this).removeClass("btn-primary").addClass("btn-success");
-    }, 1000);
-    $(this).text("Regenerate");
-});
+    $(this).removeClass("btn-success").addClass("btn-light");
 
-$("#stop").click(function () {
-    source.close();
+    axios.get(url)
+        .then(function (response) {
+            console.log(response.data);
+            $("#response").html("<p>" + response.data + "</p>");
+            send_user_input_btn.text("Regenerate");
+            send_user_input_btn.removeClass("btn-light").addClass("btn-success");
+            send_user_input_btn.attr("disabled", false);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
 });
