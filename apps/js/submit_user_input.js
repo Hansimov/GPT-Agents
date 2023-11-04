@@ -34,6 +34,16 @@ function load_available_models() {
         });
 }
 
+
+function auto_resize_user_input() {
+    // https://stackoverflow.com/questions/37629860/automatically-resizing-textarea-in-bootstrap
+    document.getElementById("user-input").addEventListener('input', function () {
+        this.style.height = 0;
+        this.style.height = this.scrollHeight + 3 + 'px';
+    }, false);
+}
+
 $(document).ready(function () {
     load_available_models();
+    auto_resize_user_input();
 });

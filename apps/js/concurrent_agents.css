@@ -13,3 +13,16 @@
     background-color: #dbedff;
     cursor: pointer;
 }
+
+.fixed-bottom {
+    position: fixed; 
+    right: 0; 
+    bottom: 0; 
+    left: 0;
+    padding: 1rem;
+}
+
+#user-input {
+    resize: none;
+    max-height: 500px;
+}
