@@ -98,55 +98,75 @@ function register_user_input_callbacks() {
             messages: [
                 {
                     role: "user",
-                    content: "Say hello to me.",
+                    content:
+                        "DO NOT SAY ANY OTHER THING. JUST REPEAT ONE WORD: 'hello'.",
                 },
             ],
             temperature: 0,
             stream: true,
         }),
     };
+    const decoder = new TextDecoder("utf-8");
     fetch(url, request_options)
         .then((response) => response.body)
         .then((rb) => {
             const reader = rb.getReader();
 
-            return new ReadableStream({
-                start(controller) {
-                    function push() {
-                        reader.read().then(({ done, value }) => {
-                            if (done) {
-                                controller.close();
-                                return;
-                            }
-                            controller.enqueue(value);
-                            push();
-                        });
-                    }
-                    push();
-                },
-            });
-        })
-        .then((stream) => {
-            const reader = stream.getReader();
-            const decoder = new TextDecoder("utf-8");
-            var data = "";
             return reader.read().then(function process({ done, value }) {
                 if (done) {
-                    return data;
+                    return;
                 }
 
-                data = decoder.decode(value);
-                data = data.replace(/^data:\s*/, "");
-                data = JSON.stringify(data);
-                // console.log(data);
-                console.log(JSON.parse(data));
+                let data = decoder.decode(value, { stream: true });
+
+                parse_stream_data_to_json_list(data);
+
+                // console.log(JSON.parse(data));
+
                 return reader.read().then(process);
             });
-    });
-
+        })
+        .catch((error) => console.error("Error:", error));
     // event.preventDefault();
     //     }
     // });
+}
+
+function parse_stream_data_to_json_list(data) {
+    var json_list = [];
+    data = data.replace(/^data:\s*/gm, "");
+
+    // iterate line by line, and convert each non-pure-whitespace line to json
+    data = data.split("\n");
+    data = data.filter(function (line) {
+        return line.trim().length > 0;
+    });
+    data = data.map(function (line) {
+        line = line.trim();
+        // return JSON.parse(line);
+        json_list.push(JSON.parse(line));
+    });
+
+    // append the content to the text of the chats container
+    var chats_container = $("#chats-container");
+    json_list.forEach(function (item) {
+        // chats_container.text = chats_container.text + item.choices[0].content;
+        var choice = item.choices[0];
+        var content = choice.delta.content;
+        var role = choice.delta.role;
+        var finish_reason = choice.finish_reason;
+        if (role) {
+            console.log("role: " + role);
+        }
+        if (content) {
+            console.log(content);
+        }
+        if (finish_reason === "stop") {
+            console.log("[STOP]");
+        }
+        chats_container.append(content);
+    });
+    return json_list;
 }
 
 function register_user_input_history_buttons_callbacks() {
