@@ -37,12 +37,15 @@ function load_available_models() {
                         .append($("<span>").text(item.id));
                     col.click(function () {
                         if (chat_models.includes(item.id)) {
-                            chat_models = chat_models.filter(function (value, index, arr) {
+                            chat_models = chat_models.filter(function (
+                                value,
+                                index,
+                                arr
+                            ) {
                                 return value !== item.id;
                             });
                             $(this).css("background-color", "");
-                        }
-                        else {
+                        } else {
                             chat_models.push(item.id);
                             $(this).css("background-color", "#d4edda");
                         }
@@ -71,17 +74,79 @@ function auto_resize_user_input() {
 }
 
 function register_user_input_callbacks() {
-    $("#user-input").on("keypress", function (event) {
-        if (event.key === "Enter" && !event.shiftKey) {
-            let current_user_input = $(this).val();
-            user_input_history.push(current_user_input);
-            $(this).val("");
-            user_input_history_idx = user_input_history.length;
-            set_user_input_history_buttons_state();
-            console.log(user_input_history);
-            event.preventDefault();
-        }
+    // $("#user-input").on("keypress", function (event) {
+    // if (event.key === "Enter" && !event.shiftKey) {
+
+    // let current_user_input = $(this).val();
+    // user_input_history.push(current_user_input);
+    // $(this).val("");
+    // user_input_history_idx = user_input_history.length;
+    // set_user_input_history_buttons_state();
+    // console.log(user_input_history);
+
+    var url =
+        "https://corsproxy.io/?https://magic-api.ninomae.live/v1/chat/completions";
+
+    var request_options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${openai_api_key}`,
+        },
+        body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [
+                {
+                    role: "user",
+                    content: "Say hello to me.",
+                },
+            ],
+            temperature: 0,
+            stream: true,
+        }),
+    };
+    fetch(url, request_options)
+        .then((response) => response.body)
+        .then((rb) => {
+            const reader = rb.getReader();
+
+            return new ReadableStream({
+                start(controller) {
+                    function push() {
+                        reader.read().then(({ done, value }) => {
+                            if (done) {
+                                controller.close();
+                                return;
+                            }
+                            controller.enqueue(value);
+                            push();
+                        });
+                    }
+                    push();
+                },
+            });
+        })
+        .then((stream) => {
+            const reader = stream.getReader();
+            const decoder = new TextDecoder("utf-8");
+            var data = "";
+            return reader.read().then(function process({ done, value }) {
+                if (done) {
+                    return data;
+                }
+
+                data = decoder.decode(value);
+                data = data.replace(/^data:\s*/, "");
+                data = JSON.stringify(data);
+                // console.log(data);
+                console.log(JSON.parse(data));
+                return reader.read().then(process);
+            });
     });
+
+    // event.preventDefault();
+    //     }
+    // });
 }
 
 function register_user_input_history_buttons_callbacks() {
@@ -116,8 +181,7 @@ function set_user_input_history_buttons_state() {
     }
     if (user_input_history_idx >= user_input_history.length - 1) {
         next_user_input.attr("disabled", true);
-    }
-    else {
+    } else {
         next_user_input.attr("disabled", false);
     }
 
@@ -129,7 +193,7 @@ function set_user_input_history_buttons_state() {
 }
 
 $(document).ready(function () {
-    load_available_models();
+    // load_available_models();
     auto_resize_user_input();
     register_user_input_callbacks();
     register_user_input_history_buttons_callbacks();
