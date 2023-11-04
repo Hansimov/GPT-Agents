@@ -1,3 +1,4 @@
+import { request_llm } from "./llm_requester.js";
 var current_model;
 var user_input_history = [];
 var user_input_history_idx = 0;
@@ -84,86 +85,10 @@ function register_user_input_callbacks() {
     // set_user_input_history_buttons_state();
     // console.log(user_input_history);
 
-    var url =
-        "https://corsproxy.io/?https://magic-api.ninomae.live/v1/chat/completions";
-    var request_options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${openai_api_key}`,
-        },
-        body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [
-                {
-                    role: "user",
-                    content:
-                        "DO NOT SAY ANY OTHER THING. JUST REPEAT ONE WORD: 'hello'.",
-                },
-            ],
-            temperature: 0,
-            stream: true,
-        }),
-    };
-    const decoder = new TextDecoder("utf-8");
-    fetch(url, request_options)
-        .then((response) => response.body)
-        .then((rb) => {
-            const reader = rb.getReader();
-
-            return reader.read().then(function process({ done, value }) {
-                if (done) {
-                    return;
-                }
-
-                let data = decoder.decode(value, { stream: true });
-
-                parse_stream_data_to_json_list(data);
-
-                // console.log(JSON.parse(data));
-
-                return reader.read().then(process);
-            });
-        })
-        .catch((error) => console.error("Error:", error));
+    request_llm();
     // event.preventDefault();
     //     }
     // });
-}
-
-function parse_stream_data_to_json_list(data) {
-    var json_list = [];
-    // iterate line by line, and convert each non-pure-whitespace line to json
-    data = data
-        .replace(/^data:\s*/gm, "")
-        .split("\n")
-        .filter(function (line) {
-            return line.trim().length > 0;
-        })
-        .map(function (line) {
-            json_list.push(JSON.parse(line.trim()));
-        });
-
-    // append the content to the text of the chats container
-    var chats_container = $("#chats-container");
-    json_list.forEach(function (item) {
-        // chats_container.text = chats_container.text + item.choices[0].content;
-        var choice = item.choices[0];
-        var content = choice.delta.content;
-        var role = choice.delta.role;
-        var finish_reason = choice.finish_reason;
-        if (role) {
-            console.log("role: " + role);
-        }
-        if (content) {
-            console.log(content);
-        }
-        if (finish_reason === "stop") {
-            console.log("[STOP]");
-        }
-        chats_container.append(content);
-    });
-    return json_list;
 }
 
 function register_user_input_history_buttons_callbacks() {
