@@ -29,3 +29,7 @@
     color: blue;
     border: lightgray 1px solid;
 }
+
+#available-models-select {
+    max-width: 180px;
+}
