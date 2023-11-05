@@ -115,8 +115,8 @@ function register_user_input_history_buttons_callbacks() {
 }
 
 function set_user_input_history_buttons_state() {
-    prev_user_input = $("#prev-user-input");
-    next_user_input = $("#next-user-input");
+    let prev_user_input = $("#prev-user-input");
+    let next_user_input = $("#next-user-input");
     if (user_input_history.length === 0) {
         prev_user_input.attr("disabled", true);
         next_user_input.attr("disabled", true);
