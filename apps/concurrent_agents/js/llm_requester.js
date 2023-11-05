@@ -37,7 +37,7 @@ export class ChatCompletionsRequester {
         this.temperature = temperature;
         this.messages = messages;
         this.endpoint = endpoint;
-
+        this.controller = new AbortController();
         this.construct_request_params();
     }
     construct_request_messages() {
@@ -75,6 +75,7 @@ export class ChatCompletionsRequester {
             method: "POST",
             headers: this.request_headers,
             body: JSON.stringify(this.request_body),
+            signal: this.controller.signal,
         };
     }
     post() {
@@ -96,6 +97,9 @@ export class ChatCompletionsRequester {
                 });
             })
             .catch((error) => console.error("Error:", error));
+    }
+    stop() {
+        this.controller.abort();
     }
 }
 

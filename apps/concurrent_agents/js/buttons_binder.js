@@ -1,7 +1,9 @@
 import { ChatCompletionsRequester } from "./llm_requester.js";
 
 export class ButtonsBinder {
-    constructor() {}
+    constructor() {
+        this.requester = null;
+    }
     bind_send_user_input() {
         const button = $("#send-user-input");
         button.click(async () => {
@@ -11,8 +13,7 @@ export class ButtonsBinder {
                 button
                     .text("Stop")
                     .removeClass("btn-primary btn-success")
-                    .addClass("btn-warning")
-                    .attr("disabled", true);
+                    .addClass("btn-warning");
                 await this.post_user_input();
                 button
                     .text("Regenerate")
@@ -21,6 +22,7 @@ export class ButtonsBinder {
                     .attr("disabled", false);
             } else if (status === "Stop") {
                 console.log("Stop");
+                this.requester.stop();
                 button
                     .attr("disabled", true)
                     .removeClass("btn-warning")
@@ -36,8 +38,8 @@ export class ButtonsBinder {
     async post_user_input() {
         let user_input = $("#user-input").val();
         console.log(user_input);
-        let requester = new ChatCompletionsRequester(user_input);
-        await requester.post();
+        this.requester = new ChatCompletionsRequester(user_input);
+        await this.requester.post();
     }
     bind() {
         this.bind_send_user_input();
