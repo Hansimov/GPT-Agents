@@ -26,3 +26,14 @@
     resize: none;
     max-height: 500px;
 }
+
+.chat-user {
+    color: black;
+    border: lightgray 1px solid;
+    background-color: #eafaf1;
+}
+
+.chat-assistant {
+    color: blue;
+    border: lightgray 1px solid;
+}

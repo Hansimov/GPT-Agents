@@ -3,7 +3,7 @@ import {
     stringify_stream_bytes,
 } from "./stream_jsonizer.js";
 import { openai_api_key } from "./secrets.js";
-import { chat_renderer } from "./chat_renderer.js";
+import { update_chat, create_chat_block } from "./chat_renderer.js";
 export function request_llm() {
     var url =
         "https://corsproxy.io/?https://magic-api.ninomae.live/v1/chat/completions";
@@ -14,7 +14,7 @@ export function request_llm() {
             Authorization: `Bearer ${openai_api_key}`,
         },
         body: JSON.stringify({
-            model: "bingo-precise",
+            model: "gpt-3.5-turbo",
             messages: [
                 {
                     role: "user",
@@ -27,6 +27,8 @@ export function request_llm() {
             stream: true,
         }),
     };
+    create_chat_block("user", "who are you?");
+    create_chat_block("assistant");
 
     fetch(url, request_options)
         .then((response) => response.body)
@@ -39,7 +41,7 @@ export function request_llm() {
                 let json_chunks = jsonize_stream_data(
                     stringify_stream_bytes(value)
                 );
-                chat_renderer(json_chunks);
+                update_chat(json_chunks);
                 return reader.read().then(process);
             });
         })
