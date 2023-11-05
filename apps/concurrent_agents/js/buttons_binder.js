@@ -1,6 +1,6 @@
 import { ChatCompletionsRequester } from "./llm_requester.js";
-function bind_send_user_input() {
-    $("#send-user-input").click(function () {
+async function bind_send_user_input() {
+    $("#send-user-input").click(async function () {
         let status = $(this).text().trim();
         if (status === "Send" || status === "Regenerate") {
             console.log("Send");
@@ -10,9 +10,9 @@ function bind_send_user_input() {
                 .removeClass("btn-success")
                 .addClass("btn-warning")
                 .attr("disabled", true);
-            post_user_input();
+            await post_user_input();
             $(this)
-                .text(status)
+                .text("Regenerate")
                 .removeClass("btn-warning")
                 .addClass("btn-success")
                 .attr("disabled", false);
