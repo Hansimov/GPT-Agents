@@ -1,8 +1,6 @@
-import { request_llm } from "./llm_requester.js";
-var current_model;
+import { setup_available_models_on_select } from "./llm_models_loader.js";
 var user_input_history = [];
 var user_input_history_idx = 0;
-var chat_models = [];
 
 $("#user-input").on("enter", function () {
     console.log("enter");
@@ -17,50 +15,6 @@ $("#send-user-input").click(function () {
         .addClass("btn-success")
         .attr("disabled", false);
 });
-
-function load_available_models() {
-    var url = "https://magic-api.ninomae.live/v1/models";
-    available_models = $("#available-models");
-    current_model = $("#current-model");
-    axios
-        .get(url)
-        .then(function (response) {
-            console.log(response.data);
-            var row = $("<div>").addClass("grid");
-            response.data.data
-                .sort(function (a, b) {
-                    return a.id.localeCompare(b.id);
-                })
-                .forEach(function (item) {
-                    let model_id = item.id;
-                    var col = $("<span>")
-                        .addClass("available-model-item border p-1 m-0")
-                        .append($("<span>").text(item.id));
-                    col.click(function () {
-                        if (chat_models.includes(item.id)) {
-                            chat_models = chat_models.filter(function (
-                                value,
-                                index,
-                                arr
-                            ) {
-                                return value !== item.id;
-                            });
-                            $(this).css("background-color", "");
-                        } else {
-                            chat_models.push(item.id);
-                            $(this).css("background-color", "#d4edda");
-                        }
-                        current_model.text(chat_models);
-                    });
-                    col.attr("id", model_id);
-                    row.append(col);
-                });
-            available_models.html(row);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-}
 
 function auto_resize_user_input() {
     // https://stackoverflow.com/questions/37629860/automatically-resizing-textarea-in-bootstrap
@@ -77,15 +31,16 @@ function auto_resize_user_input() {
 function register_user_input_callbacks() {
     // $("#user-input").on("keypress", function (event) {
     // if (event.key === "Enter" && !event.shiftKey) {
-
     // let current_user_input = $(this).val();
     // user_input_history.push(current_user_input);
     // $(this).val("");
     // user_input_history_idx = user_input_history.length;
     // set_user_input_history_buttons_state();
     // console.log(user_input_history);
+    // request_llm();
+    setup_available_models_on_select();
 
-    request_llm();
+    // request_available_models();
     // event.preventDefault();
     //     }
     // });

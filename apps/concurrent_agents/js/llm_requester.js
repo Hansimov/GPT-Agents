@@ -4,7 +4,8 @@ import {
 } from "./stream_jsonizer.js";
 import { openai_api_key } from "./secrets.js";
 import { update_chat, create_chat_block } from "./chat_renderer.js";
-export function request_llm() {
+
+export function request_chat_completion() {
     var url =
         "https://corsproxy.io/?https://magic-api.ninomae.live/v1/chat/completions";
     var request_options = {
@@ -14,7 +15,7 @@ export function request_llm() {
             Authorization: `Bearer ${openai_api_key}`,
         },
         body: JSON.stringify({
-            model: "gpt-3.5-turbo",
+            model: "poe-gpt-3.5-turbo",
             messages: [
                 {
                     role: "user",
@@ -46,4 +47,24 @@ export function request_llm() {
             });
         })
         .catch((error) => console.error("Error:", error));
+}
+
+export var available_models = [];
+export function request_available_models() {
+    var url = "https://magic-api.ninomae.live/v1/models";
+    let request_options = {
+        method: "GET",
+    };
+    return fetch(url, request_options)
+        .then((response) => response.json())
+        .then((response_json) => {
+            response_json.data.forEach((item) => {
+                available_models.push(item.id);
+            });
+            available_models.sort();
+            console.log(available_models);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 }
