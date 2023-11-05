@@ -1,19 +1,10 @@
 import { setup_available_models_on_select } from "./llm_models_loader.js";
+import { bind_buttons } from "./buttons_binder.js";
 var user_input_history = [];
 var user_input_history_idx = 0;
 
 $("#user-input").on("enter", function () {
     console.log("enter");
-});
-
-$("#send-user-input").click(function () {
-    $(this).attr("disabled", true);
-    $(this).removeClass("btn-success").addClass("btn-light");
-    $(this)
-        .text("Regenerate")
-        .removeClass("btn-light")
-        .addClass("btn-success")
-        .attr("disabled", false);
 });
 
 function auto_resize_user_input() {
@@ -39,6 +30,7 @@ function register_user_input_callbacks() {
     // console.log(user_input_history);
     // request_llm();
     setup_available_models_on_select();
+    bind_buttons();
 
     // request_available_models();
     // event.preventDefault();

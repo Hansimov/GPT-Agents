@@ -1,13 +1,15 @@
 import { request_available_models, available_models } from "./llm_requester.js";
 
-export async function setup_available_models_on_select() {
+export async function setup_available_models_on_select(default_option = null) {
     var select = $("#available-models-select");
     select.empty();
     await request_available_models();
-    var default_option = "gpt-3.5-turbo";
+    if (default_option === null) {
+        default_option = "gpt-4";
+    }
 
-    $.each(available_models, function (index, value) {
-        var option = new Option(value, index);
+    available_models.forEach((value, index) => {
+        const option = new Option(value, index);
         select.append(option);
         if (value === default_option) {
             $(option).prop("selected", true);
