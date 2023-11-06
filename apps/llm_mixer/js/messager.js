@@ -1,4 +1,36 @@
-import { get_request_messages } from "./chat_operator.js";
+export class MessagerViewer {
+    constructor(message) {
+        this.message = message;
+        this.create_elements();
+    }
+    create_elements() {
+        this.container = $("<div>").addClass("row no-gutters message-viewer");
+        this.role_displayer = $("<div>").addClass("col-auto role-displayer");
+        if (this.message.role === "user") {
+            this.role_displayer.append("You");
+        } else {
+            this.role_displayer.append(this.message.model);
+        }
+        this.role_displayer.append(this.message.model);
+        this.content_displayer = $("<div>")
+            .addClass(
+                `col mb-2 p-2 content-displayer chat-${this.message.role}`
+            )
+            .append(this.message.content);
+        this.button = $("<button>").addClass(
+            "col-auto btn btn-primary regenerate-button"
+        );
+        if (this.message.role === "user") {
+            this.button.append("Edit");
+        } else {
+            this.button.append("Regenerate");
+        }
+        this.container
+            .append(this.role_displayer)
+            .append(this.content_displayer)
+            .append(this.button);
+    }
+}
 
 export class Messager {
     constructor(message) {
@@ -13,8 +45,8 @@ export class Messager {
         };
     }
     create_viewer() {
-        this.viewer = $("<div>").addClass(`chat-${this.message.role} mb-2 p-2`);
-        this.viewer.append(this.message.content);
+        let messager_viewer = new MessagerViewer(this.message);
+        this.viewer = messager_viewer.container;
     }
 }
 

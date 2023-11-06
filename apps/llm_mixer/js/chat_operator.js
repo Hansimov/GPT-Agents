@@ -25,8 +25,11 @@ export function get_selected_llm_model() {
     return available_models_select.val();
 }
 
-export function get_latest_message_viewer() {
-    return messagers_container.children().last();
+export function get_latest_message_content_displayer() {
+    return messager_list.messagers_container
+        .children()
+        .last()
+        .find(".content-displayer");
 }
 export function get_request_messages() {
     return messager_list.get_request_messages();
@@ -36,9 +39,9 @@ export function pop_messager(n = 2) {
     return messager_list.pop(n);
 }
 
-export function update_message(json_chunks, message_viewer = null) {
-    if (message_viewer === null) {
-        message_viewer = get_latest_message_viewer();
+export function update_message(json_chunks, content_displayer = null) {
+    if (content_displayer === null) {
+        content_displayer = get_latest_message_content_displayer();
     }
     json_chunks.forEach(function (item) {
         let choice = item.choices[0];
@@ -55,7 +58,7 @@ export function update_message(json_chunks, message_viewer = null) {
             console.log("[STOP]");
         }
         console.log(item);
-        message_viewer.append(content);
+        content_displayer.append(content);
     });
     return json_chunks;
 }
