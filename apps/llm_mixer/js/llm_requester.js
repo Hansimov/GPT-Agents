@@ -2,7 +2,7 @@ import {
     jsonize_stream_data,
     stringify_stream_bytes,
 } from "./stream_jsonizer.js";
-import { openai_api_key } from "./secrets.js";
+import * as secrets from "./secrets.js";
 import { update_chat, create_chat_block } from "./chat_renderer.js";
 
 export var chat_sessions = [];
@@ -27,16 +27,19 @@ export class ChatSession {
 export class ChatCompletionsRequester {
     constructor(
         prompt,
-        model = "gpt-3.5-turbo",
+        model = "poe-gpt-3.5-turbo",
         temperature = 0,
         messages = [],
-        endpoint = "https://corsproxy.io/?https://magic-api.ninomae.live/v1/chat/completions"
+        endpoint,
+        cors_proxy
     ) {
         this.prompt = prompt;
         this.model = model;
         this.temperature = temperature;
         this.messages = messages;
-        this.endpoint = endpoint;
+        this.endpoint = endpoint || secrets.openai_endpoint;
+        this.cors_proxy = cors_proxy || secrets.cors_proxy;
+        this.request_endpoint = this.cors_proxy + this.endpoint;
         this.controller = new AbortController();
         this.construct_request_params();
     }
@@ -56,7 +59,7 @@ export class ChatCompletionsRequester {
     construct_request_headers() {
         this.request_headers = {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${openai_api_key}`,
+            Authorization: `Bearer ${secrets.openai_api_key}`,
         };
     }
     construct_request_body() {
@@ -81,7 +84,7 @@ export class ChatCompletionsRequester {
     post() {
         create_chat_block("user", this.prompt);
         create_chat_block("assistant");
-        return fetch(this.endpoint, this.request_params)
+        return fetch(this.request_endpoint, this.request_params)
             .then((response) => response.body)
             .then((rb) => {
                 const reader = rb.getReader();
