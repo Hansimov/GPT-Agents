@@ -32,6 +32,10 @@ export function get_request_messages() {
     return messager_list.get_request_messages();
 }
 
+export function pop_messager(n = 2) {
+    return messager_list.pop(n);
+}
+
 export function update_message(json_chunks, message_viewer = null) {
     if (message_viewer === null) {
         message_viewer = get_latest_message_viewer();
