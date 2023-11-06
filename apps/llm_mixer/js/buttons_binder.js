@@ -51,9 +51,9 @@ export class ButtonsBinder {
         }
     }
     async post_user_input() {
-        let user_input = $("#user-input").val();
-        console.log(user_input);
-        this.requester = new ChatCompletionsRequester(user_input);
+        let user_input_content = $("#user-input").val();
+        console.log(user_input_content);
+        this.requester = new ChatCompletionsRequester(user_input_content);
         await this.requester.post();
     }
     bind() {
