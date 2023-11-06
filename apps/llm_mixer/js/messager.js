@@ -5,18 +5,32 @@ export class MessagerViewer {
     }
     create_elements() {
         this.container = $("<div>").addClass("row no-gutters message-viewer");
-        this.role_displayer = $("<div>").addClass("col-auto role-displayer");
+        this.create_role_displayer();
+        this.create_content_displayer();
+        this.create_button();
+        this.container
+            .append(this.role_displayer)
+            .append(this.content_displayer)
+            .append(this.button);
+    }
+    create_role_displayer() {
+        this.role_displayer = $("<div>")
+            .addClass("col-auto mb-2 p-2")
+            .addClass("role-displayer");
         if (this.message.role === "user") {
             this.role_displayer.append("You");
         } else {
             this.role_displayer.append(this.message.model);
         }
-        this.role_displayer.append(this.message.model);
+    }
+    create_content_displayer() {
         this.content_displayer = $("<div>")
-            .addClass(
-                `col mb-2 p-2 content-displayer chat-${this.message.role}`
-            )
+            .addClass("col mb-2 p-2")
+            .addClass("content-displayer")
+            .addClass(`chat-${this.message.role}`)
             .append(this.message.content);
+    }
+    create_button() {
         this.button = $("<button>").addClass(
             "col-auto btn btn-primary regenerate-button"
         );
@@ -25,10 +39,6 @@ export class MessagerViewer {
         } else {
             this.button.append("Regenerate");
         }
-        this.container
-            .append(this.role_displayer)
-            .append(this.content_displayer)
-            .append(this.button);
     }
 }
 
