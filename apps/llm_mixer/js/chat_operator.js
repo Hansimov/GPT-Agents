@@ -3,6 +3,8 @@ import { Messager, MessagerList } from "./messager.js";
 let messagers_container = $("#messagers-container");
 let messager_list = new MessagerList(messagers_container);
 
+let available_models_select = $("#available-models-select");
+
 export function create_messager(
     role,
     content = "",
@@ -17,6 +19,10 @@ export function create_messager(
     };
     let messager = new Messager(message);
     messager_list.push(messager);
+}
+
+export function get_selected_llm_model() {
+    return available_models_select.val();
 }
 
 export function get_latest_message_viewer() {

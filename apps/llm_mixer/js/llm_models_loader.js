@@ -9,10 +9,11 @@ export async function setup_available_models_on_select(default_option = null) {
     }
 
     available_models.forEach((value, index) => {
-        const option = new Option(value, index);
+        const option = new Option(value, value);
         select.append(option);
         if (value === default_option) {
             $(option).prop("selected", true);
         }
     });
+    console.log(`Default model: ${select.val()}`);
 }

@@ -7,21 +7,20 @@ import {
     update_message,
     create_messager,
     get_request_messages,
+    get_selected_llm_model,
 } from "./chat_operator.js";
 
 export class ChatCompletionsRequester {
     constructor(
         prompt,
-        model = "gpt-3.5-turbo",
-        temperature = 0,
-        messages = [],
-        endpoint,
-        cors_proxy
+        model = null,
+        temperature = null,
+        endpoint = null,
+        cors_proxy = null
     ) {
         this.prompt = prompt;
-        this.model = model;
-        this.temperature = temperature;
-        this.messages = messages;
+        this.model = model || get_selected_llm_model() || "gpt-turbo-3.5";
+        this.temperature = temperature !== null ? temperature : 0;
         this.endpoint = endpoint || secrets.openai_endpoint;
         this.cors_proxy = cors_proxy || secrets.cors_proxy;
         this.request_endpoint = this.cors_proxy + this.endpoint;
