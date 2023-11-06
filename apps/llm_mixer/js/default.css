@@ -14,6 +14,10 @@
     cursor: pointer;
 }
 
+#messagers-container {
+    overflow-y: auto;
+}
+
 #user-input {
     resize: none;
     max-height: 500px;

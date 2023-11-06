@@ -82,9 +82,20 @@ function set_user_input_history_buttons_state() {
     }
 }
 
+function adjust_messagers_container_max_height() {
+    var user_interaction_height = $("#user-interactions").outerHeight(true);
+    var page_height = $(window).height();
+    $("#messagers-container").css(
+        "max-height",
+        page_height - user_interaction_height - 30 + "px"
+    );
+}
+
 $(document).ready(function () {
     // load_available_models();
     auto_resize_user_input();
     register_user_input_callbacks();
     register_user_input_history_buttons_callbacks();
+    adjust_messagers_container_max_height();
+    $(window).on("resize", adjust_messagers_container_max_height);
 });
