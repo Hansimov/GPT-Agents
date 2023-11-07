@@ -17,7 +17,7 @@ export class MessagerViewer {
     }
     create_role_displayer() {
         this.role_displayer = $("<div>")
-            .addClass("col-auto p-2")
+            .addClass("col-2 p-2")
             .addClass("role-displayer");
         if (this.message.role === "user") {
             this.role_displayer.append("You");
@@ -27,14 +27,14 @@ export class MessagerViewer {
     }
     create_content_displayer() {
         this.content_displayer = $("<div>")
-            .addClass("col p-2")
+            .addClass("col-8 p-2")
             .addClass("content-displayer")
             .addClass(`chat-${this.message.role}`)
             .append(this.message.content);
     }
     create_button_group() {
         this.button_group = $("<div>")
-            .addClass("col-auto")
+            .addClass("col-2")
             .addClass("button-group");
 
         this.edit_button = $("<button>")
