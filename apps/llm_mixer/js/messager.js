@@ -4,18 +4,20 @@ export class MessagerViewer {
         this.create_elements();
     }
     create_elements() {
-        this.container = $("<div>").addClass("row no-gutters message-viewer");
+        this.container = $("<div>").addClass(
+            "mt-2 row no-gutters message-viewer"
+        );
         this.create_role_displayer();
         this.create_content_displayer();
-        this.create_button();
+        this.create_button_group();
         this.container
             .append(this.role_displayer)
             .append(this.content_displayer)
-            .append(this.button);
+            .append(this.button_group);
     }
     create_role_displayer() {
         this.role_displayer = $("<div>")
-            .addClass("col-auto mb-2 p-2")
+            .addClass("col-auto p-2")
             .addClass("role-displayer");
         if (this.message.role === "user") {
             this.role_displayer.append("You");
@@ -25,20 +27,29 @@ export class MessagerViewer {
     }
     create_content_displayer() {
         this.content_displayer = $("<div>")
-            .addClass("col mb-2 p-2")
+            .addClass("col p-2")
             .addClass("content-displayer")
             .addClass(`chat-${this.message.role}`)
             .append(this.message.content);
     }
-    create_button() {
-        this.button = $("<button>").addClass(
-            "col-auto btn btn-primary regenerate-button"
-        );
+    create_button_group() {
+        this.button_group = $("<div>")
+            .addClass("col-auto")
+            .addClass("button-group");
+
+        this.button = $("<button>").addClass("btn px-0");
+        let button_icon = $("<i>");
         if (this.message.role === "user") {
-            this.button.append("Edit");
+            button_icon.addClass("fa fa-edit");
+            this.button.attr("title", "Edit");
+            this.button.addClass("edit-button");
         } else {
-            this.button.append("Regenerate");
+            button_icon.addClass("fa fa-rotate fa-spin-fast");
+            this.button.attr("title", "Regenerate");
+            this.button.addClass("regenerate-button");
         }
+        this.button.append(button_icon);
+        this.button_group.append(this.button);
     }
 }
 
