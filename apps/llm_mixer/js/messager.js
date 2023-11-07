@@ -37,19 +37,29 @@ export class MessagerViewer {
             .addClass("col-auto")
             .addClass("button-group");
 
-        this.button = $("<button>").addClass("btn px-0");
-        let button_icon = $("<i>");
+        this.edit_button = $("<button>")
+            .addClass("btn px-2")
+            .addClass("edit-button")
+            .attr("title", "Edit")
+            .append($("<i>").addClass("fa fa-edit"));
+        this.button_group.append(this.edit_button);
+
+        this.copy_button = $("<button>")
+            .addClass("btn px-2")
+            .addClass("copy-button")
+            .attr("title", "Copy")
+            .append($("<i>").addClass("fa fa-copy"));
+        this.button_group.append(this.copy_button);
+
         if (this.message.role === "user") {
-            button_icon.addClass("fa fa-edit");
-            this.button.attr("title", "Edit");
-            this.button.addClass("edit-button");
         } else {
-            button_icon.addClass("fa fa-rotate fa-spin-fast");
-            this.button.attr("title", "Regenerate");
-            this.button.addClass("regenerate-button");
+            this.regenerate_button = $("<button>")
+                .addClass("btn px-2")
+                .addClass("generate-button")
+                .attr("title", "Regenerate")
+                .append($("<i>").addClass("fa fa-rotate fa-spin-fast"));
+            this.button_group.append(this.regenerate_button);
         }
-        this.button.append(button_icon);
-        this.button_group.append(this.button);
     }
 }
 
