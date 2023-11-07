@@ -47,6 +47,8 @@ export class ButtonsBinder {
         let user_input_content = $("#user-input").val();
         console.log(user_input_content);
         this.requester = new ChatCompletionsRequester(user_input_content);
+        this.requester.create_messager_components();
+        start_latest_message_animation();
         await this.requester.post();
     }
 
@@ -58,7 +60,6 @@ export class ButtonsBinder {
             .removeClass()
             .addClass("fa fa-circle-pause fa-fade")
             .css("color", "orange");
-        start_latest_message_animation();
         await this.post_user_input();
         await this.stop(button);
     }

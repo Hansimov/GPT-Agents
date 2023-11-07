@@ -54,9 +54,11 @@ export class ChatCompletionsRequester {
             signal: this.controller.signal,
         };
     }
-    post() {
+    create_messager_components() {
         create_messager("user", this.prompt);
         create_messager("assistant", "", this.model, this.temperature);
+    }
+    post() {
         this.construct_request_params();
         return fetch(this.request_endpoint, this.request_params)
             .then((response) => response.body)
