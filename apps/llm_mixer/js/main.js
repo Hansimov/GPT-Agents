@@ -1,4 +1,7 @@
-import { setup_available_models_on_select } from "./llm_models_loader.js";
+import {
+    setup_available_models_on_select,
+    setup_temperature_on_select,
+} from "./llm_models_loader.js";
 import { ButtonsBinder } from "./buttons_binder.js";
 var user_input_history = [];
 var user_input_history_idx = 0;
@@ -30,6 +33,7 @@ function register_user_input_callbacks() {
     // console.log(user_input_history);
     // request_llm();
     setup_available_models_on_select();
+    setup_temperature_on_select();
     let buttons_binder = new ButtonsBinder();
     buttons_binder.bind();
 

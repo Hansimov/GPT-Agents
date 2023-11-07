@@ -22,34 +22,47 @@
         <div class="container">
             <div id="messagers-container" class="container mt-3"></div>
             <div id="user-interactions" class="container fixed-bottom mb-3">
-                <div class="mt-2">
+                <div class="mt-2 row no-gutters">
                     <div class="col-auto">
                         <select
                             class="form-select"
                             id="available-models-select"
+                            title="Available Models"
+                        ></select>
+                    </div>
+                    <div class="col-auto">
+                        <select
+                            class="form-select"
+                            id="temperature-select"
+                            title="Temperature"
+                        ></select>
+                    </div>
+                    <div class="col-4">
+                        <select
+                            class="form-select"
+                            id="chat-history-select"
+                            title="Chat History"
                         ></select>
                     </div>
                 </div>
-                <div class="mt-2">
-                    <div class="row no-gutters">
-                        <div class="col-auto pl-3 pr-0">
-                            <button id="new-chat-session" class="btn px-0">
-                                <i class="fa fa-circle-plus"></i>
-                            </button>
-                        </div>
-                        <div class="col px-0">
-                            <textarea
-                                id="user-input"
-                                class="form-control"
-                                rows="1"
-                                placeholder="Typing here ..."
-                            ></textarea>
-                        </div>
-                        <div class="col-auto pr-3 pl-0">
-                            <button id="send-user-input" class="btn px-0">
-                                <i class="fa fa-paper-plane"></i>
-                            </button>
-                        </div>
+                <div class="mt-2 row no-gutters">
+                    <div class="col-auto pl-3 pr-0">
+                        <button id="new-chat-session" class="btn px-0">
+                            <i class="fa fa-circle-plus"></i>
+                        </button>
+                    </div>
+                    <div class="col px-0">
+                        <textarea
+                            id="user-input"
+                            class="form-control"
+                            rows="1"
+                            placeholder="Typing here ..."
+                        ></textarea>
+                    </div>
+                    <div class="col-auto pr-3 pl-0">
+                        <button id="send-user-input" class="btn px-0">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="mt-3">

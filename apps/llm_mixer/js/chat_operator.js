@@ -2,8 +2,8 @@ import { Messager, MessagerList } from "./messager.js";
 
 let messagers_container = $("#messagers-container");
 let messager_list = new MessagerList(messagers_container);
-
 let available_models_select = $("#available-models-select");
+let temperature_select = $("#temperature-select");
 
 export function create_messager(
     role,
@@ -23,6 +23,10 @@ export function create_messager(
 
 export function get_selected_llm_model() {
     return available_models_select.val();
+}
+
+export function get_selected_temperature() {
+    return temperature_select.val();
 }
 
 export function get_latest_messager_container() {
