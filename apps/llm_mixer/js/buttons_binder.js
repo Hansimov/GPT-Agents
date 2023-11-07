@@ -7,13 +7,17 @@ export class ButtonsBinder {
     }
     bind_send_user_input() {
         const button = $("#send-user-input");
+        button.attr("status", "send");
         button.click(async () => {
             await this.handle_user_input(button);
         });
 
         $("#user-input").keypress(async (event) => {
-            let status = button.text().trim();
-            if (event.key === "Enter" && !event.shiftKey && status !== "Stop") {
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey &&
+                button.attr("status") === "send"
+            ) {
                 event.preventDefault();
                 await this.send(button);
             }
@@ -24,12 +28,10 @@ export class ButtonsBinder {
         if (user_input_content === "") {
             return;
         }
-        let status = button.text().trim();
-        if (status === "Send") {
+        let status = button.attr("status");
+        if (status === "send") {
             this.send(button);
-        } else if (status === "Regenerate") {
-            this.regenerate(button);
-        } else if (status === "Stop") {
+        } else if (status === "stop") {
             this.stop(button);
             return;
         } else {
@@ -46,40 +48,25 @@ export class ButtonsBinder {
 
     async send(button) {
         console.log("Send");
-        button
-            .text("Stop")
-            .removeClass("btn-primary btn-success")
-            .addClass("btn-warning");
+        let button_icon = button.find("i");
+        button.attr("status", "stop");
+        button_icon
+            .removeClass()
+            .addClass("fa fa-circle-pause fa-fade")
+            .css("color", "orange");
         await this.post_user_input();
-        button
-            .text("Regenerate")
-            .removeClass("btn-warning")
-            .addClass("btn-success")
-            .attr("disabled", false);
-    }
-    async regenerate(button) {
-        console.log("Regenerate");
-        button
-            .text("Stop")
-            .removeClass("btn-primary btn-success")
-            .addClass("btn-warning");
-        pop_messager(2);
-        await this.post_user_input();
-        button
-            .text("Regenerate")
-            .removeClass("btn-warning")
-            .addClass("btn-success")
-            .attr("disabled", false);
+        button.attr("status", "send");
+        button_icon.removeClass().addClass("fa fa-paper-plane");
     }
     async stop(button) {
         console.log("Stop");
+        let button_icon = button.find("i");
         this.requester.stop();
-        button
-            .attr("disabled", true)
-            .removeClass("btn-warning")
-            .addClass("btn-success")
-            .text("Regenerate")
-            .attr("disabled", false);
+        button.attr("status", "send");
+        button_icon
+            .removeClass()
+            .addClass("fa fa-paper-plane")
+            .css("color", "red");
     }
     bind() {
         this.bind_send_user_input();

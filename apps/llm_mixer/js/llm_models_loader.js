@@ -5,7 +5,7 @@ export async function setup_available_models_on_select(default_option = null) {
     select.empty();
     await request_available_models();
     if (default_option === null) {
-        default_option = "gpt-4";
+        default_option = "gpt-3.5-turbo";
     }
 
     available_models.forEach((value, index) => {
