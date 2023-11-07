@@ -25,12 +25,31 @@ export function get_selected_llm_model() {
     return available_models_select.val();
 }
 
-export function get_latest_message_content_displayer() {
-    return messager_list.messagers_container
-        .children()
-        .last()
-        .find(".content-displayer");
+export function get_latest_messager_container() {
+    return messager_list.messagers_container.children().last();
 }
+export function get_latest_message_content_displayer() {
+    return get_latest_messager_container().find(".content-displayer");
+}
+
+export function start_latest_message_animation() {
+    return get_latest_messager_container()
+        .find(".button-group")
+        .find(".regenerate-button")
+        .find("i")
+        .addClass("fa-spin-fast")
+        .css("color", "orange");
+}
+
+export function stop_latest_message_animation() {
+    return get_latest_messager_container()
+        .find(".button-group")
+        .find(".regenerate-button")
+        .find("i")
+        .removeClass("fa-spin-fast")
+        .css("color", "green");
+}
+
 export function get_request_messages() {
     return messager_list.get_request_messages();
 }

@@ -1,5 +1,9 @@
 import { ChatCompletionsRequester } from "./llm_requester.js";
-import { pop_messager } from "./chat_operator.js";
+import {
+    pop_messager,
+    stop_latest_message_animation,
+    start_latest_message_animation,
+} from "./chat_operator.js";
 
 export class ButtonsBinder {
     constructor() {
@@ -7,7 +11,7 @@ export class ButtonsBinder {
     }
     bind_send_user_input() {
         const button = $("#send-user-input");
-        button.attr("status", "send");
+        button.attr("status", "send").attr("title", "Send");
         button.click(async () => {
             await this.handle_user_input(button);
         });
@@ -49,24 +53,25 @@ export class ButtonsBinder {
     async send(button) {
         console.log("Send");
         let button_icon = button.find("i");
-        button.attr("status", "stop");
+        button.attr("status", "stop").attr("title", "Stop");
         button_icon
             .removeClass()
             .addClass("fa fa-circle-pause fa-fade")
             .css("color", "orange");
+        start_latest_message_animation();
         await this.post_user_input();
-        button.attr("status", "send");
-        button_icon.removeClass().addClass("fa fa-paper-plane");
+        await this.stop(button);
     }
     async stop(button) {
         console.log("Stop");
         let button_icon = button.find("i");
         this.requester.stop();
-        button.attr("status", "send");
+        stop_latest_message_animation();
+        button.attr("status", "send").attr("title", "Send");
         button_icon
             .removeClass()
             .addClass("fa fa-paper-plane")
-            .css("color", "red");
+            .css("color", "green");
     }
     bind() {
         this.bind_send_user_input();
