@@ -4,9 +4,9 @@ export class MessagerViewer {
         this.create_elements();
     }
     create_elements() {
-        this.container = $("<div>").addClass(
-            "mt-2 row no-gutters message-viewer"
-        );
+        this.container = $("<div>")
+            .addClass("mt-2 row no-gutters message-viewer")
+            .addClass(`message-${this.message.role}`);
         this.create_role_displayer();
         this.create_content_displayer();
         this.create_button_group();
@@ -52,13 +52,13 @@ export class MessagerViewer {
         this.button_group.append(this.copy_button);
 
         if (this.message.role === "user") {
-        } else {
             this.regenerate_button = $("<button>")
                 .addClass("btn px-2")
-                .addClass("generate-button")
+                .addClass("regenerate-button")
                 .attr("title", "Regenerate")
-                .append($("<i>").addClass("fa fa-rotate fa-spin-fast"));
+                .append($("<i>").addClass("fa fa-rotate"));
             this.button_group.append(this.regenerate_button);
+        } else {
         }
     }
 }

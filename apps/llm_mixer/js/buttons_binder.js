@@ -56,10 +56,7 @@ export class ButtonsBinder {
         console.log("Send");
         let button_icon = button.find("i");
         button.attr("status", "stop").attr("title", "Stop");
-        button_icon
-            .removeClass()
-            .addClass("fa fa-circle-pause fa-fade")
-            .css("color", "orange");
+        button_icon.removeClass().addClass("fa fa-circle-pause fa-fade-fast");
         await this.post_user_input();
         await this.stop(button);
     }

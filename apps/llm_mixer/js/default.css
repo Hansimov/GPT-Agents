@@ -40,6 +40,12 @@
 
 .fa-spin-fast {
     animation: fa-spin 0.6s infinite linear;
+    color: orange;
+}
+
+.fa-fade-fast {
+    animation: fa-fade 1.5s infinite linear;
+    color: orange;
 }
 
 .message-viewer .edit-button,
@@ -52,4 +58,20 @@
 .message-viewer:hover .copy-button,
 .message-viewer:hover .regenerate-button {
     display: inline-block;
+}
+
+@keyframes blink {
+    0% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: antiquewhite;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+.blinking {
+    animation: blink 2s infinite;
 }

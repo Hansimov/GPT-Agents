@@ -32,26 +32,30 @@ export function get_latest_message_content_displayer() {
     return get_latest_messager_container().find(".content-displayer");
 }
 
+export function get_latest_user_messager() {
+    return $(".message-user").last();
+}
+
 export function start_latest_message_animation() {
-    return get_latest_messager_container()
+    get_latest_messager_container()
+        .find(".content-displayer")
+        .addClass("blinking");
+    get_latest_user_messager()
         .find(".button-group")
-        .find(".generate-button")
+        .find(".regenerate-button")
         .find("i")
-        .addClass("fa-spin-fast")
-        .css("color", "orange");
+        .addClass("fa-spin-fast");
 }
 
 export function stop_latest_message_animation() {
-    let generate_button = get_latest_messager_container()
+    get_latest_messager_container()
+        .find(".content-displayer")
+        .removeClass("blinking");
+    get_latest_user_messager()
         .find(".button-group")
-        .find(".generate-button");
-    let generate_button_icon = generate_button
+        .find(".regenerate-button")
         .find("i")
-        .removeClass("fa-spin-fast")
-        .css("color", "green");
-    generate_button
-        .removeClass("generate-button")
-        .addClass("regenerate-button");
+        .removeClass("fa-spin-fast");
 }
 
 export function get_request_messages() {
