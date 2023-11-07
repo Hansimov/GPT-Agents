@@ -35,19 +35,23 @@ export function get_latest_message_content_displayer() {
 export function start_latest_message_animation() {
     return get_latest_messager_container()
         .find(".button-group")
-        .find(".regenerate-button")
+        .find(".generate-button")
         .find("i")
         .addClass("fa-spin-fast")
         .css("color", "orange");
 }
 
 export function stop_latest_message_animation() {
-    return get_latest_messager_container()
+    let generate_button = get_latest_messager_container()
         .find(".button-group")
-        .find(".regenerate-button")
+        .find(".generate-button");
+    let generate_button_icon = generate_button
         .find("i")
         .removeClass("fa-spin-fast")
         .css("color", "green");
+    generate_button
+        .removeClass("generate-button")
+        .addClass("regenerate-button");
 }
 
 export function get_request_messages() {

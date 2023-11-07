@@ -38,7 +38,18 @@
     max-width: 250px;
 }
 
-
 .fa-spin-fast {
     animation: fa-spin 0.6s infinite linear;
+}
+
+.message-viewer .edit-button,
+.message-viewer .copy-button,
+.message-viewer .regenerate-button {
+    display: none;
+}
+
+.message-viewer:hover .edit-button,
+.message-viewer:hover .copy-button,
+.message-viewer:hover .regenerate-button {
+    display: inline-block;
 }
