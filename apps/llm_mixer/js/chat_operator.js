@@ -1,10 +1,16 @@
 import { Messager, MessagerList } from "./messager.js";
 
 let messagers_container = $("#messagers-container");
-let messager_list = new MessagerList(messagers_container);
 let available_models_select = $("#available-models-select");
 let temperature_select = $("#temperature-select");
+
+let messager_list = new MessagerList(messagers_container);
+let chat_history = [messager_list];
 let md_to_html_converter = new showdown.Converter();
+
+export function get_active_messager_list() {
+    return chat_history[chat_history.length - 1];
+}
 
 export function create_messager(
     role,
@@ -19,7 +25,7 @@ export function create_messager(
         temperature: temperature,
     };
     let messager = new Messager(message);
-    messager_list.push(messager);
+    get_active_messager_list().push(messager);
 }
 
 export function get_selected_llm_model() {
@@ -31,7 +37,7 @@ export function get_selected_temperature() {
 }
 
 export function get_latest_messager_container() {
-    return messager_list.messagers_container.children().last();
+    return get_active_messager_list().messagers_container.children().last();
 }
 export function get_latest_message_content_displayer() {
     return get_latest_messager_container().find(".content-displayer");
@@ -64,11 +70,11 @@ export function stop_latest_message_animation() {
 }
 
 export function get_request_messages() {
-    return messager_list.get_request_messages();
+    return get_active_messager_list().get_request_messages();
 }
 
 export function pop_messager(n = 2) {
-    return messager_list.pop(n);
+    return get_active_messager_list().pop(n);
 }
 
 export function update_message(json_chunks, content_displayer = null) {
@@ -102,4 +108,10 @@ export function update_message(json_chunks, content_displayer = null) {
         console.log(item);
     });
     return json_chunks;
+}
+
+export function create_new_chat_session() {
+    let new_messager_list = new MessagerList(messagers_container);
+    chat_history.push(new_messager_list);
+    messagers_container.empty();
 }

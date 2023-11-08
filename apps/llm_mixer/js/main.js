@@ -2,7 +2,7 @@ import {
     setup_available_models_on_select,
     setup_temperature_on_select,
 } from "./llm_models_loader.js";
-import { ButtonsBinder } from "./buttons_binder.js";
+import { bind_chat_buttons } from "./buttons_binder.js";
 var user_input_history = [];
 var user_input_history_idx = 0;
 
@@ -22,25 +22,10 @@ function auto_resize_user_input() {
     );
 }
 
-function register_user_input_callbacks() {
-    // $("#user-input").on("keypress", function (event) {
-    // if (event.key === "Enter" && !event.shiftKey) {
-    // let current_user_input = $(this).val();
-    // user_input_history.push(current_user_input);
-    // $(this).val("");
-    // user_input_history_idx = user_input_history.length;
-    // set_user_input_history_buttons_state();
-    // console.log(user_input_history);
-    // request_llm();
+function setup_interactive_components() {
     setup_available_models_on_select();
     setup_temperature_on_select();
-    let buttons_binder = new ButtonsBinder();
-    buttons_binder.bind();
-
-    // request_available_models();
-    // event.preventDefault();
-    //     }
-    // });
+    bind_chat_buttons();
 }
 
 function register_user_input_history_buttons_callbacks() {
@@ -98,7 +83,7 @@ function adjust_messagers_container_max_height() {
 $(document).ready(function () {
     // load_available_models();
     auto_resize_user_input();
-    register_user_input_callbacks();
+    setup_interactive_components();
     register_user_input_history_buttons_callbacks();
     adjust_messagers_container_max_height();
     $(window).on("resize", adjust_messagers_container_max_height);

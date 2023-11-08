@@ -3,13 +3,21 @@ import {
     pop_messager,
     stop_latest_message_animation,
     start_latest_message_animation,
+    create_new_chat_session,
 } from "./chat_operator.js";
 
-export class ButtonsBinder {
+export function bind_chat_buttons() {
+    let send_binder = new SendUserInputButtonBinder();
+    send_binder.bind();
+    let new_binder = new NewChatButtonBinder();
+    new_binder.bind();
+}
+
+class SendUserInputButtonBinder {
     constructor() {
         this.requester = null;
     }
-    bind_send_user_input() {
+    bind() {
         const button = $("#send-user-input");
         button.attr("status", "send").attr("title", "Send");
         button.click(async () => {
@@ -71,7 +79,15 @@ export class ButtonsBinder {
             .addClass("fa fa-paper-plane")
             .addClass("icon-success");
     }
+}
+
+class NewChatButtonBinder {
+    constructor() {}
     bind() {
-        this.bind_send_user_input();
+        const button = $("#new-chat-session");
+        button.attr("status", "new").attr("title", "New Chat");
+        button.click(() => {
+            create_new_chat_session();
+        });
     }
 }
