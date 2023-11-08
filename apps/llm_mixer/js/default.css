@@ -14,7 +14,7 @@
     cursor: pointer;
 }
 
-#messagers-container {
+#chat-session-container {
     overflow-y: auto;
 }
 

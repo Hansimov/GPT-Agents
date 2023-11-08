@@ -74,7 +74,7 @@ function set_user_input_history_buttons_state() {
 function adjust_messagers_container_max_height() {
     var user_interaction_height = $("#user-interactions").outerHeight(true);
     var page_height = $(window).height();
-    $("#messagers-container").css(
+    $("#chat-session-container").css(
         "max-height",
         page_height - user_interaction_height - 30 + "px"
     );
