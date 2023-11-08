@@ -2,7 +2,7 @@ import {
     jsonize_stream_data,
     stringify_stream_bytes,
 } from "./stream_jsonizer.js";
-import * as secrets from "./secrets.js";
+// import * as secrets from "./secrets.js";
 import {
     update_message,
     create_messager,
@@ -23,8 +23,8 @@ export class ChatCompletionsRequester {
         this.model = model || get_selected_llm_model() || "gpt-turbo-3.5";
         this.temperature =
             temperature !== null ? temperature : get_selected_temperature();
-        this.endpoint = endpoint || secrets.openai_endpoint;
-        this.cors_proxy = cors_proxy || secrets.cors_proxy;
+        this.endpoint = endpoint || localStorage.getItem("openai_endpoint");
+        this.cors_proxy = cors_proxy || "https://cors-anywhere.herokuapp.com/";
         this.request_endpoint = this.cors_proxy + this.endpoint;
         this.controller = new AbortController();
     }
@@ -34,7 +34,7 @@ export class ChatCompletionsRequester {
     construct_request_headers() {
         this.request_headers = {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${secrets.openai_api_key}`,
+            Authorization: `Bearer ${localStorage.getItem("openai_api_key")}`,
         };
     }
     construct_request_body() {

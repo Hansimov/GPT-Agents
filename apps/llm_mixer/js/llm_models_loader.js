@@ -34,3 +34,32 @@ export async function setup_temperature_on_select(default_option = null) {
     }
     console.log(`Default temperature: ${select.val()}`);
 }
+
+export function setup_endpoint_and_key() {
+    if (localStorage.getItem("openai_endpoint")) {
+        $("#openai-endpoint").val(localStorage.getItem("openai_endpoint"));
+        console.log("GET: OpenAI Endpoint!");
+    } else {
+        console.log("NULL: OpenAI Endpoint!");
+        $("#openai-endpoint").on("submit", function (event) {
+            event.preventDefault();
+            localStorage.setItem(
+                "openai_endpoint",
+                $("#openai-endpoint").val()
+            );
+            console.log("SET: OpenAI Endpoint!");
+        });
+    }
+
+    if (localStorage.getItem("openai_api_key")) {
+        $("#openai-api-key").val(localStorage.getItem("openai_api_key"));
+        console.log("GET: OpenAI API Key!");
+    } else {
+        console.log("NULL: OpenAI API Key!");
+        $("#openai-api-key").on("submit", function (event) {
+            event.preventDefault();
+            localStorage.setItem("openai_api_key", $("#openai-api-key").val());
+            console.log("SET: OpenAI API Key!");
+        });
+    }
+}

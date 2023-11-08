@@ -73,13 +73,31 @@
                         </button>
                     </div>
                 </div>
-                <div class="mt-3">
-                    <button id="prev-user-input" class="btn btn-dark">
-                        <span class="fa fa-arrow-left"></span>
-                    </button>
-                    <button id="next-user-input" class="btn btn-dark">
-                        <span class="fa fa-arrow-right"></span>
-                    </button>
+                <div class="row mt-2 no-gutters">
+                    <div class="col-auto pl-3 pr-0">
+                        <button id="prev-user-input" class="btn btn-dark">
+                            <span class="fa fa-arrow-left"></span>
+                        </button>
+                        <button id="next-user-input" class="btn btn-dark">
+                            <span class="fa fa-arrow-right"></span>
+                        </button>
+                    </div>
+                    <form class="col px-1">
+                            <input
+                                id="openai-endpoint"
+                                class="form-control"
+                                rows="1"
+                                placeholder="Endpoint ..."
+                            ></input>
+                    </form>
+                    <form class="col px-1">
+                        <input
+                            id="openai-api-key"
+                            class="form-control"
+                            rows="1"
+                            placeholder="API Key ..."
+                        ></input>
+                    </form>
                 </div>
             </div>
         </div>

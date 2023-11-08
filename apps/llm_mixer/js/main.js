@@ -1,6 +1,7 @@
 import {
     setup_available_models_on_select,
     setup_temperature_on_select,
+    setup_endpoint_and_key,
 } from "./llm_models_loader.js";
 import { bind_chat_buttons } from "./buttons_binder.js";
 var user_input_history = [];
@@ -23,6 +24,7 @@ function auto_resize_user_input() {
 }
 
 function setup_interactive_components() {
+    setup_endpoint_and_key();
     setup_available_models_on_select();
     setup_temperature_on_select();
     bind_chat_buttons();
