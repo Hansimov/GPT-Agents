@@ -95,9 +95,9 @@ export function update_message(json_chunks, content_displayer = null) {
         }
         if (content) {
             console.log(content);
-            content_displayer.attr(
-                "raw_text",
-                content_displayer.attr("raw_text") + content
+            content_displayer.data(
+                "raw_content",
+                content_displayer.data("raw_content") + content
             );
             get_active_messager_list().messagers.slice(-1)[0].message.content +=
                 content;
