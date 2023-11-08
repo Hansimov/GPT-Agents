@@ -37,7 +37,7 @@ export function get_selected_llm_model() {
 }
 
 export function get_selected_temperature() {
-    return temperature_select.val();
+    return Number(temperature_select.val());
 }
 
 export function get_latest_messager_container() {
