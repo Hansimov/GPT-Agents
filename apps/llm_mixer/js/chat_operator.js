@@ -4,6 +4,7 @@ let messagers_container = $("#messagers-container");
 let messager_list = new MessagerList(messagers_container);
 let available_models_select = $("#available-models-select");
 let temperature_select = $("#temperature-select");
+let md_to_html_converter = new showdown.Converter();
 
 export function create_messager(
     role,
@@ -84,12 +85,20 @@ export function update_message(json_chunks, content_displayer = null) {
         }
         if (content) {
             console.log(content);
+            content_displayer.attr(
+                "raw_text",
+                content_displayer.attr("raw_text") + content
+            );
+            content_displayer.html(
+                md_to_html_converter.makeHtml(
+                    content_displayer.attr("raw_text")
+                )
+            );
         }
         if (finish_reason === "stop") {
             console.log("[STOP]");
         }
         console.log(item);
-        content_displayer.append(content);
     });
     return json_chunks;
 }

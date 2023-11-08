@@ -31,6 +31,7 @@ export class MessagerViewer {
             .addClass("content-displayer")
             .addClass(`chat-${this.message.role}`)
             .append(this.message.content);
+        this.content_displayer.attr("raw_text", "");
     }
     create_button_group() {
         this.button_group = $("<div>")
