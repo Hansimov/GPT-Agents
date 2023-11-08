@@ -1,4 +1,5 @@
 import { Messager, MessagerList } from "./messager.js";
+import { transform_footnote } from "./stream_jsonizer.js";
 
 let messagers_container = $("#messagers-container");
 let available_models_select = $("#available-models-select");
@@ -7,6 +8,7 @@ let temperature_select = $("#temperature-select");
 let messager_list = new MessagerList(messagers_container);
 let chat_history = [messager_list];
 let md_to_html_converter = new showdown.Converter();
+md_to_html_converter.setFlavor("github");
 
 export function get_active_messager_list() {
     return chat_history[chat_history.length - 1];
@@ -103,10 +105,12 @@ export function update_message(json_chunks, content_displayer = null) {
                 content;
             content_displayer.html(
                 md_to_html_converter.makeHtml(
-                    content_displayer.attr("raw_text")
+                    transform_footnote(content_displayer.data("raw_content"))
                 )
             );
-            content_displayer.find("*").addClass("no-margin-bottom");
+            content_displayer
+                .find("table")
+                .addClass("table table-bordered table-hover");
         }
         if (finish_reason === "stop") {
             console.log("[STOP]");

@@ -4,6 +4,7 @@ import {
     stop_latest_message_animation,
     start_latest_message_animation,
     create_new_chat_session,
+    get_latest_message_content_displayer,
 } from "./chat_operator.js";
 
 export function bind_chat_buttons() {
@@ -79,6 +80,7 @@ class SendUserInputButtonBinder {
             .addClass("fa fa-paper-plane")
             .addClass("icon-success");
         hljs.highlightAll();
+        console.log(get_latest_message_content_displayer().data("raw_content"));
     }
 }
 

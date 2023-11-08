@@ -18,3 +18,9 @@ export function jsonize_stream_data(data) {
         });
     return json_chunks;
 }
+
+export function transform_footnote(text) {
+    return text
+        .replace(/\[\^(\d+)\^\]\[\d+\]/g, "[$1]")
+        .replace(/\[(\d+)\]:\s*(.*)\s*""/g, "[$1] $2 \n");
+}

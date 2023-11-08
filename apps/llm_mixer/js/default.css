@@ -60,6 +60,10 @@
     display: inline-block;
 }
 
+.message-viewer * {
+    margin-bottom: 0;
+}
+
 @keyframes blink {
     0% {
         background-color: transparent;
@@ -82,8 +86,4 @@
 
 .icon-success {
     color: green;
-}
-
-.no-margin-bottom {
-    margin-bottom: 0;
 }
