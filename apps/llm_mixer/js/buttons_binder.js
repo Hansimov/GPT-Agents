@@ -78,6 +78,7 @@ class SendUserInputButtonBinder {
             .removeClass()
             .addClass("fa fa-paper-plane")
             .addClass("icon-success");
+        hljs.highlightAll();
     }
 }
 
