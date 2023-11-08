@@ -75,3 +75,11 @@
 .blinking {
     animation: blink 2s infinite;
 }
+
+.fa:hover {
+    color: lightsalmon;
+}
+
+.icon-success {
+    color: green;
+}

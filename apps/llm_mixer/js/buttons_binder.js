@@ -69,7 +69,7 @@ export class ButtonsBinder {
         button_icon
             .removeClass()
             .addClass("fa fa-paper-plane")
-            .css("color", "green");
+            .addClass("icon-success");
     }
     bind() {
         this.bind_send_user_input();
