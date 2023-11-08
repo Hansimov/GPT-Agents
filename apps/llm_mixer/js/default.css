@@ -83,3 +83,7 @@
 .icon-success {
     color: green;
 }
+
+.no-margin-bottom {
+    margin-bottom: 0;
+}

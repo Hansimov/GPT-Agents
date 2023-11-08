@@ -94,6 +94,7 @@ export function update_message(json_chunks, content_displayer = null) {
                     content_displayer.attr("raw_text")
                 )
             );
+            content_displayer.find("*").addClass("no-margin-bottom");
         }
         if (finish_reason === "stop") {
             console.log("[STOP]");
