@@ -12,6 +12,10 @@ export function get_active_messager_list() {
     return chat_history[chat_history.length - 1];
 }
 
+export function get_latest_messager() {
+    return get_active_messager_list().messagers.slice(-1)[0];
+}
+
 export function create_messager(
     role,
     content = "",
@@ -95,6 +99,8 @@ export function update_message(json_chunks, content_displayer = null) {
                 "raw_text",
                 content_displayer.attr("raw_text") + content
             );
+            get_active_messager_list().messagers.slice(-1)[0].message.content +=
+                content;
             content_displayer.html(
                 md_to_html_converter.makeHtml(
                     content_displayer.attr("raw_text")

@@ -67,15 +67,17 @@ export class MessagerViewer {
 export class Messager {
     constructor(message) {
         this.message = message;
-        this.create_request_message();
         this.create_viewer();
     }
-    create_request_message() {
+
+    get_request_message() {
         this.request_message = {
             role: this.message.role,
             content: this.message.content,
         };
+        return this.request_message;
     }
+
     create_viewer() {
         let messager_viewer = new MessagerViewer(this.message);
         this.viewer = messager_viewer.container;
@@ -123,8 +125,8 @@ export class MessagerList {
         });
     }
     get_request_messages() {
-        return this.messagers.map(function (messager) {
-            return messager.request_message;
+        return this.messagers.slice(0, -1).map(function (messager) {
+            return messager.get_request_message();
         });
     }
 
