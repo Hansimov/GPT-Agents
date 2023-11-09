@@ -35,7 +35,11 @@
 }
 
 #available-models-select {
-    max-width: 250px;
+    max-width: calc(100vw - 200px);
+}
+
+#temperature-select {
+    max-width: 70px;
 }
 
 .fa-spin-fast {

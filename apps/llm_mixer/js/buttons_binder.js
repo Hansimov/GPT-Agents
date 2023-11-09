@@ -16,6 +16,8 @@ export function bind_chat_buttons() {
     openai_endpoint_binder.bind();
     let openai_api_key_binder = new OpenaiAPIKeyButtonBinder();
     openai_api_key_binder.bind();
+    let show_endpoint_and_key_binder = new ShowEndpointAndKeyButtonBinder();
+    show_endpoint_and_key_binder.bind();
 }
 
 class SendUserInputButtonBinder {
@@ -103,7 +105,7 @@ class OpenaiEndpointButtonBinder {
     constructor() {}
     bind() {
         const button = $("#openai-endpoint-button");
-        button.attr("title", "Submit OpenAI Endpoint");
+        button.attr("title", "Submit Endpoint");
         const stored_openai_endpoint = localStorage.getItem("openai_endpoint");
         if (stored_openai_endpoint) {
             $("#openai-endpoint").val(stored_openai_endpoint);
@@ -123,7 +125,7 @@ class OpenaiAPIKeyButtonBinder {
     constructor() {}
     bind() {
         const button = $("#openai-api-key-button");
-        button.attr("title", "Submit OpenAI API Key");
+        button.attr("title", "Submit API Key");
         const stored_openai_api_key = localStorage.getItem("openai_api_key");
         if (stored_openai_api_key) {
             $("#openai-api-key").val(stored_openai_api_key);
@@ -132,6 +134,31 @@ class OpenaiAPIKeyButtonBinder {
         button.click(() => {
             console.log($("#openai-api-key").val());
             localStorage.setItem("openai_api_key", $("#openai-api-key").val());
+        });
+    }
+}
+
+class ShowEndpointAndKeyButtonBinder {
+    constructor() {}
+    bind() {
+        const button = $("#show-endpoint-and-key-button");
+        button.attr("title", "Show endpoint and api key");
+
+        if (localStorage.getItem("openai_endpoint")) {
+            $("#openai-endpoint").parent().hide();
+            $("#openai-endpoint-button").parent().hide();
+        }
+
+        if (localStorage.getItem("openai_api_key")) {
+            $("#openai-api-key").parent().hide();
+            $("#openai-api-key-button").parent().hide();
+        }
+
+        button.click(() => {
+            $("#openai-endpoint").parent().toggle();
+            $("#openai-endpoint-button").parent().toggle();
+            $("#openai-api-key").parent().toggle();
+            $("#openai-api-key-button").parent().toggle();
         });
     }
 }
