@@ -7,10 +7,52 @@ export async function setup_available_models_on_select(default_option = null) {
     if (default_option === null) {
         default_option = "gpt-3.5-turbo";
     }
-
-    available_models.forEach((value, index) => {
+    const working_models = [
+        "bing-precise",
+        "bing-balanced",
+        "bing-creative",
+        // "bing-dall-e", // not work
+        "bing-gpt-4",
+        "bing-gpt-4-32k",
+        // "bingo-balanced", // not work
+        // "bingo-creative", // not work
+        // "bingo-precise", // not work
+        "claude-2",
+        "gpt-3.5-turbo",
+        "gpt-3.5-turbo-internet",
+        "gpt-4",
+        "gpt-4-32k",
+        "gpt-4-internet",
+        // "pandora-gpt-3.5-turbo", // not work
+        // "poe-claude-2-100k", // not work
+        "poe-claude-instant",
+        "poe-claude-instant-100k",
+        // "poe-code-llama-13b",
+        // "poe-code-llama-34b",
+        // "poe-code-llama-7b",
+        // "poe-dolly-v2-12b", // not work
+        "poe-google-palm",
+        "poe-gpt-3.5-turbo",
+        // "poe-gpt-3.5-turbo-16k", // not work
+        "poe-gpt-3.5-turbo-instruct",
+        "poe-gpt-4",
+        "poe-gpt-4-32k",
+        // "poe-llama-2-13b",
+        // "poe-llama-2-70b",
+        // "poe-llama-2-7b",
+        // "poe-nous-hermes-13b",
+        // "poe-nous-hermes-l2-13b", // not work
+        // "poe-saga",
+        // "poe-solar-0-70b",
+        // "poe-stablediffusion-xl", // not work
+        // "poe-starcoderchat", // not work
+        "poe-web-search",
+    ];
+    working_models.forEach((value, index) => {
         const option = new Option(value, value);
-        select.append(option);
+        if (available_models.includes(value)) {
+            select.append(option);
+        }
         if (value === default_option) {
             $(option).prop("selected", true);
         }
