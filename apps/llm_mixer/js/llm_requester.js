@@ -2,7 +2,6 @@ import {
     jsonize_stream_data,
     stringify_stream_bytes,
 } from "./stream_jsonizer.js";
-// import * as secrets from "./secrets.js";
 import {
     update_message,
     create_messager,

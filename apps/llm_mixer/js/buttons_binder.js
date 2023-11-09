@@ -8,10 +8,14 @@ import {
 } from "./chat_operator.js";
 
 export function bind_chat_buttons() {
-    let send_binder = new SendUserInputButtonBinder();
-    send_binder.bind();
-    let new_binder = new NewChatButtonBinder();
-    new_binder.bind();
+    let send_user_input_binder = new SendUserInputButtonBinder();
+    send_user_input_binder.bind();
+    let new_chat_binder = new NewChatButtonBinder();
+    new_chat_binder.bind();
+    let openai_endpoint_binder = new OpenaiEndpointButtonBinder();
+    openai_endpoint_binder.bind();
+    let openai_api_key_binder = new OpenaiAPIKeyButtonBinder();
+    openai_api_key_binder.bind();
 }
 
 class SendUserInputButtonBinder {
@@ -91,6 +95,43 @@ class NewChatButtonBinder {
         button.attr("status", "new").attr("title", "New Chat");
         button.click(() => {
             create_new_chat_session();
+        });
+    }
+}
+
+class OpenaiEndpointButtonBinder {
+    constructor() {}
+    bind() {
+        const button = $("#openai-endpoint-button");
+        button.attr("title", "Submit OpenAI Endpoint");
+        const stored_openai_endpoint = localStorage.getItem("openai_endpoint");
+        if (stored_openai_endpoint) {
+            $("#openai-endpoint").val(stored_openai_endpoint);
+            console.log(`GET OpenAI Endpoint: ${stored_openai_endpoint}`);
+        }
+        button.click(() => {
+            console.log($("#openai-endpoint").val());
+            localStorage.setItem(
+                "openai_endpoint",
+                $("#openai-endpoint").val()
+            );
+        });
+    }
+}
+
+class OpenaiAPIKeyButtonBinder {
+    constructor() {}
+    bind() {
+        const button = $("#openai-api-key-button");
+        button.attr("title", "Submit OpenAI API Key");
+        const stored_openai_api_key = localStorage.getItem("openai_api_key");
+        if (stored_openai_api_key) {
+            $("#openai-api-key").val(stored_openai_api_key);
+            console.log(`GET OpenAI API Key: ${stored_openai_api_key}`);
+        }
+        button.click(() => {
+            console.log($("#openai-api-key").val());
+            localStorage.setItem("openai_api_key", $("#openai-api-key").val());
         });
     }
 }
