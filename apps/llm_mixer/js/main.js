@@ -80,7 +80,7 @@ function adjust_messagers_container_max_height() {
     var page_height = $(window).height();
     $("#chat-session-container").css(
         "max-height",
-        page_height - user_interaction_height - 30 + "px"
+        page_height - user_interaction_height + "px"
     );
 }
 

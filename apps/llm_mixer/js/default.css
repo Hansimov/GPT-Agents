@@ -68,6 +68,15 @@
     margin-bottom: 0;
 }
 
+/* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
+.message-viewer .role-displayer,
+.message-viewer .content-displayer {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+}
+
 @keyframes blink {
     0% {
         background-color: transparent;
