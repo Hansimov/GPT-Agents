@@ -201,7 +201,12 @@ class ScreenshotButtonBinder {
         const button = $("#screenshot-button");
         button.attr("title", "Take screenshot for whole chat");
         button.click(() => {
-            html2canvas($("#chat-session-container")[0]).then((canvas) => {
+            let screenshot_padding = 10;
+            html2canvas($("#messagers-container")[0], {
+                x: -screenshot_padding,
+                width:
+                    $("#messagers-container").width() + 2 * screenshot_padding,
+            }).then((canvas) => {
                 var link = document.createElement("a");
                 let date = new Date();
                 let date_string = date.toISOString().split("T")[0];

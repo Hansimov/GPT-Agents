@@ -16,6 +16,7 @@
 
 #chat-session-container {
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #user-input {
