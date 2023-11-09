@@ -10,6 +10,15 @@ import {
     get_selected_temperature,
 } from "./chat_operator.js";
 
+function concat_urls(...urls) {
+    let new_url = urls
+        .map((url) => url.replace(/^\/|\/$/g, ""))
+        .filter((url) => url !== "")
+        .join("/");
+    console.log(new_url);
+    return new_url;
+}
+
 export class ChatCompletionsRequester {
     constructor(
         prompt,
@@ -23,13 +32,18 @@ export class ChatCompletionsRequester {
         this.temperature =
             temperature !== null ? temperature : get_selected_temperature();
         this.endpoint = endpoint || localStorage.getItem("openai_endpoint");
-        // if current web page is "https"
-        if (window.location.protocol === "https:") {
-            this.cors_proxy = "";
+        if (cors_proxy !== null) {
+            this.cors_proxy = cors_proxy;
+        } else if (window.location.protocol === "https:") {
+            this.cors_proxy = "https://hansimov-cors-anywhere.onrender.com/";
         } else {
             this.cors_proxy = "https://cors-anywhere.herokuapp.com/";
         }
-        this.request_endpoint = this.cors_proxy + this.endpoint;
+        this.request_endpoint = concat_urls(
+            this.cors_proxy,
+            this.endpoint,
+            "/chat/completions"
+        );
         this.controller = new AbortController();
     }
     construct_request_messages() {
