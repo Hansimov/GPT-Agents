@@ -26,7 +26,11 @@ function auto_resize_user_input() {
 function setup_interactive_components() {
     setup_available_models_on_select();
     setup_temperature_on_select();
+    auto_resize_user_input();
     bind_chat_buttons();
+    register_user_input_history_buttons_callbacks();
+    adjust_messagers_container_max_height();
+    $(window).on("resize", adjust_messagers_container_max_height);
 }
 
 function register_user_input_history_buttons_callbacks() {
@@ -82,10 +86,5 @@ function adjust_messagers_container_max_height() {
 }
 
 $(document).ready(function () {
-    // load_available_models();
-    auto_resize_user_input();
     setup_interactive_components();
-    register_user_input_history_buttons_callbacks();
-    adjust_messagers_container_max_height();
-    $(window).on("resize", adjust_messagers_container_max_height);
 });
