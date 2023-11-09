@@ -24,6 +24,8 @@ export function bind_chat_buttons() {
     let chat_session_container_scroll_binder =
         new ChatSessionContainerScrollBinder();
     chat_session_container_scroll_binder.bind();
+    let screenshot_button_binder = new ScreenshotButtonBinder();
+    screenshot_button_binder.bind();
 }
 
 class SendUserInputButtonBinder {
@@ -189,6 +191,29 @@ class ChatSessionContainerScrollBinder {
             if ($("#send-user-input").attr("status") === "stop") {
                 set_user_scroll_status(true);
             }
+        });
+    }
+}
+
+class ScreenshotButtonBinder {
+    constructor() {}
+    bind() {
+        const button = $("#screenshot-button");
+        button.attr("title", "Take screenshot for whole chat");
+        button.click(() => {
+            html2canvas($("#chat-session-container")[0]).then((canvas) => {
+                var link = document.createElement("a");
+                let date = new Date();
+                let date_string = date.toISOString().split("T")[0];
+                let time_string = date
+                    .toTimeString()
+                    .split(" ")[0]
+                    .replace(/:/g, "-");
+                let datetime_string = `${date_string}_${time_string}`;
+                link.download = `chat_${datetime_string}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
         });
     }
 }
