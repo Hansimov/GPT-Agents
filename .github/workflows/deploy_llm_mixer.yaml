@@ -1,0 +1,22 @@
+# deploy files under ./apps/llm_mixer and publish to static page in github pages
+# https://github.com/peaceiris/actions-gh-pages
+
+name: Deploy LLM Mixer
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name:
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./apps/llm_mixer
