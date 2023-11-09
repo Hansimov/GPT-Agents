@@ -26,6 +26,8 @@ export function bind_chat_buttons() {
     chat_session_container_scroll_binder.bind();
     let screenshot_button_binder = new ScreenshotButtonBinder();
     screenshot_button_binder.bind();
+    let available_models_select_binder = new AvailableModelsSelectBinder();
+    available_models_select_binder.bind();
 }
 
 class SendUserInputButtonBinder {
@@ -219,6 +221,17 @@ class ScreenshotButtonBinder {
                 link.href = canvas.toDataURL("image/png");
                 link.click();
             });
+        });
+    }
+}
+
+class AvailableModelsSelectBinder {
+    constructor() {}
+    bind() {
+        const select = $("#available-models-select");
+        select.change(() => {
+            console.log(select.val());
+            localStorage.setItem("default_model", select.val());
         });
     }
 }

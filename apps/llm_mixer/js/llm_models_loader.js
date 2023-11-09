@@ -4,9 +4,6 @@ export async function setup_available_models_on_select(default_option = null) {
     var select = $("#available-models-select");
     select.empty();
     await request_available_models();
-    if (default_option === null) {
-        default_option = "gpt-3.5-turbo";
-    }
     const working_models = [
         "bing-precise",
         "bing-balanced",
@@ -53,10 +50,12 @@ export async function setup_available_models_on_select(default_option = null) {
         if (available_models.includes(value)) {
             select.append(option);
         }
-        if (value === default_option) {
-            $(option).prop("selected", true);
-        }
     });
+    let default_model = "gpt-turbo-3.5";
+    if (localStorage.getItem("default_model")) {
+        default_model = localStorage.getItem("default_model");
+    }
+    select.val(default_model);
     console.log(`Default model: ${select.val()}`);
 }
 
