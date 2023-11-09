@@ -23,7 +23,12 @@ export class ChatCompletionsRequester {
         this.temperature =
             temperature !== null ? temperature : get_selected_temperature();
         this.endpoint = endpoint || localStorage.getItem("openai_endpoint");
-        this.cors_proxy = cors_proxy || "https://cors-anywhere.herokuapp.com/";
+        // if current web page is "https"
+        if (window.location.protocol === "https:") {
+            this.cors_proxy = "";
+        } else {
+            this.cors_proxy = "https://cors-anywhere.herokuapp.com/";
+        }
         this.request_endpoint = this.cors_proxy + this.endpoint;
         this.controller = new AbortController();
     }
