@@ -35,7 +35,7 @@
 }
 
 #available-models-select {
-    max-width: calc(100vw - 150px);
+    max-width: calc(100vw - 200px);
 }
 
 #temperature-select {
