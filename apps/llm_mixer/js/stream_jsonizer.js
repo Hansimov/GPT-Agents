@@ -14,6 +14,7 @@ export function jsonize_stream_data(data) {
             return line.trim().length > 0;
         })
         .map(function (line) {
+            console.log(line);
             json_chunks.push(JSON.parse(line.trim()));
         });
     return json_chunks;
